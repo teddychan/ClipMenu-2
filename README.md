@@ -14,7 +14,31 @@ A modern macOS clipboard-history menu-bar app, written in Swift 6. It lives in
 - Settings window (General / Menu / Type / Action / Shortcuts), persisted via
   `UserDefaults`; history and snippets stored via SwiftData.
 
-## Requirements
+## Installation
+macOS 26 (Tahoe) or later on Apple Silicon.
+
+### Homebrew (recommended)
+```bash
+brew install --cask teddychan/tap/clipmenu-2
+```
+Upgrade later with `brew upgrade --cask clipmenu-2`, or remove it with
+`brew uninstall --zap --cask clipmenu-2`.
+
+### Direct download
+Download `ClipMenu-2-vX.Y.Z.zip` from the
+[latest release](https://github.com/teddychan/clipmenu-2/releases/latest),
+unzip it, and drag `ClipMenu 2.app` into `/Applications`. Builds are
+Developer ID-signed and notarized, and update themselves via Sparkle.
+
+### Mac App Store
+[ClipMenu 2 on the Mac App Store](https://apps.apple.com/us/app/clipmenu-2/id6775685878?mt=12)
+— free. The App Store build is sandboxed and updates through the App Store
+instead of Sparkle; everything else matches the direct download.
+
+### Build from source
+See [Build & run](#build--run) below.
+
+## Requirements (building from source)
 - macOS 26 or 27 on Apple Silicon — the app ships a single arm64 build.
 - A Swift 6 toolchain (Xcode 26+ or the matching Command Line Tools).
 
