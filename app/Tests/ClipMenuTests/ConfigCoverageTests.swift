@@ -50,15 +50,15 @@ import DragonKit
 
     @Test func contentHasDateAndSummary() {
         let content = WhatsNewConfig.content
-        #expect(content.date == "2026-07-11")
+        #expect(content.date == "2026-07-25")
         #expect(!content.summary.isEmpty)
     }
 
-    @Test func contentHasASingleImprovedSection() {
+    @Test func contentHasASingleChangedSection() {
         let sections = WhatsNewConfig.content.sections
         #expect(sections.count == 1)
         let section = try! #require(sections.first)
-        #expect(section.kind == .improved)
+        #expect(section.kind == .changed)
         #expect(section.entries.count == 1)
         #expect(!(section.entries.first ?? "").isEmpty)
     }

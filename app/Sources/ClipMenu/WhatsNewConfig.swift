@@ -8,11 +8,11 @@ enum WhatsNewConfig {
     static var content: WhatsNewContent {
         WhatsNewContent(
             version: "v\(AppInfo.version)",
-            date: "2026-07-11",
-            summary: L("Faster clipboard history search."),
+            date: "2026-07-25",
+            summary: L("Maintenance release."),
             sections: [
-                ChangeSection(kind: .improved, entries: [
-                    L("Searching your clipboard history (⌃⌘V) is faster — matching now happens in the database as you type instead of scanning every item, which keeps search quick even with a large history."),
+                ChangeSection(kind: .changed, entries: [
+                    L("Nothing changed inside the app. ClipMenu 2 is now also on the Mac App Store, and the install instructions cover all three ways to get it: the App Store, Homebrew, and a direct download."),
                 ]),
             ]
         )
