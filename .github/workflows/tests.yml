@@ -1,0 +1,31 @@
+name: Tests
+
+# Runs the unit-test suite on every PR to main (and pushes to main). Build/release stays in
+# release.yml (Developer ID / Homebrew) and release-mas.yml (Mac App Store) — this job never
+# signs, notarizes, or releases anything.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    # macOS 26 image: same runner both release workflows build on (macOS 26 SDK).
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Swift version
+        run: swift --version
+
+      # DragonKit and ViewInspector resolve from GitHub like any SwiftPM dependency —
+      # nothing to vendor. CLIPMENU_SPARKLE is deliberately left unset so the test
+      # build stays Sparkle-free, which is what UpdaterUITests asserts.
+      - name: Tests (ClipMenuTests)
+        working-directory: app
+        run: swift test

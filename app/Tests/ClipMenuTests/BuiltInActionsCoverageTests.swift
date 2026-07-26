@@ -11,58 +11,61 @@ import Foundation
 // AppStore.container singleton (no injectable context) and are NOT covered here.
 //
 // Serialized: touches UserDefaults.standard and the shared NSPasteboard.general.
-@Suite(.serialized) @MainActor struct BuiltInActionsEffectCoverageTests {
+extension PasteboardSerialized {
 
-    private func withPasteDisabled(_ body: () -> Void) {
-        let key = PreferenceKeys.inputPasteCommand
-        let previous = UserDefaults.standard.object(forKey: key)
-        UserDefaults.standard.set(false, forKey: key)   // Paster.paste() no-ops
-        defer { UserDefaults.standard.set(previous, forKey: key) }
-        body()
-    }
+    @Suite(.serialized) @MainActor struct BuiltInActionsEffectCoverageTests {
 
-    @Test func pasteAsPlainTextCopiesClipStringToPasteboard() {
-        withPasteDisabled {
-            let clip = ClipRecord(typeIdentifiers: ["String"], stringValue: "plain value")
-            BuiltInActions.pasteAsPlainText(clip)
-            #expect(NSPasteboard.general.string(forType: .string) == "plain value")
+        private func withPasteDisabled(_ body: () -> Void) {
+            let key = PreferenceKeys.inputPasteCommand
+            let previous = UserDefaults.standard.object(forKey: key)
+            UserDefaults.standard.set(false, forKey: key)   // Paster.paste() no-ops
+            defer { UserDefaults.standard.set(previous, forKey: key) }
+            body()
         }
-    }
 
-    @Test func pasteAsPlainTextWithNilStringCopiesEmpty() {
-        withPasteDisabled {
-            let clip = ClipRecord(typeIdentifiers: ["String"], stringValue: nil)
-            BuiltInActions.pasteAsPlainText(clip)
-            #expect(NSPasteboard.general.string(forType: .string) == "")
+        @Test func pasteAsPlainTextCopiesClipStringToPasteboard() {
+            withPasteDisabled {
+                let clip = ClipRecord(typeIdentifiers: ["String"], stringValue: "plain value")
+                BuiltInActions.pasteAsPlainText(clip)
+                #expect(NSPasteboard.general.string(forType: .string) == "plain value")
+            }
         }
-    }
 
-    @Test func pasteAsPlainTextCopiesSnippetContent() {
-        withPasteDisabled {
-            let snippet = Snippet(title: "t", content: "snippet body")
-            BuiltInActions.pasteAsPlainText(snippet: snippet)
-            #expect(NSPasteboard.general.string(forType: .string) == "snippet body")
+        @Test func pasteAsPlainTextWithNilStringCopiesEmpty() {
+            withPasteDisabled {
+                let clip = ClipRecord(typeIdentifiers: ["String"], stringValue: nil)
+                BuiltInActions.pasteAsPlainText(clip)
+                #expect(NSPasteboard.general.string(forType: .string) == "")
+            }
         }
-    }
 
-    @Test func pasteAsFilePathJoinsFilenamesOntoPasteboard() {
-        withPasteDisabled {
-            let clip = ClipRecord(typeIdentifiers: ["Filenames"],
-                                  filenames: ["/a/one.txt", "/b/two.txt"])
-            BuiltInActions.pasteAsFilePath(clip)
-            #expect(NSPasteboard.general.string(forType: .string) == "/a/one.txt\n/b/two.txt")
+        @Test func pasteAsPlainTextCopiesSnippetContent() {
+            withPasteDisabled {
+                let snippet = Snippet(title: "t", content: "snippet body")
+                BuiltInActions.pasteAsPlainText(snippet: snippet)
+                #expect(NSPasteboard.general.string(forType: .string) == "snippet body")
+            }
         }
-    }
 
-    @Test func pasteAsFilePathWithNilFilenamesCopiesEmpty() {
-        withPasteDisabled {
-            let clip = ClipRecord(typeIdentifiers: ["Filenames"], filenames: nil)
-            BuiltInActions.pasteAsFilePath(clip)
-            #expect(NSPasteboard.general.string(forType: .string) == "")
+        @Test func pasteAsFilePathJoinsFilenamesOntoPasteboard() {
+            withPasteDisabled {
+                let clip = ClipRecord(typeIdentifiers: ["Filenames"],
+                                      filenames: ["/a/one.txt", "/b/two.txt"])
+                BuiltInActions.pasteAsFilePath(clip)
+                #expect(NSPasteboard.general.string(forType: .string) == "/a/one.txt\n/b/two.txt")
+            }
         }
-    }
 
-    @Test func newLineConstantIsLineFeed() {
-        #expect(BuiltInActions.newLine == "\n")
+        @Test func pasteAsFilePathWithNilFilenamesCopiesEmpty() {
+            withPasteDisabled {
+                let clip = ClipRecord(typeIdentifiers: ["Filenames"], filenames: nil)
+                BuiltInActions.pasteAsFilePath(clip)
+                #expect(NSPasteboard.general.string(forType: .string) == "")
+            }
+        }
+
+        @Test func newLineConstantIsLineFeed() {
+            #expect(BuiltInActions.newLine == "\n")
+        }
     }
 }

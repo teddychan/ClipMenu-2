@@ -202,7 +202,10 @@ The suite lives in `app/Tests/ClipMenuTests` and runs on Swift Testing, no simul
 or granted permissions required. It covers clipboard capture and privacy filtering, the
 history and snippet stores with their migrations, JavaScript and built-in actions, menu
 building and search, hotkey rebinding, the Settings panes, and folder backup and
-restore.
+restore. CI runs the whole suite on every pull request via
+[`.github/workflows/tests.yml`](.github/workflows/tests.yml).
+
+[![Tests](https://github.com/teddychan/clipmenu-2/actions/workflows/tests.yml/badge.svg)](https://github.com/teddychan/clipmenu-2/actions/workflows/tests.yml)
 
 ```bash
 cd app && swift test
