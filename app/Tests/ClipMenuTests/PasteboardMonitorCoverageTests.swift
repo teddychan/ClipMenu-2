@@ -16,41 +16,44 @@ import AppKit
 // cancelled before it can fire.
 //
 // Serialized because start() reads NSPasteboard.general.changeCount.
-@Suite(.serialized) struct PasteboardMonitorCoverageTests {
+extension PasteboardSerialized {
 
-    private func makeStore() throws -> ClipStore {
-        let container = try ModelContainer(
-            for: Folder.self, Snippet.self, ClipRecord.self, ClipImage.self,
-            configurations: ModelConfiguration(isStoredInMemoryOnly: true))
-        return ClipStore(modelContainer: container)
-    }
+    @Suite(.serialized) struct PasteboardMonitorCoverageTests {
 
-    // start() installs a poll task; a second start() is a no-op (guarded on
-    // pollTask == nil); stop() cancels and clears it. Reaching the end without
-    // hanging proves the task was created and torn down cleanly.
-    @Test func startIsIdempotentAndStopTearsDown() async throws {
-        let store = try makeStore()
-        let monitor = PasteboardMonitor()
+        private func makeStore() throws -> ClipStore {
+            let container = try ModelContainer(
+                for: Folder.self, Snippet.self, ClipRecord.self, ClipImage.self,
+                configurations: ModelConfiguration(isStoredInMemoryOnly: true))
+            return ClipStore(modelContainer: container)
+        }
 
-        // A long interval means the spawned task sleeps well past the test; stop()
-        // cancels the sleep so nothing lingers.
-        await monitor.start(clipStore: store, interval: .seconds(3600))
-        await monitor.start(clipStore: store, interval: .seconds(3600)) // guarded no-op
-        await monitor.stop()
+        // start() installs a poll task; a second start() is a no-op (guarded on
+        // pollTask == nil); stop() cancels and clears it. Reaching the end without
+        // hanging proves the task was created and torn down cleanly.
+        @Test func startIsIdempotentAndStopTearsDown() async throws {
+            let store = try makeStore()
+            let monitor = PasteboardMonitor()
 
-        // stop() is safe to call again once already stopped (pollTask == nil).
-        await monitor.stop()
-    }
+            // A long interval means the spawned task sleeps well past the test; stop()
+            // cancels the sleep so nothing lingers.
+            await monitor.start(clipStore: store, interval: .seconds(3600))
+            await monitor.start(clipStore: store, interval: .seconds(3600)) // guarded no-op
+            await monitor.stop()
 
-    // After a stop, start() can install a fresh poll task again (pollTask was
-    // cleared to nil), so the monitor is reusable across enable/disable cycles.
-    @Test func canRestartAfterStop() async throws {
-        let store = try makeStore()
-        let monitor = PasteboardMonitor()
+            // stop() is safe to call again once already stopped (pollTask == nil).
+            await monitor.stop()
+        }
 
-        await monitor.start(clipStore: store, interval: .seconds(3600))
-        await monitor.stop()
-        await monitor.start(clipStore: store, interval: .seconds(3600))
-        await monitor.stop()
+        // After a stop, start() can install a fresh poll task again (pollTask was
+        // cleared to nil), so the monitor is reusable across enable/disable cycles.
+        @Test func canRestartAfterStop() async throws {
+            let store = try makeStore()
+            let monitor = PasteboardMonitor()
+
+            await monitor.start(clipStore: store, interval: .seconds(3600))
+            await monitor.stop()
+            await monitor.start(clipStore: store, interval: .seconds(3600))
+            await monitor.stop()
+        }
     }
 }
