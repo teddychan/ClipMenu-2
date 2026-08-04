@@ -13,7 +13,7 @@ import DragonKitUpdates
 enum UpdaterUI {
     #if SPARKLE
     /// The app's single updater instance. `UpdatesSettingsPane` binds its
-    /// auto-check/auto-download toggles; the menu-bar "Check for updates…" item
+    /// auto-check/auto-download toggles; the menu-bar "Check for Updates…" item
     /// goes through `checkNow()`.
     static let updater = DragonUpdater()
     #endif

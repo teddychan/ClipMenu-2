@@ -15,7 +15,9 @@ import DragonKit
 //   - clip rows are fed through the History search field, filtered by a per-test
 //     random marker, so only this test's seeded clips surface regardless of what
 //     else is already in the shared AppStore.container;
-//   - command items are matched by ObjC selector, not by (localizable) title.
+//   - command items are matched by ObjC selector, not by (localizable) title —
+//     except DragonAppMenu's closure-backed App-menu items, which carry no
+//     per-command selector and are matched by their DragonKit title instead.
 //
 // Serialized + UserDefaults save/restore because the build methods snapshot
 // preferences from UserDefaults.standard and read the process-wide
@@ -189,20 +191,25 @@ struct MainMenuControllerCoverageTests {
         #expect(menu.title == "ClipMenu")
         let items = allItems(menu)
         let actions = Set(items.compactMap(\.action))
-        // Quick-actions zone + standardized App menu (Liquid Glass §5A).
+        let titles = items.map(\.title)
+        let name = MainMenuController.canonicalName
+        // Quick-actions zone (ClipMenu's own selectors) + standardized App menu
+        // (DragonKit's DragonAppMenu). The App-menu items other than Quit are
+        // closure-backed, so there is no per-command selector to match: they are
+        // identified by the same DragonKit title the menu builder renders.
         #expect(actions.contains(Selector(("editSnippets:"))))
-        #expect(actions.contains(Selector(("showAbout:"))))
-        #expect(actions.contains(Selector(("showPreferences:"))))
-        #expect(actions.contains(Selector(("uninstall:"))))
+        #expect(titles.contains(String(format: L("DragonKit.menu.about"), name)))
+        #expect(titles.contains(L("DragonKit.menu.settings")))
+        #expect(titles.contains(String(format: L("DragonKit.menu.uninstall"), name)))
         #expect(actions.contains(Selector(("terminate:"))))
         // Clear History is present by default (addClearHistoryMenuItem defaults YES).
         #expect(actions.contains(Selector(("clearHistory:"))))
-        // "Check for updates…" only exists in the Sparkle build; tests build with
+        // "Check for Updates…" only exists in the Sparkle build; tests build with
         // CLIPMENU_SPARKLE unset, so it must be absent.
-        #expect(!actions.contains(Selector(("checkForUpdates:"))))
+        #expect(!titles.contains(L("DragonKit.menu.checkForUpdates")))
 
         // Settings… → ⌘, ; Quit → ⌘Q.
-        let settings = try? #require(items.first { $0.action == Selector(("showPreferences:")) })
+        let settings = try? #require(items.first { $0.title == L("DragonKit.menu.settings") })
         #expect(settings?.keyEquivalent == ",")
         #expect(settings?.keyEquivalentModifierMask == .command)
         let quit = items.first { $0.action == Selector(("terminate:")) }

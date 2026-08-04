@@ -1036,46 +1036,24 @@ final class MainMenuController: NSObject, NSMenuDelegate {
     static let canonicalName = "ClipMenu 2"
 
     /// Append the standardized App menu (Liquid Glass §5A): About · Check for
-    /// updates… (Sparkle/direct build only) · Settings… (⌘,) · — · Uninstall… ·
-    /// Quit (⌘Q). Each item leads with an SF Symbol.
+    /// Updates… (Sparkle/direct build only) · Settings… (⌘,) · — · Uninstall… ·
+    /// Quit (⌘Q). Built by DragonKit's `DragonAppMenu`, the single source of truth
+    /// for this section in every Dragon app — including the titles, the leading SF
+    /// Symbols and the divider before Uninstall/Quit, so the separator added here
+    /// is only the one that closes off ClipMenu's own content above.
     private func addAppMenuSection(to menu: NSMenu) {
-        let name = Self.canonicalName
         menu.addItem(.separator())
 
-        let about = NSMenuItem(title: String(format: L("About %@"), name),
-                               action: #selector(showAbout(_:)), keyEquivalent: "")
-        about.target = self
-        about.image = NSImage(systemSymbolName: "info.circle", accessibilityDescription: nil)
-        menu.addItem(about)
-
-        // Check for updates… exists only in the Sparkle / Developer ID build; the
-        // Mac App Store build is updated by the App Store and shows no item.
-        if UpdaterUI.isSupported {
-            let updates = NSMenuItem(title: L("Check for updates…"),
-                                     action: #selector(checkForUpdates(_:)), keyEquivalent: "")
-            updates.target = self
-            updates.image = NSImage(systemSymbolName: "arrow.down.circle", accessibilityDescription: nil)
-            menu.addItem(updates)
-        }
-
-        let settings = NSMenuItem(title: L("Settings…"),
-                                  action: #selector(showPreferences(_:)), keyEquivalent: ",")
-        settings.target = self
-        settings.image = NSImage(systemSymbolName: "gearshape", accessibilityDescription: nil)
-        menu.addItem(settings)
-
-        menu.addItem(.separator())
-
-        let uninstall = NSMenuItem(title: String(format: L("Uninstall %@…"), name),
-                                   action: #selector(uninstall(_:)), keyEquivalent: "")
-        uninstall.target = self
-        uninstall.image = NSImage(systemSymbolName: "trash", accessibilityDescription: nil)
-        menu.addItem(uninstall)
-
-        let quit = NSMenuItem(title: String(format: L("Quit %@"), name),
-                              action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
-        quit.image = NSImage(systemSymbolName: "power", accessibilityDescription: nil)
-        menu.addItem(quit)
+        let items = DragonAppMenu.items(DragonAppMenu.Config(
+            appName: Self.canonicalName,
+            onAbout: { [weak self] in self?.showAbout(nil) },
+            onSettings: { [weak self] in self?.showPreferences(nil) },
+            // Check for Updates… exists only in the Sparkle / Developer ID build; the
+            // Mac App Store build is updated by the App Store, and passing nil here
+            // omits the item entirely.
+            onCheckForUpdates: UpdaterUI.isSupported ? { [weak self] in self?.checkForUpdates(nil) } : nil,
+            onUninstall: { [weak self] in self?.uninstall(nil) }))
+        for item in items { menu.addItem(item) }
     }
 
     /// "About ClipMenu 2" — opens Settings on the About pane specifically. (The

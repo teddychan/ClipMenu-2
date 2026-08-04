@@ -253,12 +253,7 @@
 "Search…" = "搜索…";
 "No matches" = "无匹配项";
 
-/* App menu (§5A), About pane, Uninstall pane, What's New (2.17.0) */
-"About %@" = "关于 %@";
-"Check for updates…" = "检查更新…";
-"Settings…" = "设置…";
-"Uninstall %@…" = "卸载 %@…";
-"Quit %@" = "退出 %@";
+/* About pane, Uninstall pane, What's New (2.17.0) */
 "Website" = "网站";
 "Support on GitHub" = "GitHub 支持";
 "Created by" = "作者";
