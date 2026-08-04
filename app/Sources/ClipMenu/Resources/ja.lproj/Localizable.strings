@@ -268,3 +268,8 @@
 "Permissions, What's New, and Software Update panes." = "権限・新機能・ソフトウェアアップデートの各パネル。";
 "Switch language instantly — no restart needed." = "言語を即座に切り替え — 再起動不要。";
 "Uninstall now confirms right inside Settings instead of a separate window." = "アンインストールは別ウインドウではなく設定内で確認するようになりました。";
+
+/* What's New (2.19.0) */
+"Uninstall has moved out of the menu-bar menu into Settings." = "アンインストールがメニューバーのメニューから設定に移動しました。";
+"Uninstall is no longer in the menu-bar menu, next to Quit." = "「終了」の隣にあったアンインストールをメニューバーのメニューから削除。";
+"Find it as the last pane in Settings, where it confirms before removing anything." = "設定の最後のペインに移動し、削除前に確認を求めます。";

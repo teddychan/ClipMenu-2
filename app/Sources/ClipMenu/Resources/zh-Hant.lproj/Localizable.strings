@@ -268,3 +268,8 @@
 "Permissions, What's New, and Software Update panes." = "新增權限、新功能與軟體更新面板。";
 "Switch language instantly — no restart needed." = "即時切換語言，無需重新啟動。";
 "Uninstall now confirms right inside Settings instead of a separate window." = "解除安裝現在直接在設定內確認，不再彈出獨立視窗。";
+
+/* What's New (2.19.0) */
+"Uninstall has moved out of the menu-bar menu into Settings." = "解除安裝已從選單列選單移至設定。";
+"Uninstall is no longer in the menu-bar menu, next to Quit." = "選單列選單中「結束」旁邊的解除安裝項目已移除。";
+"Find it as the last pane in Settings, where it confirms before removing anything." = "現在位於設定的最後一個面板，刪除前會先確認。";
