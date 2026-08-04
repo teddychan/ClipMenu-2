@@ -140,7 +140,7 @@ import SwiftData
         let bad = meta(recordName: "bad.clipbackup", hash: "h")
         let store = MockBackupStore(seed: [.init(meta: bad, payload: Data("not-json".utf8))])
 
-        await #expect(throws: BackupError.validationFailed) {
+        await #expect(throws: SyncBackupError.validationFailed) {
             try await manager(store, ctx).restore(bad)
         }
         // Untouched: the local data is left exactly as it was.
@@ -158,7 +158,7 @@ import SwiftData
         let m = meta(recordName: "future.clipbackup", schemaVersion: 1, hash: "h")
         let store = MockBackupStore(seed: [.init(meta: m, payload: payload)])
 
-        await #expect(throws: BackupError.unsupportedSchemaVersion(found: 999, supported: 1)) {
+        await #expect(throws: SyncBackupError.unsupportedSchemaVersion(found: 999, supported: 1)) {
             try await manager(store, ctx).restore(m)
         }
         let folders = try ctx.fetch(FetchDescriptor<Folder>())

@@ -97,7 +97,7 @@ final class BackupManager {
 
     func restore(_ version: BackupVersionMeta) async throws {
         guard version.schemaVersion <= SnippetSnapshot.currentSchemaVersion else {
-            throw BackupError.unsupportedSchemaVersion(
+            throw SyncBackupError.unsupportedSchemaVersion(
                 found: version.schemaVersion, supported: SnippetSnapshot.currentSchemaVersion)
         }
         Self.isRestoring = true
@@ -107,15 +107,15 @@ final class BackupManager {
         let payload = try await store.fetchPayload(recordName: version.recordName)
         let snapshot: SnippetSnapshot
         do { snapshot = try SnippetSnapshot.decode(payload) }
-        catch { throw BackupError.validationFailed }
+        catch { throw SyncBackupError.validationFailed }
         guard snapshot.schemaVersion <= SnippetSnapshot.currentSchemaVersion else {
-            throw BackupError.unsupportedSchemaVersion(
+            throw SyncBackupError.unsupportedSchemaVersion(
                 found: snapshot.schemaVersion, supported: SnippetSnapshot.currentSchemaVersion)
         }
 
         // Phase B — snapshot current state and confirm it persisted.
         do { try await backUpNow(kind: .preRestore, force: true) }
-        catch { throw BackupError.preRestoreFailed }
+        catch { throw SyncBackupError.preRestoreFailed }
 
         // Phase C — replace, rolling back if the save fails.
         try BackupManager.applyWithRollback(snapshot, to: context) { try self.context.save() }

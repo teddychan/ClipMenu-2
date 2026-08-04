@@ -122,7 +122,7 @@ actor MockBackupStore: BackupStore {
         try seed(ctx, folderTitle: "B", snippet: "y")
         await store.setFailSave(.preRestore)
 
-        await #expect(throws: BackupError.preRestoreFailed) {
+        await #expect(throws: SyncBackupError.preRestoreFailed) {
             try await m.restore(vA)
         }
         let folders = try ctx.fetch(FetchDescriptor<Folder>())
@@ -140,7 +140,7 @@ actor MockBackupStore: BackupStore {
             recordName: v.recordName, kind: v.kind, serverDate: v.serverDate,
             clientDate: v.clientDate, folderCount: v.folderCount, snippetCount: v.snippetCount,
             contentHash: v.contentHash, schemaVersion: 999, deviceName: v.deviceName)
-        await #expect(throws: BackupError.self) { try await m.restore(newer) }
+        await #expect(throws: SyncBackupError.self) { try await m.restore(newer) }
     }
 
     // P2c: a fresh/slow-syncing device must not push an empty backup as the newest
