@@ -1,13 +1,13 @@
 {
-  "originHash" : "317060edc95a1838628a2e63cf94b991f823a653401f3b292371b6774b7a82a0",
+  "originHash" : "483d80159dbd0491b737202f4169c7383fd0416e2091d9599c0f5b851817a7a9",
   "pins" : [
     {
       "identity" : "dragon-kit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/teddychan/dragon-kit",
       "state" : {
-        "revision" : "808d5a71882c5de7d3d457a145c92f9eef84cb81",
-        "version" : "2.0.0"
+        "revision" : "6ebfbb9465bf33a3169a88ecea3959753f108184",
+        "version" : "2.0.1"
       }
     },
     {

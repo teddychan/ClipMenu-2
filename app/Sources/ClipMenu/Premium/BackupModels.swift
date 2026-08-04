@@ -63,8 +63,10 @@ extension BackupStore {
     func otherItemCount() async -> Int { 0 }
 }
 
-/// Typed failures surfaced to the restore UI.
-enum BackupError: Error, Equatable {
+/// Typed failures surfaced to the restore UI. Named for the Sync & Backup pane, not
+/// plain `BackupError` — that name is DragonKit's (`DragonBackup.BackupError`, a
+/// UserDefaults-suite payload error), and shadowing it hides drift (CONFORMANCE.md R3).
+enum SyncBackupError: Error, Equatable {
     case unsupportedSchemaVersion(found: Int, supported: Int)
     case validationFailed
     case preRestoreFailed

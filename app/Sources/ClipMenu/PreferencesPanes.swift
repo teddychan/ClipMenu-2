@@ -345,7 +345,7 @@ struct RestoreVersionsView: View {
         guard let v = selected else { return }
         restoring = true; defer { restoring = false }
         do { try await manager.restore(v); dismiss() }
-        catch let e as BackupError {
+        catch let e as SyncBackupError {
             switch e {
             case .preRestoreFailed:
                 error = L("Couldn't save a safety backup, so the restore was cancelled.")

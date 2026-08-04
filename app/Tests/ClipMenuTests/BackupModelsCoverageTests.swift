@@ -4,7 +4,7 @@ import Foundation
 
 // Characterization of the backup model value types (BackupModels.swift):
 // BackupKind Codable/CaseIterable, BackupVersionMeta computed props + Equatable,
-// and the BackupError / BackupResult equality surfaces.
+// and the SyncBackupError / BackupResult equality surfaces.
 @Suite struct BackupModelsCoverageTests {
 
     private func meta(recordName: String = "rec-1",
@@ -67,16 +67,16 @@ import Foundation
         #expect(a != meta(recordName: "same", serverDate: Date(timeIntervalSince1970: 5)))
     }
 
-    // MARK: BackupError
+    // MARK: SyncBackupError
 
     @Test func backupErrorEquality() {
-        #expect(BackupError.validationFailed == BackupError.validationFailed)
-        #expect(BackupError.preRestoreFailed == BackupError.preRestoreFailed)
-        #expect(BackupError.unsupportedSchemaVersion(found: 2, supported: 1)
-                == BackupError.unsupportedSchemaVersion(found: 2, supported: 1))
-        #expect(BackupError.unsupportedSchemaVersion(found: 2, supported: 1)
-                != BackupError.unsupportedSchemaVersion(found: 3, supported: 1))
-        #expect(BackupError.validationFailed != BackupError.preRestoreFailed)
+        #expect(SyncBackupError.validationFailed == SyncBackupError.validationFailed)
+        #expect(SyncBackupError.preRestoreFailed == SyncBackupError.preRestoreFailed)
+        #expect(SyncBackupError.unsupportedSchemaVersion(found: 2, supported: 1)
+                == SyncBackupError.unsupportedSchemaVersion(found: 2, supported: 1))
+        #expect(SyncBackupError.unsupportedSchemaVersion(found: 2, supported: 1)
+                != SyncBackupError.unsupportedSchemaVersion(found: 3, supported: 1))
+        #expect(SyncBackupError.validationFailed != SyncBackupError.preRestoreFailed)
     }
 
     // MARK: BackupResult
