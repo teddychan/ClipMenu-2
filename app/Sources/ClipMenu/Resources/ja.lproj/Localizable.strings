@@ -253,12 +253,7 @@
 "Search…" = "検索…";
 "No matches" = "一致なし";
 
-/* App menu (§5A), About pane, Uninstall pane, What's New (2.17.0) */
-"About %@" = "%@ について";
-"Check for updates…" = "アップデートを確認…";
-"Settings…" = "設定…";
-"Uninstall %@…" = "%@ をアンインストール…";
-"Quit %@" = "%@ を終了";
+/* About pane, Uninstall pane, What's New (2.17.0) */
 "Website" = "ウェブサイト";
 "Support on GitHub" = "GitHub でサポート";
 "Created by" = "作者";

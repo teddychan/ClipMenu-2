@@ -253,12 +253,7 @@
 "Search…" = "Rechercher…";
 "No matches" = "Aucun résultat";
 
-/* App menu (§5A), About pane, Uninstall pane, What's New (2.17.0) */
-"About %@" = "À propos de %@";
-"Check for updates…" = "Rechercher des mises à jour…";
-"Settings…" = "Réglages…";
-"Uninstall %@…" = "Désinstaller %@…";
-"Quit %@" = "Quitter %@";
+/* About pane, Uninstall pane, What's New (2.17.0) */
 "Website" = "Site web";
 "Support on GitHub" = "Assistance sur GitHub";
 "Created by" = "Créé par";

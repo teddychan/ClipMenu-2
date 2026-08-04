@@ -253,12 +253,7 @@
 "Search…" = "검색…";
 "No matches" = "일치 항목 없음";
 
-/* App menu (§5A), About pane, Uninstall pane, What's New (2.17.0) */
-"About %@" = "%@ 정보";
-"Check for updates…" = "업데이트 확인…";
-"Settings…" = "설정…";
-"Uninstall %@…" = "%@ 제거…";
-"Quit %@" = "%@ 종료";
+/* About pane, Uninstall pane, What's New (2.17.0) */
 "Website" = "웹 사이트";
 "Support on GitHub" = "GitHub 지원";
 "Created by" = "제작자";

@@ -253,12 +253,7 @@
 "Search…" = "搜尋…";
 "No matches" = "無相符項目";
 
-/* App menu (§5A), About pane, Uninstall pane, What's New (2.17.0) */
-"About %@" = "關於 %@";
-"Check for updates…" = "檢查更新…";
-"Settings…" = "設定…";
-"Uninstall %@…" = "解除安裝 %@…";
-"Quit %@" = "結束 %@";
+/* About pane, Uninstall pane, What's New (2.17.0) */
 "Website" = "網站";
 "Support on GitHub" = "GitHub 支援";
 "Created by" = "作者";
