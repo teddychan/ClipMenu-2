@@ -1036,11 +1036,15 @@ final class MainMenuController: NSObject, NSMenuDelegate {
     static let canonicalName = "ClipMenu 2"
 
     /// Append the standardized App menu (Liquid Glass §5A): About · Check for
-    /// Updates… (Sparkle/direct build only) · Settings… (⌘,) · — · Uninstall… ·
-    /// Quit (⌘Q). Built by DragonKit's `DragonAppMenu`, the single source of truth
-    /// for this section in every Dragon app — including the titles, the leading SF
-    /// Symbols and the divider before Uninstall/Quit, so the separator added here
-    /// is only the one that closes off ClipMenu's own content above.
+    /// Updates… (Sparkle/direct build only) · Settings… (⌘,) · — · Quit (⌘Q).
+    /// Built by DragonKit's `DragonAppMenu`, the single source of truth for this
+    /// section in every Dragon app — including the titles, the leading SF Symbols
+    /// and the divider before Quit, so the separator added here is only the one
+    /// that closes off ClipMenu's own content above.
+    ///
+    /// Uninstall is deliberately not here: a rare destructive action does not
+    /// belong one click from Quit. It lives in Settings as `UninstallSettingsPane`
+    /// (last pane in the sidebar), so it stays one click from Settings….
     private func addAppMenuSection(to menu: NSMenu) {
         menu.addItem(.separator())
 
@@ -1051,8 +1055,7 @@ final class MainMenuController: NSObject, NSMenuDelegate {
             // Check for Updates… exists only in the Sparkle / Developer ID build; the
             // Mac App Store build is updated by the App Store, and passing nil here
             // omits the item entirely.
-            onCheckForUpdates: UpdaterUI.isSupported ? { [weak self] in self?.checkForUpdates(nil) } : nil,
-            onUninstall: { [weak self] in self?.uninstall(nil) }))
+            onCheckForUpdates: UpdaterUI.isSupported ? { [weak self] in self?.checkForUpdates(nil) } : nil))
         for item in items { menu.addItem(item) }
     }
 
@@ -1064,12 +1067,5 @@ final class MainMenuController: NSObject, NSMenuDelegate {
 
     @objc private func checkForUpdates(_ sender: Any?) {
         UpdaterUI.checkNow()
-    }
-
-    /// "Uninstall ClipMenu 2…" — opens Settings on the Uninstall pane (DragonKit's
-    /// `UninstallSettingsPane`), which confirms inline (checklist + user-data
-    /// toggle) and performs the teardown (config in SettingsWindowController.swift).
-    @objc private func uninstall(_ sender: Any?) {
-        SettingsWindowController.shared.show(paneID: "uninstall")
     }
 }

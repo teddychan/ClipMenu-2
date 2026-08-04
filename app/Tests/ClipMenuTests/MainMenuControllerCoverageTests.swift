@@ -200,13 +200,18 @@ struct MainMenuControllerCoverageTests {
         #expect(actions.contains(Selector(("editSnippets:"))))
         #expect(titles.contains(String(format: L("DragonKit.menu.about"), name)))
         #expect(titles.contains(L("DragonKit.menu.settings")))
-        #expect(titles.contains(String(format: L("DragonKit.menu.uninstall"), name)))
         #expect(actions.contains(Selector(("terminate:"))))
         // Clear History is present by default (addClearHistoryMenuItem defaults YES).
         #expect(actions.contains(Selector(("clearHistory:"))))
         // "Check for Updates…" only exists in the Sparkle build; tests build with
         // CLIPMENU_SPARKLE unset, so it must be absent.
         #expect(!titles.contains(L("DragonKit.menu.checkForUpdates")))
+        // Uninstall was dropped from the canonical menu in DragonKit 2.0.0 — a rare
+        // destructive action does not belong one click from Quit; it lives in Settings
+        // as UninstallSettingsPane. Scoped to the App-menu tail (About → end of the
+        // top level) so a clipboard entry in the zone above can't decide this.
+        let appMenu = menu.items.drop { $0.title != String(format: L("DragonKit.menu.about"), name) }
+        #expect(!appMenu.contains { $0.title.localizedCaseInsensitiveContains("uninstall") })
 
         // Settings… → ⌘, ; Quit → ⌘Q.
         let settings = try? #require(items.first { $0.title == L("DragonKit.menu.settings") })
