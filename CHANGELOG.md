@@ -5,6 +5,21 @@ Developer-facing notes for ClipMenu. User-facing release notes live in
 
 ## Unreleased
 
+## 2.19.0 — 2026-08-04
+
+Uninstall left the status-item menu. DragonKit 2.0.0's `DragonAppMenu` no longer
+takes an `onUninstall` handler, so the App-menu section is About · Check for
+Updates… (direct build only) · Settings… · — · Quit. A rare destructive action
+does not belong one click from Quit; it stays reachable as DragonKit's
+`UninstallSettingsPane`, the last pane in Settings, which ClipMenu already ships.
+
+- **DragonKit 1.5.0 → 2.0.0** (`app/Package.swift`, `app/Package.resolved`).
+  Breaking only in the menu-builder signature described above.
+- `MainMenuController` drops its `uninstall(_:)` action; the menu assertion in
+  `MainMenuControllerCoverageTests` now checks Uninstall is *absent*, scoped to
+  the App-menu tail so a clipboard entry above can't satisfy the match.
+- What's New copy refreshed for this release in all 7 localizations.
+
 ## 2.17.11 — 2026-07-11
 
 Maintenance release: test-coverage and internal quality only — no user-facing

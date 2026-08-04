@@ -50,16 +50,19 @@ import DragonKit
 
     @Test func contentHasDateAndSummary() {
         let content = WhatsNewConfig.content
-        #expect(content.date == "2026-07-25")
+        #expect(content.date == "2026-08-04")
         #expect(!content.summary.isEmpty)
     }
 
-    @Test func contentHasASingleChangedSection() {
+    /// 2.19.0's notes: Uninstall left the menu (removed) and now lives in Settings
+    /// (changed). Pinned per release alongside the WhatsNewConfig copy itself.
+    @Test func contentHasARemovedThenChangedSection() {
         let sections = WhatsNewConfig.content.sections
-        #expect(sections.count == 1)
-        let section = try! #require(sections.first)
-        #expect(section.kind == .changed)
-        #expect(section.entries.count == 1)
-        #expect(!(section.entries.first ?? "").isEmpty)
+        #expect(sections.count == 2)
+        #expect(sections.map(\.kind) == [.removed, .changed])
+        for section in sections {
+            #expect(section.entries.count == 1)
+            #expect(!(section.entries.first ?? "").isEmpty)
+        }
     }
 }

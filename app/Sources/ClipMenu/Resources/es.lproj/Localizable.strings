@@ -268,3 +268,8 @@
 "Permissions, What's New, and Software Update panes." = "Paneles de Permisos, Novedades y Actualización de software.";
 "Switch language instantly — no restart needed." = "Cambia el idioma al instante, sin reiniciar.";
 "Uninstall now confirms right inside Settings instead of a separate window." = "Desinstalar ahora se confirma dentro de Ajustes, sin una ventana aparte.";
+
+/* What's New (2.19.0) */
+"Uninstall has moved out of the menu-bar menu into Settings." = "Desinstalar se ha movido del menú de la barra de menús a los Ajustes.";
+"Uninstall is no longer in the menu-bar menu, next to Quit." = "Desinstalar ya no aparece en el menú de la barra de menús, junto a Salir.";
+"Find it as the last pane in Settings, where it confirms before removing anything." = "Ahora está en el último panel de Ajustes, donde pide confirmación antes de eliminar nada.";

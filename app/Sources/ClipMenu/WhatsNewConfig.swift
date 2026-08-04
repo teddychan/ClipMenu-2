@@ -8,11 +8,14 @@ enum WhatsNewConfig {
     static var content: WhatsNewContent {
         WhatsNewContent(
             version: "v\(AppInfo.version)",
-            date: "2026-07-25",
-            summary: L("Maintenance release."),
+            date: "2026-08-04",
+            summary: L("Uninstall has moved out of the menu-bar menu into Settings."),
             sections: [
+                ChangeSection(kind: .removed, entries: [
+                    L("Uninstall is no longer in the menu-bar menu, next to Quit."),
+                ]),
                 ChangeSection(kind: .changed, entries: [
-                    L("Nothing changed inside the app. ClipMenu 2 is now also on the Mac App Store, and the install instructions cover all three ways to get it: the App Store, Homebrew, and a direct download."),
+                    L("Find it as the last pane in Settings, where it confirms before removing anything."),
                 ]),
             ]
         )
