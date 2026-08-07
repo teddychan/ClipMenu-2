@@ -5,6 +5,8 @@ Developer-facing notes for ClipMenu. User-facing release notes live in
 
 ## Unreleased
 
+## 2.19.1 — 2026-08-07
+
 Fixes from an engineering-standard audit of the clipboard, menu, and snippet
 paths. Two were reachable from the Settings panes by typing a plausible number.
 
@@ -42,6 +44,12 @@ paths. Two were reachable from the Settings panes by typing a plausible number.
 - `scripts/run-debug.sh` stamps `(Debug)` onto the version and launches with
   `open -n`, so a debug build can't be mistaken for the release in a screenshot
   and LaunchServices can't resolve to a stale bundle from another checkout.
+- **DragonKit 2.1.0 → 2.3.0** (`app/Package.swift`, `app/Package.resolved`),
+  clearing conformance R10. Of the kit's three fixes only the failed-uninstall
+  one reaches this app — it ships `UninstallSettingsPane`; it does not use
+  `DragonSettingsStore` (so the settings-reset-on-upgrade bug never applied) or
+  `DragonBackup` (so the malformed-restore fix never applied). No app code
+  changes were needed.
 
 ## 2.19.0 — 2026-08-04
 

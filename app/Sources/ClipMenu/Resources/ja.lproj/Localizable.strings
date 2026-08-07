@@ -273,7 +273,10 @@
 "Switch language instantly — no restart needed." = "言語を即座に切り替え — 再起動不要。";
 "Uninstall now confirms right inside Settings instead of a separate window." = "アンインストールは別ウインドウではなく設定内で確認するようになりました。";
 
-/* What's New (2.19.0) */
-"Uninstall has moved out of the menu-bar menu into Settings." = "アンインストールがメニューバーのメニューから設定に移動しました。";
-"Uninstall is no longer in the menu-bar menu, next to Quit." = "「終了」の隣にあったアンインストールをメニューバーのメニューから削除。";
-"Find it as the last pane in Settings, where it confirms before removing anything." = "設定の最後のペインに移動し、削除前に確認を求めます。";
+/* What's New (2.19.1) */
+"Fixes a bug that could erase your clipboard history, and a crash when opening the menu." = "クリップボード履歴が消える不具合と、メニューを開いたときのクラッシュを修正しました。";
+"Your clipboard history could be erased after setting the history size to 0." = "履歴の件数を 0 に設定すると、クリップボード履歴が消えることがありました。";
+"ClipMenu could crash every time the menu opened after a negative tool tip length was set." = "ツールチップの長さに負の値を設定すると、メニューを開くたびにクラッシュすることがありました。";
+"Edits in the snippet editor could be lost without warning if they couldn't be saved." = "スニペットエディタの編集が保存できない場合、警告なく失われることがありました。";
+"Reducing the history size now asks first, then removes the older clips right away." = "履歴の件数を減らすと、確認のうえで古いクリップをすぐに削除します。";
+"Settings no longer accept sizes and lengths that don't work, such as 0 items." = "設定で 0 件などの無効な値を受け付けなくなりました。";
