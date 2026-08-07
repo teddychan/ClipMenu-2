@@ -273,7 +273,10 @@
 "Switch language instantly — no restart needed." = "即時切換語言，無需重新啟動。";
 "Uninstall now confirms right inside Settings instead of a separate window." = "解除安裝現在直接在設定內確認，不再彈出獨立視窗。";
 
-/* What's New (2.19.0) */
-"Uninstall has moved out of the menu-bar menu into Settings." = "解除安裝已從選單列選單移至設定。";
-"Uninstall is no longer in the menu-bar menu, next to Quit." = "選單列選單中「結束」旁邊的解除安裝項目已移除。";
-"Find it as the last pane in Settings, where it confirms before removing anything." = "現在位於設定的最後一個面板，刪除前會先確認。";
+/* What's New (2.19.1) */
+"Fixes a bug that could erase your clipboard history, and a crash when opening the menu." = "修正了可能清空剪貼簿記錄的問題，以及開啟選單時的崩潰。";
+"Your clipboard history could be erased after setting the history size to 0." = "將記錄筆數設為 0 後，剪貼簿記錄可能被清空。";
+"ClipMenu could crash every time the menu opened after a negative tool tip length was set." = "將工具提示長度設為負數後，每次開啟選單都可能導致崩潰。";
+"Edits in the snippet editor could be lost without warning if they couldn't be saved." = "片段編輯器中的變更在無法儲存時可能會靜默遺失。";
+"Reducing the history size now asks first, then removes the older clips right away." = "調低記錄筆數現在會先確認，然後立即刪除較早的剪貼項目。";
+"Settings no longer accept sizes and lengths that don't work, such as 0 items." = "設定不再接受無效的數值，例如 0 筆。";

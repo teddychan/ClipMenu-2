@@ -9,10 +9,16 @@ import SwiftData
 // ran before save() and its fetchOffset descriptor selected the still-pending
 // insert as the "overflow", silently discarding every new copy once full.
 //
-// Serialized + uses a disk-backed store because capture()/trim() read
-// maxHistorySize from UserDefaults.standard and #Index/offset ordering only
-// applies to on-disk (SQLite) stores.
-@Suite(.serialized) struct AtCapacityCaptureTests {
+// Uses a disk-backed store because #Index/offset ordering only applies to on-disk
+// (SQLite) stores.
+//
+// Each test injects its OWN UserDefaults suite into capture() rather than writing
+// `UserDefaults.standard`. That domain is process-global, and Swift Testing runs
+// sibling suites in parallel: a cap leaked from here silently trimmed another
+// suite's store — HistoryIndexRepairTests went red in CI (which runs `swift test`
+// without --no-parallel) expecting 2 clips and finding 1, while the serial local
+// run passed. Injecting removes the shared state instead of ordering around it.
+@Suite struct AtCapacityCaptureTests {
 
     @Test func captureWhenAtCapacityKeepsNewClipAndTrimsOldest() async throws {
         let dir = URL.temporaryDirectory.appending(path: "ClipMenuAtCap-\(UUID().uuidString)")
@@ -23,9 +29,10 @@ import SwiftData
             url: dir.appending(path: "History.store"), cloudKitDatabase: .none)
 
         let cap = 5
-        let previous = UserDefaults.standard.object(forKey: PreferenceKeys.maxHistorySize)
-        UserDefaults.standard.set(cap, forKey: PreferenceKeys.maxHistorySize)
-        defer { UserDefaults.standard.set(previous, forKey: PreferenceKeys.maxHistorySize) }
+        let suite = "AtCap-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suite)!
+        defaults.removePersistentDomain(forName: suite)
+        defaults.set(cap, forKey: PreferenceKeys.maxHistorySize)
 
         // Seed exactly `cap` rows (contentHash 0..<cap), oldest first.
         let container = try ModelContainer(for: ClipRecord.self, ClipImage.self, configurations: config)
@@ -43,7 +50,8 @@ import SwiftData
         let newHash = 999_999
         await store.capture(PasteboardSnapshot(
             typeNames: ["String"], stringValue: "BRAND NEW", rtfData: nil, pdfData: nil,
-            filenames: nil, urlString: nil, imageData: nil, contentHash: newHash))
+            filenames: nil, urlString: nil, imageData: nil, contentHash: newHash),
+            defaults: defaults)
 
         // Reopen the store from disk and assert: new clip present, oldest gone, cap held.
         let ctx = ModelContext(try ModelContainer(for: ClipRecord.self, ClipImage.self, configurations: config))
@@ -66,9 +74,10 @@ import SwiftData
             "History", schema: Schema([ClipRecord.self, ClipImage.self]),
             url: dir.appending(path: "History.store"), cloudKitDatabase: .none)
 
-        let previous = UserDefaults.standard.object(forKey: PreferenceKeys.maxHistorySize)
-        UserDefaults.standard.set(0, forKey: PreferenceKeys.maxHistorySize)
-        defer { UserDefaults.standard.set(previous, forKey: PreferenceKeys.maxHistorySize) }
+        let suite = "ZeroCap-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suite)!
+        defaults.removePersistentDomain(forName: suite)
+        defaults.set(0, forKey: PreferenceKeys.maxHistorySize)
 
         let container = try ModelContainer(for: ClipRecord.self, ClipImage.self, configurations: config)
         let seed = ModelContext(container)
@@ -84,7 +93,8 @@ import SwiftData
         let newHash = 888_888
         await store.capture(PasteboardSnapshot(
             typeNames: ["String"], stringValue: "SURVIVES", rtfData: nil, pdfData: nil,
-            filenames: nil, urlString: nil, imageData: nil, contentHash: newHash))
+            filenames: nil, urlString: nil, imageData: nil, contentHash: newHash),
+            defaults: defaults)
 
         let ctx = ModelContext(try ModelContainer(for: ClipRecord.self, ClipImage.self, configurations: config))
         let hashes = Set(try ctx.fetch(FetchDescriptor<ClipRecord>()).map(\.contentHash))

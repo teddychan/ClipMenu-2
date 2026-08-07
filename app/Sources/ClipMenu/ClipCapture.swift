@@ -217,7 +217,13 @@ func stableContentHash(
 actor ClipStore {
     /// Capture a snapshot: bump lastUsedDate if an identical clip exists
     /// (ClipsController.m:619-636), else insert + trim (642-643).
-    func capture(_ snapshot: PasteboardSnapshot) {
+    ///
+    /// `defaults` is injectable purely so tests can exercise a specific history cap
+    /// without writing to `UserDefaults.standard`, which is process-global: a cap
+    /// leaked from one suite silently trims another suite's store, and Swift
+    /// Testing runs sibling suites in parallel (see PasteboardSerialized). Matches
+    /// the injectable domain the descriptors below already take.
+    func capture(_ snapshot: PasteboardSnapshot, defaults: UserDefaults = .standard) {
         let hash = snapshot.contentHash
         let existing = FetchDescriptor<ClipRecord>(predicate: #Predicate { $0.contentHash == hash })
         if let match = try? modelContext.fetch(existing).first {
@@ -251,7 +257,7 @@ actor ClipStore {
         // and delete it, silently dropping every new copy once the store fills up.
         modelContext.insert(record)
         try? modelContext.save()
-        trim()
+        trim(defaults: defaults)
         try? modelContext.save()
     }
 
@@ -286,13 +292,13 @@ actor ClipStore {
     /// whole sorted history — with the `lastUsedDate`/`createdDate` index this stays
     /// cheap even under rapid copies and a large history
     /// (design-invariants.md — History bound).
-    private func trim() {
+    private func trim(defaults: UserDefaults) {
         // Fetch the overflow directly: the offset descriptor already returns []
         // when the store is at or under the cap, so the previous explicit
         // fetchCount guard was a redundant extra query on every capture. Dropping
         // it still trims correctly in bulk when the user LOWERS the cap — the
         // offset fetch then returns every clip beyond the new, smaller cap.
-        guard let overflow = try? modelContext.fetch(Self.trimOverflowDescriptor()) else { return }
+        guard let overflow = try? modelContext.fetch(Self.trimOverflowDescriptor(defaults)) else { return }
         for record in overflow {
             modelContext.delete(record)
         }
