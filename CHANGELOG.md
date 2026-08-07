@@ -5,6 +5,44 @@ Developer-facing notes for ClipMenu. User-facing release notes live in
 
 ## Unreleased
 
+Fixes from an engineering-standard audit of the clipboard, menu, and snippet
+paths. Two were reachable from the Settings panes by typing a plausible number.
+
+- **Data loss: a history size of `0` deleted the entire clipboard history.** The
+  cap was passed unclamped into the trim query, where Core Data reads
+  `fetchOffset = 0` as "select every row" (and `fetchLimit = 0` as "no limit") —
+  so the next copy deleted every clip including the one just captured, with no
+  warning and no recovery (history is not part of backup). A negative value made
+  the fetch throw, which `try?` swallowed, silently disabling trimming for good.
+  `ClipStore.maxHistorySize` now floors at 1.
+- **Crash: a negative tool-tip length trapped on every menu build.**
+  `clipToolTip` feeds the value to `String.prefix(_:)`, which traps on a negative
+  count, so the app died on every status-item click until the pref was reset.
+  Clamped in `MainMenuController.MenuPrefs`, beside the existing thumbnail clamp.
+- **Lowering the history cap now applies immediately, after a confirmation.**
+  `trim()` only ran inside `capture()`, so the menu hid the surplus clips while
+  they stayed readable on disk until the next copy — lowering the cap to prune
+  sensitive history gave a false sense of deletion, and raising it brought every
+  clip back. New `ClipStore.enforceCapNow`; the alert names the exact count.
+- **The numeric preference fields are bounded** (`PreferenceRanges`), replacing
+  free-form text fields that accepted any integer. Settings and the onboarding
+  wizard now share the constants instead of drifting (`1...999` vs unbounded).
+- **Snippet edits no longer lose work silently.** All 12 mutation sites in the
+  editor saved with `try? context.save()`; a failed write left the views showing
+  the in-memory context while the work was gone at next launch. They route
+  through one helper that raises a single persistent banner, localized in all 7
+  languages.
+- **The App menu and Uninstall pane read the app's real name.** They used a
+  hardcoded `"ClipMenu 2"`, so a debug build labelled itself as the release app
+  while acting on debug data. Now read from the bundle, with the literal kept as
+  the `swift run` fallback.
+- **19 comments cited a deleted `CLAUDE.md`.** Its invariants are published as
+  `docs/design-invariants.md` and cited by section *name* — the numbers had
+  already drifted, with several `§2` citations pointing at the wrong section.
+- `scripts/run-debug.sh` stamps `(Debug)` onto the version and launches with
+  `open -n`, so a debug build can't be mistaken for the release in a screenshot
+  and LaunchServices can't resolve to a stale bundle from another checkout.
+
 ## 2.19.0 — 2026-08-04
 
 Uninstall left the status-item menu. DragonKit 2.0.0's `DragonAppMenu` no longer

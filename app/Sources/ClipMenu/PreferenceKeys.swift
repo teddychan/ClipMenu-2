@@ -87,3 +87,48 @@ enum PreferenceKeys {
     static let onboardingCompleted = "onboardingCompleted"
     static let onboardingStep = "onboardingStep"
 }
+
+/// Accepted ranges for the free-form numeric preference fields.
+///
+/// The fields are plain text fields, so without a bound the user can store a value
+/// the rest of the app can't express: `maxHistorySize` of 0 made the trim query
+/// delete the entire history, and a negative tool-tip length crashed every menu
+/// build. The consuming code keeps its own defensive clamp as a safety net for
+/// values stored before these existed (and for anything arriving via the synced
+/// settings sidecar); these ranges are the *policy* — what a person is allowed to
+/// type — and live here so the Settings pane and the onboarding wizard can't drift
+/// apart, as they had (`1...999` there vs unbounded here).
+///
+/// 2000 is the shared ceiling: past it these settings stop being meaningful long
+/// before they become dangerous.
+enum PreferenceRanges {
+    /// Clips to keep. At least 1 — see `ClipStore.maxHistorySize` for why 0 is not
+    /// "keep nothing" to the fetch descriptors it feeds.
+    static let maxHistorySize = 1...2000
+
+    /// Clips shown directly in the menu before the rest go into overflow folders.
+    /// **0 is legitimate and is the default** (AppController.m:146-147): it means
+    /// "none inline, group everything into folders". This is the one field whose
+    /// floor is 0 rather than 1 — forcing 1 would silently change the out-of-box
+    /// menu layout for anyone who merely opens this pane.
+    static let numberOfItemsPlaceInline = 0...2000
+
+    /// Clips per overflow folder; a folder holding none can't be navigated.
+    static let numberOfItemsPlaceInsideFolder = 1...2000
+
+    /// Characters of a clip's text shown as its menu title. Values under 3 all
+    /// render as the bare "..." ellipsis, since `trimTitle` reserves those 3.
+    static let maxMenuItemTitleLength = 1...2000
+
+    /// Characters of a clip's text shown in its hover tool tip. Floored at 100
+    /// because a tool tip is there to preview more of the clip than the (much
+    /// shorter) menu title already shows — a tiny cap makes the feature pointless,
+    /// and "off" is what the "Show tool tip on a menu item" toggle is for.
+    static let maxLengthOfToolTip = 100...2000
+
+    /// Longest side (px) of the menu image thumbnail. Deliberately NOT the shared
+    /// 1...2000: 16 is the smallest visible thumbnail and 256 is the stored
+    /// thumbnail's own resolution (`Thumbnailer.storedMaxPixelSize`) — asking for
+    /// more forces a decode from the multi-MB original on every menu open.
+    static let thumbnailMaxSize = 16...256
+}

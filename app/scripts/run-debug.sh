@@ -40,6 +40,19 @@ pb=/usr/libexec/PlistBuddy
 BUILD="$(git rev-list --count HEAD 2>/dev/null || echo "$VERSION")"
 "$pb" -c "Set :CFBundleVersion ${BUILD}" "$APP/Contents/Info.plist"
 
+# Mark the marketing version too, so a screenshot / About pane / log line can
+# never be mistaken for the release build. The name alone isn't enough: bug
+# reports quote the version, and without this it reads identically to release.
+# Stamped here rather than in Info.plist so it can't drift on a version bump
+# (this bundle's plist is re-copied from source on every run; the guard keeps the
+# suffix idempotent anyway).
+SHORT_VERSION="$("$pb" -c 'Print :CFBundleShortVersionString' "$APP/Contents/Info.plist")"
+case "$SHORT_VERSION" in
+  *"(Debug)") ;;
+  *) SHORT_VERSION="$SHORT_VERSION (Debug)"
+     "$pb" -c "Set :CFBundleShortVersionString ${SHORT_VERSION}" "$APP/Contents/Info.plist" ;;
+esac
+
 cp AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
 
 # All SwiftPM resource bundles: the app's own + DragonKit's localized strings.
@@ -71,5 +84,9 @@ fi
 codesign --force --deep --sign "$IDENTITY" "$APP" 2>/dev/null || true
 
 echo "Assembled $APP (id ${DEBUG_ID})"
-open "$APP"
-echo "Launched ${APP_NAME} — runs next to the installed ClipMenu 2."
+# -n opens the bundle at THIS exact path. A plain `open` (or `open -b`) lets
+# LaunchServices resolve the debug id to whichever bundle it likes — including a
+# stale build in another checkout — so you'd debug a binary you didn't just
+# compile. It also parents the app to launchd, so it outlives this shell.
+open -n "$APP"
+echo "Launched ${APP_NAME} ${SHORT_VERSION} (build ${BUILD}) — runs next to the installed ClipMenu 2."

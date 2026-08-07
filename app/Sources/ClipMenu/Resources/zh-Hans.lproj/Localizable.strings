@@ -11,6 +11,9 @@
 "Date last used" = "最近使用日期";
 "Max clipboard history size:" = "最大剪贴板历史数量：";
 "items" = "项";
+"Delete older clipboard history?" = "要删除较早的剪贴板历史吗？";
+"%d older clips will be deleted from your history. This can't be undone." = "将从历史中删除 %d 条较早的剪贴项。此操作无法撤销。";
+"characters" = "个字符";
 "Time interval to observe the clipboard:" = "监视剪贴板的时间间隔：";
 "Time interval" = "时间间隔";
 "Save clipboard history on quit" = "退出时保存剪贴板历史";
@@ -200,6 +203,7 @@
 "Manual" = "手动";
 "Before restore" = "恢复前";
 "Couldn't save a safety backup, so the restore was cancelled." = "无法保存安全备份，已取消恢复。";
+"Couldn't save your snippets. Your last change isn't saved yet." = "无法保存片段，你的最后一次更改尚未保存。";
 "This version was made on a newer app version and can't be restored." = "该版本由更新版本的应用创建，无法恢复。";
 "Restore failed. Your current data was not changed." = "恢复失败。你的当前数据未被更改。";
 

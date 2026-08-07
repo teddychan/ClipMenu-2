@@ -122,9 +122,10 @@ final class ClipRecord {
 
     // Per-type payloads (all optional; populated only for stored types).
     var stringValue: String?
-    // Large binary payloads use external storage (CLAUDE.md §4/§7): SwiftData
-    // writes them as separate files, keeping history rows small and loading the
-    // bytes lazily (only when a clip is thumbnailed or pasted), not on every fetch.
+    // Large binary payloads use external storage (design-invariants.md — Persistence):
+    // SwiftData writes them as separate files, keeping history rows small and
+    // loading the bytes lazily (only when a clip is thumbnailed or pasted), not
+    // on every fetch.
     @Attribute(.externalStorage) var rtfData: Data?
     @Attribute(.externalStorage) var pdfData: Data?
     var filenames: [String]?
@@ -134,13 +135,13 @@ final class ClipRecord {
     /// history menu's `ClipRecord` fetch never materializes the multi-MB blob —
     /// faulting a `ClipRecord` loads the whole row, and a large inline image
     /// column would come with it. The relationship is loaded lazily, only when
-    /// a clip is actually pasted (CLAUDE.md §4).
+    /// a clip is actually pasted (design-invariants.md — Images and memory).
     @Relationship(deleteRule: .cascade) var image: ClipImage?
 
     /// Small downsampled PNG thumbnail for menu display (a few tens of KB),
     /// generated once at capture. The menu renders from this so it never has to
-    /// load the original image (CLAUDE.md §4). Display-only: it never goes back
-    /// on the pasteboard.
+    /// load the original image (design-invariants.md — Images and memory).
+    /// Display-only: it never goes back on the pasteboard.
     var thumbnailData: Data?
 
     /// Stable content fingerprint for de-duplication (legacy `Clip` hash,

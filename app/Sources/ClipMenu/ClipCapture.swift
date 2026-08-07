@@ -49,7 +49,8 @@ struct PasteboardSnapshot: Sendable {
 
 // Runs on the caller's executor — the PasteboardMonitor actor — so multi-MB
 // payload copies (full TIFF/PDF/RTFD, and synchronous resolution of promised
-// pasteboard data) never stall the main actor (CLAUDE.md §3). NSPasteboard is
+// pasteboard data) never stall the main actor
+// (design-invariants.md — Clipboard polling). NSPasteboard is
 // not Sendable but is not @MainActor-bound either: each call obtains
 // NSPasteboard.general locally and never sends it across an isolation
 // boundary; only the Sendable PasteboardSnapshot crosses actors.
@@ -226,7 +227,8 @@ actor ClipStore {
         }
 
         // Derive the small display thumbnail now (off the main actor). The
-        // original bytes are stored untouched for byte-exact paste (CLAUDE.md §4).
+        // original bytes are stored untouched for byte-exact paste
+        // (design-invariants.md — Images and memory).
         let thumbnailData = snapshot.imageData.flatMap(Thumbnailer.makeThumbnailData(from:))
 
         let record = ClipRecord(
@@ -282,7 +284,8 @@ actor ClipStore {
     /// Drop oldest clips beyond maxHistorySize (ClipsController.m:795-813). Runs on
     /// every capture, so it fetches only the overflow (offset past the cap), not the
     /// whole sorted history — with the `lastUsedDate`/`createdDate` index this stays
-    /// cheap even under rapid copies and a large history (CLAUDE.md §2).
+    /// cheap even under rapid copies and a large history
+    /// (design-invariants.md — History bound).
     private func trim() {
         // Fetch the overflow directly: the offset descriptor already returns []
         // when the store is at or under the cap, so the previous explicit
@@ -307,9 +310,20 @@ actor ClipStore {
     /// The user's configured history cap (default 20). Single source of truth for
     /// the bound applied everywhere clip history is materialized — storage
     /// (`trim`), the menu and its search, history export, and the upgrade
-    /// migration — so the on-disk and in-view history never exceed it (CLAUDE.md §2/§4).
+    /// migration — so the on-disk and in-view history never exceed it
+    /// (design-invariants.md — History bound).
+    ///
+    /// Clamped to at least 1: the Settings field is free-form, and to the descriptors
+    /// below a stored 0 does NOT mean "keep nothing". `fetchLimit = 0` means "no
+    /// limit", so `boundedHistoryDescriptor` would materialize the WHOLE store, while
+    /// `fetchOffset = 0` selects every row — so `trim()` would delete the entire
+    /// history including the clip just captured (unrecoverable: history is not part of
+    /// backup). A negative value makes the offset fetch throw (SQLite error 20), whose
+    /// `try?` swallows it and silently stops trimming for good. 1 is the smallest cap
+    /// both descriptors express correctly, and matches the `guard limit > 0` that
+    /// `StoreMigration.copyClipsInBatches` already applies defensively.
     static func maxHistorySize(_ defaults: UserDefaults = .standard) -> Int {
-        defaults.object(forKey: PreferenceKeys.maxHistorySize) as? Int ?? 20
+        max(1, defaults.object(forKey: PreferenceKeys.maxHistorySize) as? Int ?? 20)
     }
 
     /// Newest-first fetch of the visible history, capped to `maxHistorySize`. The
@@ -333,6 +347,43 @@ actor ClipStore {
         #Predicate<ClipRecord> { clip in
             clip.stringValue?.localizedStandardContains(query) ?? false
         }
+    }
+
+    /// How many stored clips are past `cap` — i.e. how many `enforceCapNow` would
+    /// delete. Uses a SQL COUNT rather than materializing rows, so the Settings
+    /// pane can ask this on every edit of the history-size field.
+    static func overflowCount(beyondCap cap: Int, in context: ModelContext) -> Int {
+        let total = (try? context.fetchCount(FetchDescriptor<ClipRecord>())) ?? 0
+        return max(0, total - max(1, cap))
+    }
+
+    /// `enforceCapNow` against an explicit defaults domain — injected by tests so
+    /// they never touch `UserDefaults.standard`, which is process-global and would
+    /// race the other suites (see PasteboardSerialized).
+    @discardableResult
+    static func enforceCapNow(in context: ModelContext, defaults: UserDefaults) -> Int {
+        guard let overflow = try? context.fetch(trimOverflowDescriptor(defaults)) else { return 0 }
+        for record in overflow { context.delete(record) }
+        try? context.save()
+        return overflow.count
+    }
+
+    /// Apply the current cap to `context` immediately, deleting every clip past it,
+    /// and report how many were dropped.
+    ///
+    /// `trim()` runs only inside `capture()`, so LOWERING the cap otherwise left the
+    /// older clips on disk until the user happened to copy something next. That was
+    /// worse than it sounds: `boundedHistoryDescriptor` bounds the *view* straight
+    /// away, so the menu hid those clips while they stayed fully readable in the
+    /// store — a user who lowered the cap to prune sensitive history got a false
+    /// sense of deletion, and raising it again brought every clip back.
+    ///
+    /// Destructive and unrecoverable (history is not part of backup), so the caller
+    /// must confirm with the user first — see the history-size field in
+    /// `GeneralPreferencesView`.
+    @discardableResult
+    static func enforceCapNow(in context: ModelContext) -> Int {
+        enforceCapNow(in: context, defaults: .standard)
     }
 
     /// The overflow to drop in `trim()`: the clips PAST `maxHistorySize` in the

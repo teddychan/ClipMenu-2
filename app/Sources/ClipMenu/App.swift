@@ -177,7 +177,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         clipStore = store
         Task { await pasteboardMonitor.start(clipStore: store) }
         // One-time: give pre-existing image clips their display thumbnail so the
-        // menu shows a picture without faulting the full image (CLAUDE.md §4).
+        // menu shows a picture without faulting the full image
+        // (design-invariants.md — Images and memory).
         Task { await store.backfillThumbnails() }
 
         // An Edit menu so window-level Undo/Redo (and standard text editing)

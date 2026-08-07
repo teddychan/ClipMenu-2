@@ -3,12 +3,13 @@ import AppKit
 // Clipboard watcher (legacy ClipsController polling, ClipsController.m:587-649,
 // 815-833).
 //
-// Design per CLAUDE.md performance guardrails: the pasteboard has no change
-// notification, so poll `NSPasteboard.general.changeCount` on a coalesced
-// timer. This monitor is an `actor`, so its loop — including the changeCount
-// read AND the payload snapshot — runs OFF the main actor; copying a multi-MB
-// image/PDF never stalls the UI (CLAUDE.md §3). NSPasteboard is obtained and
-// used entirely on this actor's executor (see PasteboardReader).
+// Design per performance guardrails (design-invariants.md — Clipboard polling):
+// the pasteboard has no change notification, so poll
+// `NSPasteboard.general.changeCount` on a coalesced timer. This monitor is an
+// `actor`, so its loop — including the changeCount read AND the payload
+// snapshot — runs OFF the main actor; copying a multi-MB image/PDF never stalls
+// the UI (design-invariants.md — Clipboard polling). NSPasteboard is obtained
+// and used entirely on this actor's executor (see PasteboardReader).
 //
 // On a changeCount change it reads a snapshot and hands it to the ClipStore
 // actor to persist. Default interval 0.75s with a 1.0s cap mirrors the legacy

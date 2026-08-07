@@ -128,7 +128,11 @@ final class MainMenuController: NSObject, NSMenuDelegate {
             // stored resolution.
             let rawThumb = d.object(forKey: PreferenceKeys.thumbnailMaxSize) as? Int ?? 64
             p.thumbnailMaxSize = min(256, max(16, rawThumb))
-            p.maxToolTipLength = d.object(forKey: PreferenceKeys.maxLengthOfToolTipKey) as? Int ?? 200
+            // Clamp to a non-negative length: `clipToolTip` feeds this to
+            // String.prefix(_:), which traps on a negative count — a wild
+            // UserDefaults value would crash on every menu build.
+            let rawTip = d.object(forKey: PreferenceKeys.maxLengthOfToolTipKey) as? Int ?? 200
+            p.maxToolTipLength = max(0, rawTip)
             p.maxTitleLength = d.object(forKey: PreferenceKeys.maxMenuItemTitleLength) as? Int ?? 20
             p.groupSnippetsInFolder = d.object(forKey: PreferenceKeys.groupSnippetsInFolder) as? Bool ?? true
             return p
@@ -672,8 +676,9 @@ final class MainMenuController: NSObject, NSMenuDelegate {
         // Shared bounded-history policy (newest-first, capped to maxHistorySize)
         // used by the menu, this search, and Export… (ClipStore). The original
         // image lives in the faulted `ClipRecord.image` relationship, so fetching
-        // for the menu never loads the multi-MB bytes; only paste does (CLAUDE.md
-        // §4). The menu renders from the small `thumbnailData` column on the row.
+        // for the menu never loads the multi-MB bytes; only paste does
+        // (design-invariants.md — Images and memory). The menu renders from the
+        // small `thumbnailData` column on the row.
         var descriptor = ClipStore.boundedHistoryDescriptor()
         // History-menu search (⌘⌃V): filter in the store instead of fetching every
         // row and filtering in Swift on each keystroke — the search hot path. The
@@ -681,8 +686,9 @@ final class MainMenuController: NSObject, NSMenuDelegate {
         // Storage is trimmed to maxHistorySize on every capture, so the store
         // already holds the whole history the user chose to keep; the predicate
         // therefore searches all of it while materializing only the matches, which
-        // stays fast even with a large history (CLAUDE.md §2). `localizedStandardContains`
-        // is the case/diacritic-insensitive, Finder-style match SwiftData can push
+        // stays fast even with a large history
+        // (design-invariants.md — History bound). `localizedStandardContains` is
+        // the case/diacritic-insensitive, Finder-style match SwiftData can push
         // into SQLite. Image-only clips (no stringValue) never match, as expected.
         let query = historySearchQuery.trimmingCharacters(in: .whitespacesAndNewlines)
         if !query.isEmpty {
@@ -1028,12 +1034,21 @@ final class MainMenuController: NSObject, NSMenuDelegate {
 
     // MARK: - Standardized App menu (Liquid Glass §5A)
 
-    /// The canonical product name used in the App-menu titles (must match
-    /// CFBundleDisplayName, including the "2"). Hard-coded rather than read from
-    /// AppInfo.displayName so the menu reads "ClipMenu 2" even under `swift run`,
-    /// where the bundle has no CFBundleDisplayName and AppInfo falls back to
-    /// "ClipMenu". Also used by the Uninstall settings pane.
-    static let canonicalName = "ClipMenu 2"
+    /// The product name used in the App-menu titles and by the Uninstall settings
+    /// pane. Read from the bundle so a debug build — which is re-id'd and renamed
+    /// to "<App> Debug" by scripts/run-debug.sh so it can run beside the installed
+    /// release — labels its own menu and its own Uninstall sheet, instead of
+    /// claiming to be the release app while acting on the debug app's data.
+    ///
+    /// The literal is only a fallback for `swift run`, where there is no bundle at
+    /// all (`Bundle.main.infoDictionary` is empty) — which is why this can't just
+    /// use `AppInfo.displayName`, whose fallback drops the "2".
+    static let canonicalName: String = {
+        let info = Bundle.main.infoDictionary
+        return (info?["CFBundleDisplayName"] as? String)
+            ?? (info?["CFBundleName"] as? String)
+            ?? "ClipMenu 2"
+    }()
 
     /// Append the standardized App menu (Liquid Glass §5A): About · Check for
     /// Updates… (Sparkle/direct build only) · Settings… (⌘,) · — · Quit (⌘Q).
