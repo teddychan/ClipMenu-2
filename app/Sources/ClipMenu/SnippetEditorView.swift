@@ -38,6 +38,9 @@ struct SnippetEditorView: View {
     @State private var selectedFolderID: PersistentIdentifier?
     @State private var selectedSnippetID: PersistentIdentifier?
     @State private var editingFolderID: PersistentIdentifier?
+    /// Set while the last attempted store write failed; drives the banner at the
+    /// bottom of the editor. Written only by `save()`.
+    @State private var saveFailed = false
 
     private var orderedFolders: [Folder] {
         folderSort.ordered(folders, title: { $0.title }, index: { $0.index })
@@ -53,10 +56,26 @@ struct SnippetEditorView: View {
     }
 
     var body: some View {
-        HSplitView {
-            foldersColumn.frame(minWidth: 170, idealWidth: 210, maxWidth: 300, maxHeight: .infinity)
-            snippetsColumn.frame(minWidth: 200, idealWidth: 240, maxWidth: 360, maxHeight: .infinity)
-            detailColumn.frame(minWidth: 280, maxWidth: .infinity, maxHeight: .infinity)
+        VStack(spacing: 0) {
+            HSplitView {
+                foldersColumn.frame(minWidth: 170, idealWidth: 210, maxWidth: 300, maxHeight: .infinity)
+                snippetsColumn.frame(minWidth: 200, idealWidth: 240, maxWidth: 360, maxHeight: .infinity)
+                detailColumn.frame(minWidth: 280, maxWidth: .infinity, maxHeight: .infinity)
+            }
+            // An unwritable store is the one failure the three columns cannot show
+            // by themselves: they render the in-memory ModelContext, so the edit
+            // still *looks* applied. One strip spanning the whole editor reports it
+            // — the inline-error pattern RestoreVersionsView already uses — and it
+            // stays up until a save succeeds. See `save()` for why not an alert.
+            if saveFailed {
+                Divider()
+                Label(L("Couldn't save your snippets. Your last change isn't saved yet."),
+                      systemImage: "exclamationmark.triangle.fill")
+                    .font(.callout).foregroundStyle(.red)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, 10).padding(.vertical, 6)
+            }
         }
         .frame(minWidth: 720, minHeight: 420)
         .onAppear {
@@ -138,7 +157,7 @@ struct SnippetEditorView: View {
                     sortMenu(current: folder.snippetSort,
                              help: String(format: L("Sort snippets in \"%@\""), folder.title)) {
                         folder.snippetSort = $0
-                        try? context.save()
+                        save()
                     }
                 }
             }
@@ -257,13 +276,43 @@ struct SnippetEditorView: View {
         .menuStyle(.borderlessButton).fixedSize().help(help)
     }
 
+    // MARK: Persistence
+
+    /// Commit the editor's pending changes, surfacing a failed write instead of
+    /// dropping it. Every mutation below goes through here rather than saving with
+    /// `try?`: snippets are user-authored content with no retry — unlike clipboard
+    /// capture, where a best-effort save is fine because the next copy writes again
+    /// — so a store that cannot be written (disk full, revoked permissions,
+    /// external-storage failure) would otherwise lose authored snippets silently,
+    /// the views still reading the in-memory context.
+    ///
+    /// Failure raises the ONE banner in `body`, deliberately not an alert: a
+    /// drag-reorder or a burst of typing in the content field commits many times
+    /// in a row, and a modal per failure would stack dozens of dialogs over the
+    /// editor. The banner clears on the next successful save — which is also when
+    /// the changes SwiftData had kept pending finally reach the store.
+    private func save() {
+        let failed = Self.commitFailed(context.save)
+        // Assigning @State unconditionally would invalidate the editor on every
+        // keystroke in the content field; only a change of status needs a redraw.
+        if failed != saveFailed { saveFailed = failed }
+    }
+
+    /// Whether committing `save` failed. Static + injectable `save` so the failure
+    /// path is testable without an unwritable store — the same seam
+    /// `BackupManager.applyWithRollback` uses.
+    static func commitFailed(_ save: () throws -> Void) -> Bool {
+        do { try save(); return false }
+        catch { return true }
+    }
+
     // MARK: Folder CRUD
 
     private func addFolder() {
         let folder = Folder(title: L("untitled folder"),
                             index: ManualReorder.nextIndex(in: folders, index: \.index))
         context.insert(folder)
-        try? context.save()
+        save()
         selectedFolderID = folder.persistentModelID
         editingFolderID = folder.persistentModelID   // rename immediately
     }
@@ -274,7 +323,7 @@ struct SnippetEditorView: View {
         let survivors = ManualReorder.afterRemoving(
             folder.persistentModelID, from: folders, id: \.persistentModelID, index: \.index)
         for (i, f) in survivors.enumerated() { f.index = i }
-        try? context.save()
+        save()
         selectedFolderID = orderedFolders.first?.persistentModelID
     }
 
@@ -286,7 +335,7 @@ struct SnippetEditorView: View {
                               index: ManualReorder.nextIndex(in: folder.snippets ?? [], index: \.index),
                               folder: folder)
         context.insert(snippet)
-        try? context.save()
+        save()
         selectedSnippetID = snippet.persistentModelID
     }
 
@@ -296,7 +345,7 @@ struct SnippetEditorView: View {
             snippet.persistentModelID, from: folder.snippets ?? [], id: \.persistentModelID, index: \.index)
         context.delete(snippet)
         for (i, s) in remaining.enumerated() { s.index = i }
-        try? context.save()
+        save()
         selectedSnippetID = nil
     }
 
@@ -305,7 +354,7 @@ struct SnippetEditorView: View {
     private func folderTitle(_ folder: Folder) -> Binding<String> {
         Binding(
             get: { folder.title },
-            set: { if !$0.isEmpty { folder.title = $0; try? context.save() } })
+            set: { if !$0.isEmpty { folder.title = $0; save() } })
     }
     private func snippetTitle(_ snippet: Snippet) -> Binding<String> {
         // Resolved outside the closure: DragonKit's L() is @MainActor and the
@@ -319,7 +368,7 @@ struct SnippetEditorView: View {
                 if snippet.content.isEmpty, newTitle != untitled {
                     snippet.content = newTitle
                 }
-                try? context.save()
+                save()
             })
     }
     private func snippetContent(_ snippet: Snippet) -> Binding<String> {
@@ -337,7 +386,7 @@ struct SnippetEditorView: View {
                     snippet.title = Snippet.derivedTitle(fromContent: newContent) ?? untitled
                 }
                 snippet.content = newContent
-                try? context.save()
+                save()
             })
     }
 
@@ -347,13 +396,13 @@ struct SnippetEditorView: View {
         guard folderSort == .manual else { return }
         let ordered = ManualReorder.moved(folders, from: source, to: destination, index: \.index)
         for (i, folder) in ordered.enumerated() { folder.index = i }
-        try? context.save()
+        save()
     }
     private func moveSnippets(in folder: Folder, from source: IndexSet, to destination: Int) {
         guard folder.snippetSort == .manual else { return }
         let ordered = ManualReorder.moved(folder.snippets ?? [], from: source, to: destination, index: \.index)
         for (i, s) in ordered.enumerated() { s.index = i }
-        try? context.save()
+        save()
     }
     private func moveSnippets(_ refs: [SnippetRef], to folder: Folder) -> Bool {
         var nextIndex = ManualReorder.nextIndex(in: folder.snippets ?? [], index: \.index)
@@ -367,7 +416,7 @@ struct SnippetEditorView: View {
             nextIndex += 1
             moved = true
         }
-        if moved { try? context.save() }
+        if moved { save() }
         return moved
     }
 
@@ -414,7 +463,7 @@ struct SnippetEditorView: View {
                     index: i, folder: newFolder))
             }
         }
-        try? context.save()
+        save()
     }
 }
 

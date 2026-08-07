@@ -5,12 +5,12 @@ import ApplicationServices
 // Legacy ClipsController.m:503-566 (copy*) +
 // CMUtilities.m:95-172 (paste / postCommandV) + AppController.m:493-528.
 //
-// Modern-OS reality (CLAUDE.md §6): synthesizing ⌘V needs Accessibility (TCC).
-// We check AXIsProcessTrusted() and prompt to enable it rather than fail
-// silently. The ⌘V key event (keycode 9 = V, .maskCommand) is posted to
-// .cghidEventTap. Legacy did not restore the previous pasteboard, so neither
-// do we — the selected clip stays on the pasteboard (and re-sorts to the top
-// via de-dup, matching legacy).
+// Modern-OS reality (design-invariants.md — Paste synthesis and permissions):
+// synthesizing ⌘V needs Accessibility (TCC). We check AXIsProcessTrusted()
+// and prompt to enable it rather than fail silently. The ⌘V key event
+// (keycode 9 = V, .maskCommand) is posted to .cghidEventTap. Legacy did not
+// restore the previous pasteboard, so neither do we — the selected clip stays
+// on the pasteboard (and re-sorts to the top via de-dup, matching legacy).
 
 @MainActor
 enum Paster {
@@ -96,7 +96,8 @@ enum Paster {
     }
 
     /// True if trusted for Accessibility; otherwise shows the system prompt
-    /// (CLAUDE.md §6) and returns false for this attempt.
+    /// (design-invariants.md — Paste synthesis and permissions) and returns
+    /// false for this attempt.
     private static func ensureAccessibilityTrusted() -> Bool {
         if AXIsProcessTrusted() { return true }
         // Use the documented key value directly; referencing the imported C

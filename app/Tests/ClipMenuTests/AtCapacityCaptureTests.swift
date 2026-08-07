@@ -52,4 +52,44 @@ import SwiftData
         #expect(!hashes.contains(0), "the oldest clip should be the one trimmed")
         #expect(hashes.count == cap, "history should stay at the cap")
     }
+
+    // Regression (data loss): a maxHistorySize of 0 — reachable from the free-form
+    // Settings field — made trim()'s fetchOffset 0, which selects EVERY row, so a
+    // single capture wiped the whole history including the clip just inserted (and
+    // history is not covered by backup). ClipStore.maxHistorySize now clamps to 1,
+    // so capture() keeps the new clip and only trims what is genuinely older.
+    @Test func captureWithZeroCapKeepsTheNewClipInsteadOfErasingEverything() async throws {
+        let dir = URL.temporaryDirectory.appending(path: "ClipMenuZeroCap-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: dir) }
+        let config = ModelConfiguration(
+            "History", schema: Schema([ClipRecord.self, ClipImage.self]),
+            url: dir.appending(path: "History.store"), cloudKitDatabase: .none)
+
+        let previous = UserDefaults.standard.object(forKey: PreferenceKeys.maxHistorySize)
+        UserDefaults.standard.set(0, forKey: PreferenceKeys.maxHistorySize)
+        defer { UserDefaults.standard.set(previous, forKey: PreferenceKeys.maxHistorySize) }
+
+        let container = try ModelContainer(for: ClipRecord.self, ClipImage.self, configurations: config)
+        let seed = ModelContext(container)
+        let base = Date(timeIntervalSince1970: 1_000_000)
+        for i in 0 ..< 3 {
+            let d = base.addingTimeInterval(Double(i))
+            seed.insert(ClipRecord(createdDate: d, lastUsedDate: d,
+                                   typeIdentifiers: ["String"], stringValue: "seed\(i)", contentHash: i))
+        }
+        try seed.save()
+
+        let store = ClipStore(modelContainer: container)
+        let newHash = 888_888
+        await store.capture(PasteboardSnapshot(
+            typeNames: ["String"], stringValue: "SURVIVES", rtfData: nil, pdfData: nil,
+            filenames: nil, urlString: nil, imageData: nil, contentHash: newHash))
+
+        let ctx = ModelContext(try ModelContainer(for: ClipRecord.self, ClipImage.self, configurations: config))
+        let hashes = Set(try ctx.fetch(FetchDescriptor<ClipRecord>()).map(\.contentHash))
+        #expect(!hashes.isEmpty, "a cap of 0 must not empty the store")
+        #expect(hashes.contains(newHash), "the just-captured clip must survive trimming")
+        #expect(hashes.count == 1, "the clamped cap of 1 keeps exactly the newest clip")
+    }
 }

@@ -327,7 +327,7 @@ private struct HistoryStep: View {
                     labelStack(L("Items to keep"), L("Oldest are dropped past this count."))
                     Spacer()
                     Text("\(maxHistorySize)").foregroundStyle(.white).monospacedDigit()
-                    Stepper("", value: $maxHistorySize, in: 1 ... 999).labelsHidden()
+                    Stepper("", value: $maxHistorySize, in: PreferenceRanges.maxHistorySize).labelsHidden()
                 }
                 divider
                 row {

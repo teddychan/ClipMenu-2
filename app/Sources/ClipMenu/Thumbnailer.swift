@@ -5,15 +5,16 @@ import ImageIO
 // legacy MenuController.m:828-846 (image vs icon) + Clip.m:350-441 (thumbnailOfSize:
 // aspect-preserving, never upscale, cached by size).
 //
-// Per CLAUDE.md §4: never keep full-size images alive for the menu. At capture
-// we store a small downsampled PNG thumbnail (makeThumbnailData) on the clip and
-// small menu thumbnails render from that. The original TIFF lives in a separate
-// row (ClipRecord.image / ClipImage) and is loaded only when pasted (§D row 69) —
-// or, when the user picks a large thumbnail size, streamed once through ImageIO
-// to decode a crisp thumbnail at the real pixel size (the stored 256px PNG would
-// otherwise be upscaled, hence blurry). Even then the original is never kept
-// alive: it's downsampled and released, and only the small result is cached.
-// Decoded thumbnails are cached (contentHash + box) like legacy's per-Clip cache.
+// Per design-invariants.md — Images and memory: never keep full-size images
+// alive for the menu. At capture we store a small downsampled PNG thumbnail
+// (makeThumbnailData) on the clip and small menu thumbnails render from that.
+// The original TIFF lives in a separate row (ClipRecord.image / ClipImage) and
+// is loaded only when pasted (§D row 69) — or, when the user picks a large
+// thumbnail size, streamed once through ImageIO to decode a crisp thumbnail at
+// the real pixel size (the stored 256px PNG would otherwise be upscaled, hence
+// blurry). Even then the original is never kept alive: it's downsampled and
+// released, and only the small result is cached. Decoded thumbnails are cached
+// (contentHash + box) like legacy's per-Clip cache.
 
 @MainActor
 final class Thumbnailer {
@@ -36,7 +37,7 @@ final class Thumbnailer {
     /// 2× display asks for ~400 px), so for those we decode from the ORIGINAL image
     /// instead of upscaling the stored PNG. Small/default thumbnails keep using the
     /// cheap stored PNG, so the common menu open never faults the originals
-    /// (CLAUDE.md §4).
+    /// (design-invariants.md — Images and memory).
     func thumbnail(for clip: ClipRecord, fitting box: NSSize) -> NSImage? {
         let scale = Self.displayScale()
         let neededPixels = max(box.width, box.height) * scale

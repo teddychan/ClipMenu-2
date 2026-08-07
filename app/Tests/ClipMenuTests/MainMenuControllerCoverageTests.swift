@@ -386,6 +386,30 @@ struct MainMenuControllerCoverageTests {
         #expect(longItem.title.hasSuffix("..."))
     }
 
+    // Regression (crash): maxLengthOfToolTip comes from a free-form Settings field
+    // and lands in String.prefix(_:), which traps on a negative count — a stored -1
+    // killed the app (SIGTRAP) on every Main/History menu build, permanently, since
+    // the value is persisted. MenuPrefs clamps it to 0, so the tip is just empty.
+    @Test func historyClipToolTipSurvivesNegativeMaxToolTipLength() throws {
+        let restore = snapshotDefaults([
+            PreferenceKeys.numberOfItemsPlaceInline, PreferenceKeys.showToolTipOnMenuItem,
+            PreferenceKeys.maxLengthOfToolTipKey,
+        ])
+        defer { restore() }
+        UserDefaults.standard.set(999, forKey: PreferenceKeys.numberOfItemsPlaceInline)
+        UserDefaults.standard.set(true, forKey: PreferenceKeys.showToolTipOnMenuItem)
+        UserDefaults.standard.set(-1, forKey: PreferenceKeys.maxLengthOfToolTipKey)
+
+        let m = marker()
+        let (_, cleanup) = seedClips(["\(m)Tooltip"])
+        defer { cleanup() }
+
+        let c = MainMenuController()
+        let menu = try historyMenu(driving: m, on: c)
+        let clipItem = try #require(allItems(menu).first { $0.representedObject is ClipRecord })
+        #expect(clipItem.toolTip == "")
+    }
+
     @Test func historySearchGroupsOverflowClipsIntoNumberedFolders() throws {
         let restore = snapshotDefaults([
             PreferenceKeys.numberOfItemsPlaceInline, PreferenceKeys.numberOfItemsPlaceInsideFolder,

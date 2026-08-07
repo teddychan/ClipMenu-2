@@ -147,6 +147,46 @@ import DragonKit
     }
 }
 
+// MARK: - Save-failure reporting
+
+// The editor commits every mutation through `SnippetEditorView.save()`, which asks
+// `commitFailed` whether the write went through and raises the editor's banner when
+// it didn't. Before that, all 12 mutation sites saved with `try? context.save()`, so
+// an unwritable store (disk full, revoked permissions, external-storage failure) lost
+// user-authored snippets silently — the views kept rendering the in-memory context,
+// so the UI looked correct and the work was gone at next launch.
+//
+// `commitFailed` takes the save as a closure precisely so the failure path is
+// testable without an unwritable store (the same seam as
+// `BackupManager.applyWithRollback`). The `saveFailed` -> banner wiring itself is not
+// coverable: it is `private @State`, and a hosted in-memory context can't be made to
+// fail — see the coverage notes at the bottom of this file.
+@MainActor
+@Suite struct SnippetEditorSaveFailureTests {
+
+    private struct SaveBoom: Error {}
+
+    /// The regression guard for the silent-data-loss defect: a throwing commit must
+    /// be REPORTED, not swallowed. Reverting any site to `try? context.save()` drops
+    /// the reporting this asserts.
+    @Test func commitFailedReportsAThrowingSave() {
+        #expect(SnippetEditorView.commitFailed { throw SaveBoom() })
+    }
+
+    /// The success path still commits and reports no failure — so the banner can't
+    /// latch on a healthy store.
+    @Test func commitFailedReportsSuccessForARealContextSave() throws {
+        let container = try ModelContainer(
+            for: Folder.self, Snippet.self, ClipRecord.self, ClipImage.self,
+            configurations: ModelConfiguration(isStoredInMemoryOnly: true))
+        let context = container.mainContext
+        context.insert(Folder(title: "folder", index: 0))
+
+        #expect(SnippetEditorView.commitFailed(context.save) == false)
+        #expect(try context.fetchCount(FetchDescriptor<Folder>()) == 1)
+    }
+}
+
 // MARK: - SnippetRef (Transferable payload) round-trip
 
 @MainActor

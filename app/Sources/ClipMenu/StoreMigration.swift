@@ -107,14 +107,16 @@ enum StoreMigration {
         }
     }
 
-    // Fix 3: copy clips in bounded batches so image blobs don't all live in memory at once (CLAUDE.md §4).
+    // Fix 3: copy clips in bounded batches so image blobs don't all live in
+    // memory at once (design-invariants.md — Images and memory).
     // Skips clips whose contentHash already exists in the destination, so a
     // retry after a partial failure doesn't duplicate already-copied batches.
     //
     // Only the newest `limit` clips are carried over (same order `trim()` keeps),
     // so the upgrade never copies the full legacy history — including its old
     // image/PDF blobs — onto disk just to have the first capture trim it away
-    // (CLAUDE.md §2/§4). The oldest legacy rows are never even faulted.
+    // (design-invariants.md — History bound). The oldest legacy rows are never
+    // even faulted.
     private static func copyClipsInBatches(from legacy: ModelContext,
                                            into context: ModelContext,
                                            limit: Int,

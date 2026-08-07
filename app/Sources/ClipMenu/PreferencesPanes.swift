@@ -4,6 +4,27 @@ import AppKit
 import UniformTypeIdentifiers
 import DragonKit
 
+/// Clamps what a free-form numeric field can store into its accepted range
+/// (`PreferenceRanges`). A `Stepper(value:in:)` only bounds its own +/- buttons —
+/// typing into the paired `TextField` writes straight through — so the bound has to
+/// live in the binding for the field to actually be limited.
+// `Swift.min`/`Swift.max` are qualified because Binding is @dynamicMemberLookup:
+// a bare `min` inside this extension resolves to a projected Binding member.
+private extension Binding where Value == Int {
+    func clamped(to range: ClosedRange<Int>) -> Binding<Int> {
+        Binding(get: { wrappedValue },
+                set: { wrappedValue = Swift.min(range.upperBound, Swift.max(range.lowerBound, $0)) })
+    }
+
+    /// Pull an already-stored out-of-range value back in, so a field can't keep
+    /// displaying a number the rest of the app clamps away. Writes only when it
+    /// must, to avoid materializing a default that was never set.
+    func heal(into range: ClosedRange<Int>) {
+        let bounded = Swift.min(range.upperBound, Swift.max(range.lowerBound, wrappedValue))
+        if bounded != wrappedValue { wrappedValue = bounded }
+    }
+}
+
 // MARK: - General pane
 
 struct GeneralPreferencesView: View {
@@ -16,6 +37,17 @@ struct GeneralPreferencesView: View {
     @AppStorage(PreferenceKeys.showStatusItem) private var showStatusItem = 1
     @State private var showExcludeSheet = false
     @State private var showAutoPasteInfo = false
+    /// Pending "lowering the cap will delete N clips" confirmation: the count to
+    /// delete and the cap to restore if the user backs out.
+    @State private var pendingTrimCount = 0
+    @State private var capBeforeEdit = 0
+    @State private var showTrimConfirm = false
+
+    /// The history cap, bounded on the way in, so the change handler below only ever
+    /// sees a cap it can act on.
+    private var historySize: Binding<Int> {
+        $maxHistorySize.clamped(to: PreferenceRanges.maxHistorySize)
+    }
 
     var body: some View {
         DragonForm {
@@ -57,7 +89,8 @@ struct GeneralPreferencesView: View {
                 }
                 LabeledContent(L("Max clipboard history size:")) {
                     HStack {
-                        TextField("", value: $maxHistorySize, format: .number).frame(width: 60)
+                        TextField("", value: historySize, format: .number).frame(width: 60)
+                        Stepper("", value: historySize, in: PreferenceRanges.maxHistorySize).labelsHidden()
                         Text(L("items"))
                     }
                 }
@@ -88,8 +121,33 @@ struct GeneralPreferencesView: View {
         }
         .onAppear {
             loginItem = LoginItem.isEnabled   // reconcile with actual state
+            $maxHistorySize.heal(into: PreferenceRanges.maxHistorySize)
         }
         .onChange(of: loginItem) { _, newValue in LoginItem.setEnabled(newValue) }
+        .onChange(of: maxHistorySize) { oldValue, newValue in
+            // Lowering the cap is destructive, so apply it now and say so, rather
+            // than letting the menu hide the extra clips while they sit in the
+            // store until the next copy trims them (ClipStore.enforceCapNow).
+            // Raising it deletes nothing, so it needs no confirmation.
+            guard newValue < oldValue else { return }
+            let overflow = ClipStore.overflowCount(
+                beyondCap: newValue, in: AppStore.container.mainContext)
+            guard overflow > 0 else { return }
+            pendingTrimCount = overflow
+            capBeforeEdit = oldValue
+            showTrimConfirm = true
+        }
+        .alert(L("Delete older clipboard history?"), isPresented: $showTrimConfirm) {
+            Button(L("Delete"), role: .destructive) {
+                ClipStore.enforceCapNow(in: AppStore.container.mainContext)
+            }
+            // Restoring the previous cap re-enters this handler as an INCREASE,
+            // which the guard above ignores — so cancelling can't loop.
+            Button(L("Cancel"), role: .cancel) { maxHistorySize = capBeforeEdit }
+        } message: {
+            Text(String(format: L("%d older clips will be deleted from your history. This can't be undone."),
+                        pendingTrimCount))
+        }
         .sheet(isPresented: $showExcludeSheet) { ExcludeAppsView() }
     }
 }
@@ -209,7 +267,8 @@ struct BackupPreferencesView: View {
     private func export() {
         let context = AppStore.container.mainContext
         // Export the same bounded, visible history the menu shows — not every row
-        // ever stored — so it can't leak old clips past maxHistorySize (CLAUDE.md §2).
+        // ever stored — so it can't leak old clips past maxHistorySize
+        // (design-invariants.md — History bound).
         let clips = (try? context.fetch(ClipStore.boundedHistoryDescriptor())) ?? []
 
         if exportAsSingleFile {
@@ -558,17 +617,24 @@ struct MenuPreferencesView: View {
 
     private static let fontSizes = Array(9...24) + [36, 48, 64, 72, 96]
 
+    private var toolTipLength: Binding<Int> {
+        $maxToolTipLength.clamped(to: PreferenceRanges.maxLengthOfToolTip)
+    }
+
     var body: some View {
         DragonForm {
             DragonSection(LocalizedStringKey(L("Clipboard History"))) {
                 LabeledContent(L("Number of items place inline:")) {
-                    TextField("", value: $inlineCount, format: .number).frame(width: 60)
+                    TextField("", value: $inlineCount.clamped(to: PreferenceRanges.numberOfItemsPlaceInline),
+                              format: .number).frame(width: 60)
                 }
                 LabeledContent(L("Number of items place inside a folder:")) {
-                    TextField("", value: $perFolder, format: .number).frame(width: 60)
+                    TextField("", value: $perFolder.clamped(to: PreferenceRanges.numberOfItemsPlaceInsideFolder),
+                              format: .number).frame(width: 60)
                 }
                 LabeledContent(L("Number of characters in the menu:")) {
-                    TextField("", value: $maxTitleLength, format: .number).frame(width: 60)
+                    TextField("", value: $maxTitleLength.clamped(to: PreferenceRanges.maxMenuItemTitleLength),
+                              format: .number).frame(width: 60)
                 }
                 Toggle(L("Mark menu items with numbers"), isOn: $markWithNumbers)
                 Toggle(L("Add key equivalents to numeric keys"), isOn: $numericKeyEquivalents)
@@ -577,7 +643,10 @@ struct MenuPreferencesView: View {
                 Toggle(L("Show alert panel before clear history"), isOn: $alertBeforeClear)
                 Toggle(L("Show tool tip on a menu item"), isOn: $showToolTip)
                 LabeledContent(L("Max length of tool tip string:")) {
-                    TextField("", value: $maxToolTipLength, format: .number).frame(width: 60)
+                    HStack {
+                        TextField("", value: toolTipLength, format: .number).frame(width: 60)
+                        Text(L("characters")).foregroundStyle(.secondary)
+                    }
                 }
             }
 
@@ -605,8 +674,10 @@ struct MenuPreferencesView: View {
                 Toggle(L("Show Image"), isOn: $showImage)
                 LabeledContent(L("Maximum thumbnail size:")) {
                     HStack(spacing: 6) {
-                        TextField("", value: $thumbnailMaxSize, format: .number).frame(width: 60)
-                        Stepper("", value: $thumbnailMaxSize, in: 16...256, step: 8).labelsHidden()
+                        TextField("", value: $thumbnailMaxSize.clamped(to: PreferenceRanges.thumbnailMaxSize),
+                                  format: .number).frame(width: 60)
+                        Stepper("", value: $thumbnailMaxSize.clamped(to: PreferenceRanges.thumbnailMaxSize),
+                                in: PreferenceRanges.thumbnailMaxSize, step: 8).labelsHidden()
                         Text(L("px")).foregroundStyle(.secondary)
                     }
                 }
@@ -621,6 +692,15 @@ struct MenuPreferencesView: View {
                 }
                 Toggle(L("Group snippets under one menu"), isOn: $groupSnippetsInFolder)
             }
+        }
+        // Pull values stored before these ranges existed back in, so a field can't
+        // keep showing a number the rest of the app clamps away.
+        .onAppear {
+            $inlineCount.heal(into: PreferenceRanges.numberOfItemsPlaceInline)
+            $perFolder.heal(into: PreferenceRanges.numberOfItemsPlaceInsideFolder)
+            $maxTitleLength.heal(into: PreferenceRanges.maxMenuItemTitleLength)
+            $maxToolTipLength.heal(into: PreferenceRanges.maxLengthOfToolTip)
+            $thumbnailMaxSize.heal(into: PreferenceRanges.thumbnailMaxSize)
         }
     }
 }
