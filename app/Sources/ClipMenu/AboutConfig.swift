@@ -40,7 +40,7 @@ enum AboutConfig {
     /// third-party code, and so must not claim it does.
     private static var attributions: [Attribution] {
         #if SPARKLE
-        [Attribution(component: "Sparkle", source: "MIT")]
+        [Attribution(name: "Sparkle", license: "MIT")]
         #else
         []
         #endif
