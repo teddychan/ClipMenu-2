@@ -40,6 +40,14 @@ pb=/usr/libexec/PlistBuddy
 BUILD="$(git rev-list --count HEAD 2>/dev/null || echo "$VERSION")"
 "$pb" -c "Set :CFBundleVersion ${BUILD}" "$APP/Contents/Info.plist"
 
+# Commit timestamp (%cI) for About's version line; DragonAbout drops the timestamp
+# when the key is absent rather than falling back to the executable's mtime.
+COMMIT_DATE="$(git log -1 --format=%cI 2>/dev/null || true)"
+if [ -n "$COMMIT_DATE" ]; then
+    "$pb" -c "Set :DragonCommitDate ${COMMIT_DATE}" "$APP/Contents/Info.plist" 2>/dev/null \
+      || "$pb" -c "Add :DragonCommitDate string ${COMMIT_DATE}" "$APP/Contents/Info.plist"
+fi
+
 # Mark the marketing version too, so a screenshot / About pane / log line can
 # never be mistaken for the release build. The name alone isn't enough: bug
 # reports quote the version, and without this it reads identically to release.

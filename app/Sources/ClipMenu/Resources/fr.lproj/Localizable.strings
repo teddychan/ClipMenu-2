@@ -161,7 +161,6 @@
 "Released under the MIT License." = "Distribué sous licence MIT.";
 "Contributors" = "Contributeurs";
 "Creator" = "Créateur";
-"Original ClipMenu" = "ClipMenu original";
 /* Language selection (General preferences) */
 "Language" = "Langue";
 "Restart ClipMenu to apply the language change." = "Redémarrez ClipMenu pour appliquer le changement de langue.";
@@ -258,10 +257,6 @@
 "No matches" = "Aucun résultat";
 
 /* About pane, Uninstall pane, What's New (2.17.0) */
-"Website" = "Site web";
-"Support on GitHub" = "Assistance sur GitHub";
-"Created by" = "Créé par";
-"License" = "Licence";
 "Uninstall" = "Désinstaller";
 "The app and its login item" = "L'app et son élément d'ouverture de session";
 "All preferences and actions" = "Toutes les préférences et actions";

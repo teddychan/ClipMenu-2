@@ -161,7 +161,6 @@
 "Released under the MIT License." = "MIT 라이선스로 배포됩니다.";
 "Contributors" = "기여자";
 "Creator" = "제작자";
-"Original ClipMenu" = "오리지널 ClipMenu";
 /* Language selection (General preferences) */
 "Language" = "언어";
 "Restart ClipMenu to apply the language change." = "언어 변경 사항을 적용하려면 ClipMenu를 다시 시작하십시오.";
@@ -258,10 +257,6 @@
 "No matches" = "일치 항목 없음";
 
 /* About pane, Uninstall pane, What's New (2.17.0) */
-"Website" = "웹 사이트";
-"Support on GitHub" = "GitHub 지원";
-"Created by" = "제작자";
-"License" = "라이선스";
 "Uninstall" = "제거";
 "The app and its login item" = "앱과 로그인 항목";
 "All preferences and actions" = "모든 환경설정과 동작";

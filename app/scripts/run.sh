@@ -50,6 +50,16 @@ cp Info.plist "$APP/Contents/Info.plist"
 BUILD="$(git rev-list --count HEAD 2>/dev/null || echo "$VERSION")"
 /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${BUILD}" "$APP/Contents/Info.plist"
 
+# The commit's own timestamp, which DragonAbout renders after the build number:
+# "v2.19.1 (1352) · 2026-Aug-08 09:12:33 UTC". Committer date (%cI), so both halves
+# of that line describe the same commit. Omitted from the pane entirely when unset
+# (e.g. outside a git checkout) — the kit has no fallback by design.
+COMMIT_DATE="$(git log -1 --format=%cI 2>/dev/null || true)"
+if [ -n "$COMMIT_DATE" ]; then
+    /usr/libexec/PlistBuddy -c "Set :DragonCommitDate ${COMMIT_DATE}" "$APP/Contents/Info.plist" 2>/dev/null \
+      || /usr/libexec/PlistBuddy -c "Add :DragonCommitDate string ${COMMIT_DATE}" "$APP/Contents/Info.plist"
+fi
+
 # App icon. CFBundleIconFile in Info.plist names "AppIcon"; macOS looks for
 # Contents/Resources/AppIcon.icns. Without this the .app shows a generic icon
 # in Finder, System Settings ▸ Login Items, the Gatekeeper prompt and the About box.
