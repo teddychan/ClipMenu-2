@@ -203,13 +203,17 @@ or granted permissions required. It covers clipboard capture and privacy filteri
 history and snippet stores with their migrations, JavaScript and built-in actions, menu
 building and search, hotkey rebinding, the Settings panes, and folder backup and
 restore. CI runs the whole suite on every pull request via
-[`.github/workflows/tests.yml`](.github/workflows/tests.yml).
+[`.github/workflows/tests.yml`](.github/workflows/tests.yml), using the same script.
 
 [![Tests](https://github.com/teddychan/clipmenu-2/actions/workflows/tests.yml/badge.svg)](https://github.com/teddychan/clipmenu-2/actions/workflows/tests.yml)
 
 ```bash
-cd app && swift test
+app/scripts/test.sh
 ```
+
+Use the script rather than a bare `swift test`: it runs the suite serially
+(`--no-parallel`), which several suites require because they share process-global
+state such as `NSPasteboard.general`.
 
 | Metric | Value |
 |---|---|
@@ -221,7 +225,7 @@ cd app && swift test
 
 Bug reports and feature requests are welcome on the
 [issues page](https://github.com/teddychan/clipmenu-2/issues). For pull requests, keep
-changes focused, run `cd app && swift test` before you push, and record notable
+changes focused, run `app/scripts/test.sh` before you push, and record notable
 changes in [CHANGELOG.md](CHANGELOG.md) (developer-facing notes; the user-facing
 release notes live in `app/Sources/ClipMenu/WhatsNewConfig.swift`).
 

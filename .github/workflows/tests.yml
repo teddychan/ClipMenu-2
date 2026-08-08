@@ -23,9 +23,14 @@ jobs:
       - name: Swift version
         run: swift --version
 
-      # DragonKit and ViewInspector resolve from GitHub like any SwiftPM dependency —
-      # nothing to vendor. CLIPMENU_SPARKLE is deliberately left unset so the test
-      # build stays Sparkle-free, which is what UpdaterUITests asserts.
+      # app/scripts/test.sh is the canonical test command — CI runs exactly what
+      # contributors run locally. It cds into app/ itself (so no working-directory
+      # here) and runs `swift test --arch arm64 --no-parallel`. Serial is required,
+      # not a preference: several suites share process-global state (NSPasteboard.general,
+      # the UserDefaults.standard backup baseline) that Swift Testing's default
+      # cross-suite parallelism races, and `.serialized` only orders tests within a
+      # suite. DragonKit and ViewInspector resolve from GitHub like any SwiftPM
+      # dependency — nothing to vendor. The script leaves CLIPMENU_SPARKLE empty so
+      # the test build stays Sparkle-free, which is what UpdaterUITests asserts.
       - name: Tests (ClipMenuTests)
-        working-directory: app
-        run: swift test
+        run: app/scripts/test.sh
