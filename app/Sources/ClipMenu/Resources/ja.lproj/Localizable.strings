@@ -268,10 +268,8 @@
 "Switch language instantly — no restart needed." = "言語を即座に切り替え — 再起動不要。";
 "Uninstall now confirms right inside Settings instead of a separate window." = "アンインストールは別ウインドウではなく設定内で確認するようになりました。";
 
-/* What's New (2.19.1) */
-"Fixes a bug that could erase your clipboard history, and a crash when opening the menu." = "クリップボード履歴が消える不具合と、メニューを開いたときのクラッシュを修正しました。";
-"Your clipboard history could be erased after setting the history size to 0." = "履歴の件数を 0 に設定すると、クリップボード履歴が消えることがありました。";
-"ClipMenu could crash every time the menu opened after a negative tool tip length was set." = "ツールチップの長さに負の値を設定すると、メニューを開くたびにクラッシュすることがありました。";
-"Edits in the snippet editor could be lost without warning if they couldn't be saved." = "スニペットエディタの編集が保存できない場合、警告なく失われることがありました。";
-"Reducing the history size now asks first, then removes the older clips right away." = "履歴の件数を減らすと、確認のうえで古いクリップをすぐに削除します。";
-"Settings no longer accept sizes and lengths that don't work, such as 0 items." = "設定で 0 件などの無効な値を受け付けなくなりました。";
+/* What's New (2.20.0) */
+"The About pane is now fully translated, and its links point where they should." = "「情報」パネルが完全に翻訳され、リンクの飛び先も正しくなりました。";
+"Several labels in the About pane stayed in English when ClipMenu was set to another language." = "ClipMenu を他の言語に設定していても、「情報」パネルの一部の項目が英語のままでした。";
+"The About pane's Website link opened a redirect page instead of ClipMenu's own page." = "「情報」パネルの Web サイトのリンクが、ClipMenu のページではなく転送用ページを開いていました。";
+"About now credits the original ClipMenu and shows which version of the shared Dragon toolkit the app was built with." = "「情報」パネルに、オリジナルの ClipMenu のクレジットと、ビルドに使用した共有 Dragon キットのバージョンを表示するようになりました。";

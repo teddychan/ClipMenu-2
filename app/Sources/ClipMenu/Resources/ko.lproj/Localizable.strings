@@ -268,10 +268,8 @@
 "Switch language instantly — no restart needed." = "재시동 없이 언어를 즉시 전환.";
 "Uninstall now confirms right inside Settings instead of a separate window." = "제거가 이제 별도 윈도우 대신 설정 안에서 바로 확인됩니다.";
 
-/* What's New (2.19.1) */
-"Fixes a bug that could erase your clipboard history, and a crash when opening the menu." = "클립보드 기록이 지워질 수 있는 버그와 메뉴를 열 때 발생하는 충돌을 수정했습니다.";
-"Your clipboard history could be erased after setting the history size to 0." = "기록 개수를 0으로 설정하면 클립보드 기록이 지워질 수 있었습니다.";
-"ClipMenu could crash every time the menu opened after a negative tool tip length was set." = "도구 설명 길이를 음수로 설정하면 메뉴를 열 때마다 충돌할 수 있었습니다.";
-"Edits in the snippet editor could be lost without warning if they couldn't be saved." = "스니펫 편집기의 변경 사항이 저장되지 못한 경우 알림 없이 사라질 수 있었습니다.";
-"Reducing the history size now asks first, then removes the older clips right away." = "기록 개수를 줄이면 먼저 확인한 뒤 오래된 클립을 바로 삭제합니다.";
-"Settings no longer accept sizes and lengths that don't work, such as 0 items." = "설정에서 0개처럼 동작하지 않는 값을 더 이상 허용하지 않습니다.";
+/* What's New (2.20.0) */
+"The About pane is now fully translated, and its links point where they should." = "정보 패널이 완전히 번역되었고, 링크도 올바른 페이지로 연결됩니다.";
+"Several labels in the About pane stayed in English when ClipMenu was set to another language." = "ClipMenu를 다른 언어로 설정해도 정보 패널의 일부 항목이 영어로 표시되었습니다.";
+"The About pane's Website link opened a redirect page instead of ClipMenu's own page." = "정보 패널의 웹 사이트 링크가 ClipMenu 페이지 대신 리디렉션 페이지를 열었습니다.";
+"About now credits the original ClipMenu and shows which version of the shared Dragon toolkit the app was built with." = "정보 패널에 오리지널 ClipMenu 크레딧과 빌드에 사용한 공유 Dragon 키트 버전이 표시됩니다.";

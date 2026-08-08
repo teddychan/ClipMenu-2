@@ -72,19 +72,19 @@ import DragonKit
 
     @Test func contentHasDateAndSummary() {
         let content = WhatsNewConfig.content
-        #expect(content.date == "2026-08-07")
+        #expect(content.date == "2026-08-08")
         #expect(!content.summary.isEmpty)
     }
 
-    /// 2.19.1's notes: three fixes (history erasure, the menu crash, lost snippet
-    /// edits) then two changes (the confirmation before reducing history, and the
-    /// bounded Settings fields). Pinned per release alongside the WhatsNewConfig
-    /// copy itself.
+    /// 2.20.0's notes: two fixes (the untranslated About labels, the Website link
+    /// pointing at the redirect stub) then one change (About crediting the original
+    /// ClipMenu and the DragonKit version). Pinned per release alongside the
+    /// WhatsNewConfig copy itself.
     @Test func contentHasAFixedThenChangedSection() {
         let sections = WhatsNewConfig.content.sections
         #expect(sections.count == 2)
         #expect(sections.map(\.kind) == [.fixed, .changed])
-        #expect(sections.map(\.entries.count) == [3, 2])
+        #expect(sections.map(\.entries.count) == [2, 1])
         for entry in sections.flatMap(\.entries) {
             #expect(!entry.isEmpty)
         }

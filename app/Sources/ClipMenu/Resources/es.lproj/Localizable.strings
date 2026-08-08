@@ -268,10 +268,8 @@
 "Switch language instantly — no restart needed." = "Cambia el idioma al instante, sin reiniciar.";
 "Uninstall now confirms right inside Settings instead of a separate window." = "Desinstalar ahora se confirma dentro de Ajustes, sin una ventana aparte.";
 
-/* What's New (2.19.1) */
-"Fixes a bug that could erase your clipboard history, and a crash when opening the menu." = "Corrige un error que podía borrar tu historial del portapapeles y un fallo al abrir el menú.";
-"Your clipboard history could be erased after setting the history size to 0." = "El historial del portapapeles podía borrarse al establecer el tamaño del historial en 0.";
-"ClipMenu could crash every time the menu opened after a negative tool tip length was set." = "ClipMenu podía fallar cada vez que se abría el menú si la longitud de la ayuda era negativa.";
-"Edits in the snippet editor could be lost without warning if they couldn't be saved." = "Los cambios en el editor de fragmentos podían perderse sin avisar si no se podían guardar.";
-"Reducing the history size now asks first, then removes the older clips right away." = "Reducir el tamaño del historial ahora pide confirmación y elimina los elementos antiguos de inmediato.";
-"Settings no longer accept sizes and lengths that don't work, such as 0 items." = "Los Ajustes ya no aceptan tamaños ni longitudes que no funcionan, como 0 elementos.";
+/* What's New (2.20.0) */
+"The About pane is now fully translated, and its links point where they should." = "El panel Acerca de ahora está totalmente traducido y sus enlaces llevan a donde deben.";
+"Several labels in the About pane stayed in English when ClipMenu was set to another language." = "Varias etiquetas del panel Acerca de seguían en inglés cuando ClipMenu estaba configurado en otro idioma.";
+"The About pane's Website link opened a redirect page instead of ClipMenu's own page." = "El enlace Sitio web del panel Acerca de abría una página de redirección en lugar de la página de ClipMenu.";
+"About now credits the original ClipMenu and shows which version of the shared Dragon toolkit the app was built with." = "Acerca de ahora acredita el ClipMenu original y muestra con qué versión del kit compartido Dragon se compiló la app.";
