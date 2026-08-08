@@ -7,7 +7,8 @@ enum WhatsNewConfig {
     @MainActor
     static var content: WhatsNewContent {
         WhatsNewContent(
-            version: "v\(AppInfo.version)",
+            // Version omitted on purpose: it defaults to CFBundleShortVersionString
+            // and the kit adds the "v". The pane tracks the current build's notes.
             date: "2026-08-07",
             summary: L("Fixes a bug that could erase your clipboard history, and a crash when opening the menu."),
             sections: [

@@ -2,7 +2,8 @@ import Testing
 @testable import ClipMenu
 
 // Characterization tests for AppInfo — the static provider of the app's
-// user-visible name, version, build, and copyright. In the `swift test`
+// user-visible name, version, and build. (The copyright line moved to
+// DragonAbout.copyright in DragonKit 3.) In the `swift test`
 // process the values fall back to their Info.plist-less defaults, so these
 // tests pin the *shape* of each computed property rather than a build-specific
 // literal (which would differ between `swift test` and a configured bundle).
@@ -29,9 +30,5 @@ import Testing
         let desc = AppInfo.versionDescription
         #expect(!desc.isEmpty)
         #expect(desc.contains(AppInfo.version))
-    }
-
-    @Test func copyrightMirrorsLicense() {
-        #expect(AppInfo.copyright == "© 2008–2014 Naotaka Morimoto · © 2026 Teddy Chan")
     }
 }

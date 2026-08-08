@@ -161,7 +161,6 @@
 "Released under the MIT License." = "MIT ライセンスの下で公開されています。";
 "Contributors" = "貢献者";
 "Creator" = "作者";
-"Original ClipMenu" = "オリジナルの ClipMenu";
 /* Language selection (General preferences) */
 "Language" = "言語";
 "Restart ClipMenu to apply the language change." = "言語の変更を適用するには ClipMenu を再起動してください。";
@@ -258,10 +257,6 @@
 "No matches" = "一致なし";
 
 /* About pane, Uninstall pane, What's New (2.17.0) */
-"Website" = "ウェブサイト";
-"Support on GitHub" = "GitHub でサポート";
-"Created by" = "作者";
-"License" = "ライセンス";
 "Uninstall" = "アンインストール";
 "The app and its login item" = "アプリとログイン項目";
 "All preferences and actions" = "すべての環境設定とアクション";

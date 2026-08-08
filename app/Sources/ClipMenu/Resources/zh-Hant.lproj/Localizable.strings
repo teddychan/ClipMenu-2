@@ -161,7 +161,6 @@
 "Released under the MIT License." = "依 MIT 授權條款發佈。";
 "Contributors" = "貢獻者";
 "Creator" = "作者";
-"Original ClipMenu" = "原始 ClipMenu";
 /* Language selection (General preferences) */
 "Language" = "語言";
 "Restart ClipMenu to apply the language change." = "重新啟動 ClipMenu 以套用語言變更。";
@@ -258,10 +257,6 @@
 "No matches" = "無相符項目";
 
 /* About pane, Uninstall pane, What's New (2.17.0) */
-"Website" = "網站";
-"Support on GitHub" = "GitHub 支援";
-"Created by" = "作者";
-"License" = "授權";
 "Uninstall" = "解除安裝";
 "The app and its login item" = "App 與其登入項目";
 "All preferences and actions" = "所有偏好設定與動作";

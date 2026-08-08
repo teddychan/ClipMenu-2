@@ -74,6 +74,14 @@ jobs:
           BUILD_NUMBER="$(date +%s)"
           /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${BUILD_NUMBER}" "$APP/Contents/Info.plist"
           echo "Build number (CFBundleVersion): ${BUILD_NUMBER}  (marketing ${VERSION})"
+
+          # The commit's own timestamp, shown by DragonAbout after the build number.
+          # Committer date (%cI) so About's version line fingerprints one commit; the
+          # kit shows no timestamp at all when the key is missing, so stamp it here —
+          # the free channel gets this from dragon-release-ci, which MAS doesn't use.
+          COMMIT_DATE="$(git log -1 --format=%cI)"
+          /usr/libexec/PlistBuddy -c "Set :DragonCommitDate ${COMMIT_DATE}" "$APP/Contents/Info.plist" 2>/dev/null \
+            || /usr/libexec/PlistBuddy -c "Add :DragonCommitDate string ${COMMIT_DATE}" "$APP/Contents/Info.plist"
           cp AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
 
           # Every SwiftPM resource bundle: ClipMenu's own + DragonKit's localized

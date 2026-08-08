@@ -38,9 +38,4 @@ enum AppInfo {
             ? String(format: L("Version %@"), version)
             : String(format: L("Version %@ (%@)"), version, build)
     }
-
-    /// Copyright line for the About pane. Mirrors LICENSE.
-    static var copyright: String {
-        "© 2008–2014 Naotaka Morimoto · © 2026 Teddy Chan"
-    }
 }
