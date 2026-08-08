@@ -9,17 +9,15 @@ enum WhatsNewConfig {
         WhatsNewContent(
             // Version omitted on purpose: it defaults to CFBundleShortVersionString
             // and the kit adds the "v". The pane tracks the current build's notes.
-            date: "2026-08-07",
-            summary: L("Fixes a bug that could erase your clipboard history, and a crash when opening the menu."),
+            date: "2026-08-08",
+            summary: L("The About pane is now fully translated, and its links point where they should."),
             sections: [
                 ChangeSection(kind: .fixed, entries: [
-                    L("Your clipboard history could be erased after setting the history size to 0."),
-                    L("ClipMenu could crash every time the menu opened after a negative tool tip length was set."),
-                    L("Edits in the snippet editor could be lost without warning if they couldn't be saved."),
+                    L("Several labels in the About pane stayed in English when ClipMenu was set to another language."),
+                    L("The About pane's Website link opened a redirect page instead of ClipMenu's own page."),
                 ]),
                 ChangeSection(kind: .changed, entries: [
-                    L("Reducing the history size now asks first, then removes the older clips right away."),
-                    L("Settings no longer accept sizes and lengths that don't work, such as 0 items."),
+                    L("About now credits the original ClipMenu and shows which version of the shared Dragon toolkit the app was built with."),
                 ]),
             ]
         )
