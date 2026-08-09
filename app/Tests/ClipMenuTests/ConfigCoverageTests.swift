@@ -19,9 +19,9 @@ import DragonKit
         #expect(!content.versionString.isEmpty)
     }
 
-    @Test func contentHasWebsiteAndSupportLinks() {
+    @Test func contentHasWebsiteSupportAndLicensesLinks() {
         let links = AboutConfig.content.linkRows
-        #expect(links.count == 2)
+        #expect(links.count == 3)
 
         let website = links[0]
         #expect(website.detail == "dragonapp.com/clipmenu-2")
@@ -32,6 +32,16 @@ import DragonKit
         #expect(support.detail == "teddychan/clipmenu-2")
         #expect(support.systemImage == "lifepreserver")
         #expect(support.url.absoluteString == "https://github.com/teddychan/clipmenu-2/issues")
+
+        // No "Original project" row between Support and this one: `originalWork` carries a
+        // name and author but no URL, so the kit emits it as a credit, not a link.
+        //
+        // The detail is DERIVED from the URL by the kit, never typed beside it — asserting the
+        // derived string here is what proves the trailing slash does not leak into the row.
+        let licenses = links[2]
+        #expect(licenses.detail == "dragonapp.com/clipmenu-2/licenses")
+        #expect(licenses.systemImage == "doc.text")
+        #expect(licenses.url.absoluteString == "https://www.dragonapp.com/clipmenu-2/licenses/")
     }
 
     /// The Website row must address the canonical `/clipmenu-2/` page, not the

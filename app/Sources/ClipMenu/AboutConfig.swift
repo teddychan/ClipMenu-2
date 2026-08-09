@@ -28,8 +28,12 @@ enum AboutConfig {
             websiteURL: websiteURL,
             supportURL: issuesURL,
             license: "MIT",
-            // `licensesURL` is omitted: dragonapp.com/clipmenu-2/licenses does not
-            // exist yet. Sparkle's notice is credited below until it does.
+            // Third-party notices. Ungated, unlike `attributions` below: the four
+            // bundled JavaScript libraries behind the Actions transforms ship in
+            // every build, so the page has something to say even where Sparkle
+            // does not ship. Trailing slash — it is the path Pages serves, so the
+            // row does not point at a redirect.
+            licensesURL: URL(string: "https://www.dragonapp.com/clipmenu-2/licenses/")!,
             originalWork: OriginalWork(name: "ClipMenu", author: "Naotaka Morimoto"),
             attributions: attributions
         )
