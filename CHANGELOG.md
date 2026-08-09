@@ -5,6 +5,22 @@ Developer-facing notes for ClipMenu. User-facing release notes live in
 
 ## Unreleased
 
+## 2.20.1 — 2026-08-10
+
+Housekeeping only — no user-facing change, and no What's New entry.
+
+- **The committed `CFBundleVersion` was a stale `2.18.1`, two releases behind the
+  marketing version beside it.** It is inert: every build path stamps
+  `git rev-list --count HEAD` over it before the app is assembled —
+  `app/scripts/run.sh`, `app/scripts/run-debug.sh`, `.github/workflows/release-mas.yml`,
+  and the free channel inside `teddychan/dragon-release-ci`. So nothing shipped with
+  the wrong build number; the problem was that the checked-in value *read* like a real
+  version and invited someone to trust or "fix" it. Reset to `1`, the obvious inert
+  placeholder the sibling Dragon repos use (dragon-kit's `sample-app/Info.plist`), so
+  the file says "this gets overwritten" instead of naming a release.
+- `CFBundleShortVersionString` 2.20.0 → 2.20.1. This is the only version the release
+  tag is checked against (`assert_tag_matches_plist`), and it stays hand-maintained.
+
 ## 2.19.1 — 2026-08-07
 
 Fixes from an engineering-standard audit of the clipboard, menu, and snippet
