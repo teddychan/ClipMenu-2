@@ -9,15 +9,17 @@ enum WhatsNewConfig {
         WhatsNewContent(
             // Version omitted on purpose: it defaults to CFBundleShortVersionString
             // and the kit adds the "v". The pane tracks the current build's notes.
-            date: "2026-08-08",
-            summary: L("The About pane is now fully translated, and its links point where they should."),
+            date: "2026-08-10",
+            // Maintenance-only, and said so rather than dressed up. Everything 2.20.2
+            // fixes — the actions.plist collision, the debug build's identity and its
+            // updater — is only reachable from a local Debug build running beside the
+            // installed copy, so there is nothing here a user of the release build can
+            // observe. Inventing a feature entry to fill the pane would be a lie the
+            // release gate exists to catch.
+            summary: L("A maintenance release: internal updates only, with no changes to how ClipMenu works."),
             sections: [
-                ChangeSection(kind: .fixed, entries: [
-                    L("Several labels in the About pane stayed in English when ClipMenu was set to another language."),
-                    L("The About pane's Website link opened a redirect page instead of ClipMenu's own page."),
-                ]),
                 ChangeSection(kind: .changed, entries: [
-                    L("About now credits the original ClipMenu and shows which version of the shared Dragon toolkit the app was built with."),
+                    L("Updated the shared Dragon toolkit that ClipMenu is built with."),
                 ]),
             ]
         )

@@ -82,19 +82,20 @@ import DragonKit
 
     @Test func contentHasDateAndSummary() {
         let content = WhatsNewConfig.content
-        #expect(content.date == "2026-08-08")
+        #expect(content.date == "2026-08-10")
         #expect(!content.summary.isEmpty)
     }
 
-    /// 2.20.0's notes: two fixes (the untranslated About labels, the Website link
-    /// pointing at the redirect stub) then one change (About crediting the original
-    /// ClipMenu and the DragonKit version). Pinned per release alongside the
-    /// WhatsNewConfig copy itself.
-    @Test func contentHasAFixedThenChangedSection() {
+    /// 2.20.2's notes: maintenance-only, so a single `changed` section with one entry
+    /// and no `fixed` section at all. Everything the release fixes is reachable only
+    /// from a local Debug build running beside the installed copy, so claiming a fix
+    /// a user could look for would be false. Pinned per release alongside the
+    /// WhatsNewConfig copy itself — the section shape IS the maintenance-only claim.
+    @Test func contentIsAMaintenanceOnlyChangedSection() {
         let sections = WhatsNewConfig.content.sections
-        #expect(sections.count == 2)
-        #expect(sections.map(\.kind) == [.fixed, .changed])
-        #expect(sections.map(\.entries.count) == [2, 1])
+        #expect(sections.count == 1)
+        #expect(sections.map(\.kind) == [.changed])
+        #expect(sections.map(\.entries.count) == [1])
         for entry in sections.flatMap(\.entries) {
             #expect(!entry.isEmpty)
         }

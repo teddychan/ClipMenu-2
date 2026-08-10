@@ -258,8 +258,6 @@
 "Search…" = "Search…";
 "No matches" = "No matches";
 
-/* What's New (2.20.0) */
-"The About pane is now fully translated, and its links point where they should." = "The About pane is now fully translated, and its links point where they should.";
-"Several labels in the About pane stayed in English when ClipMenu was set to another language." = "Several labels in the About pane stayed in English when ClipMenu was set to another language.";
-"The About pane's Website link opened a redirect page instead of ClipMenu's own page." = "The About pane's Website link opened a redirect page instead of ClipMenu's own page.";
-"About now credits the original ClipMenu and shows which version of the shared Dragon toolkit the app was built with." = "About now credits the original ClipMenu and shows which version of the shared Dragon toolkit the app was built with.";
+/* What's New (2.20.2) */
+"A maintenance release: internal updates only, with no changes to how ClipMenu works." = "A maintenance release: internal updates only, with no changes to how ClipMenu works.";
+"Updated the shared Dragon toolkit that ClipMenu is built with." = "Updated the shared Dragon toolkit that ClipMenu is built with.";

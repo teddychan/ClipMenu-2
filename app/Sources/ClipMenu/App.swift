@@ -33,7 +33,11 @@ enum AppStore {
     /// build (bundle id `…clipmenu-2.debug`, from scripts/run-debug.sh) uses a
     /// SEPARATE "ClipMenu Debug" folder so it never reads, pollutes, or (on
     /// Uninstall) deletes the installed release's clipboard history + snippets.
-    static let folder: URL = {
+    ///
+    /// `nonisolated` because it is the app's single support-folder constant and
+    /// `ActionStore` (which is not MainActor-isolated) has to build actions.plist's
+    /// path from it — an immutable `Sendable` value, so there is nothing to race.
+    nonisolated static let folder: URL = {
         let isDebug = (Bundle.main.bundleIdentifier ?? "").hasSuffix(".debug")
         return URL.applicationSupportDirectory.appending(
             path: isDebug ? "ClipMenu Debug" : "ClipMenu", directoryHint: .isDirectory)

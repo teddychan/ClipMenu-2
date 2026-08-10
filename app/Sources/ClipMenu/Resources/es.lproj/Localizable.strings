@@ -268,8 +268,6 @@
 "Switch language instantly — no restart needed." = "Cambia el idioma al instante, sin reiniciar.";
 "Uninstall now confirms right inside Settings instead of a separate window." = "Desinstalar ahora se confirma dentro de Ajustes, sin una ventana aparte.";
 
-/* What's New (2.20.0) */
-"The About pane is now fully translated, and its links point where they should." = "El panel Acerca de ahora está totalmente traducido y sus enlaces llevan a donde deben.";
-"Several labels in the About pane stayed in English when ClipMenu was set to another language." = "Varias etiquetas del panel Acerca de seguían en inglés cuando ClipMenu estaba configurado en otro idioma.";
-"The About pane's Website link opened a redirect page instead of ClipMenu's own page." = "El enlace Sitio web del panel Acerca de abría una página de redirección en lugar de la página de ClipMenu.";
-"About now credits the original ClipMenu and shows which version of the shared Dragon toolkit the app was built with." = "Acerca de ahora acredita el ClipMenu original y muestra con qué versión del kit compartido Dragon se compiló la app.";
+/* What's New (2.20.2) */
+"A maintenance release: internal updates only, with no changes to how ClipMenu works." = "Una versión de mantenimiento: solo cambios internos, sin modificaciones en el funcionamiento de ClipMenu.";
+"Updated the shared Dragon toolkit that ClipMenu is built with." = "Se actualizó el kit compartido Dragon con el que se compila ClipMenu.";

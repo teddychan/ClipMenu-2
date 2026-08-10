@@ -5,6 +5,37 @@ Developer-facing notes for ClipMenu. User-facing release notes live in
 
 ## Unreleased
 
+## 2.20.2 — 2026-08-10
+
+Maintenance only from a user's point of view: every defect below is reachable
+solely from a local Debug build running beside the installed release, so the
+What's New entry says maintenance-only rather than inventing a fix to claim.
+
+- **`scripts/run-debug.sh` appended ` (Debug)` to `CFBundleShortVersionString`.**
+  That field is the sole source of truth for the app's semantic version and the one
+  string the release tag is checked against (`assert_tag_matches_plist`); a channel
+  label inside it makes the version non-numeric. dragon-kit's
+  `docs/MAC-APP-RELEASE-LIFECYCLE.md` forbids it outright. The script now asserts
+  `X.Y.Z` and stamps `DragonBuildChannel = Debug`, which DragonKit 3.3.0 renders as
+  `v2.20.2 Debug (76)` — so a screenshot still can't be mistaken for the release
+  build, which was the suffix's original purpose.
+- **The debug bundle could have checked the production appcast.** It inherited the
+  release's `SUFeedURL`, so an update would have replaced the debug build with the
+  public one. The script now deletes `SUFeedURL` and sets `SUEnableAutomaticChecks`
+  false: Sparkle refuses to start without a feed, `DragonUpdater` leaves its
+  `SPUUpdater` nil, and every route goes inert at the data layer. `UpdaterUI`
+  additionally reports unsupported on the Debug channel, so the menu item is absent
+  rather than inert. The Updates *pane* is deliberately still built — with no feed it
+  renders inert, and the sidebar then matches the release build pane for pane.
+- **`ActionStore.saveURL` wrote `actions.plist` into the release's folder.** It
+  hardcoded `Application Support/ClipMenu` while everything else routes through the
+  debug-aware `AppStore.folder`, so a debug build edited the installed release's
+  action set — or wrote the defaults over it on first launch. It was also the path
+  `SettingsWindowController.uninstallConfig` already declared, so uninstall was
+  cleaning a file nothing wrote. Identical for a release build; no migration.
+- DragonKit 3.2.0 → 3.3.0 (`DragonAbout.buildChannel` / `isDebugBuild`, and the
+  channel-aware `versionString()`).
+
 ## 2.20.1 — 2026-08-10
 
 Housekeeping only — no user-facing change, and no What's New entry.
