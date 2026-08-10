@@ -12,6 +12,12 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."            # package root (app/)
 
+# Compile the SAME product the release ships: CLIPMENU_SPARKLE=1 links
+# DragonKitUpdates and defines SPARKLE, so the debug build exercises the direct /
+# Developer ID code path (Updates pane, About's Sparkle attribution) rather than
+# the Mac App Store variant. Embedding Sparkle is not the same as running it — the
+# updater stays inert on the Debug channel; see UpdaterUI.isSupported and the
+# SUEnableAutomaticChecks stamp below.
 export CLIPMENU_SPARKLE=1         # include the Sparkle updater locally
 swift build -c debug --arch arm64
 BIN_PATH="$(swift build -c debug --arch arm64 --show-bin-path)"
@@ -48,18 +54,30 @@ if [ -n "$COMMIT_DATE" ]; then
       || "$pb" -c "Add :DragonCommitDate string ${COMMIT_DATE}" "$APP/Contents/Info.plist"
 fi
 
-# Mark the marketing version too, so a screenshot / About pane / log line can
-# never be mistaken for the release build. The name alone isn't enough: bug
-# reports quote the version, and without this it reads identically to release.
-# Stamped here rather than in Info.plist so it can't drift on a version bump
-# (this bundle's plist is re-copied from source on every run; the guard keeps the
-# suffix idempotent anyway).
+# Mark the CHANNEL, never the version. This block used to append " (Debug)" to
+# CFBundleShortVersionString — which is the one string the public release tag is
+# asserted against (dragon-kit docs/MAC-APP-RELEASE-LIFECYCLE.md, "Public version rules": it
+# holds only X.Y.Z, the numeric candidate the next release ships). A channel label
+# inside it makes the version non-numeric and breaks that assertion. The label is
+# presentation: DragonKit ≥3.3.0 reads DragonBuildChannel and renders
+# "v2.20.1 Debug (1234)" in About, so a screenshot still can't be mistaken for the
+# release build — which was the original reason for the suffix.
 SHORT_VERSION="$("$pb" -c 'Print :CFBundleShortVersionString' "$APP/Contents/Info.plist")"
-case "$SHORT_VERSION" in
-  *"(Debug)") ;;
-  *) SHORT_VERSION="$SHORT_VERSION (Debug)"
-     "$pb" -c "Set :CFBundleShortVersionString ${SHORT_VERSION}" "$APP/Contents/Info.plist" ;;
-esac
+if ! [[ "$SHORT_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    echo "error: CFBundleShortVersionString is '${SHORT_VERSION}', not a numeric X.Y.Z candidate." >&2
+    echo "       Fix app/Info.plist: the public vX.Y.Z tag is checked against this field." >&2
+    exit 1
+fi
+"$pb" -c "Set :DragonBuildChannel Debug" "$APP/Contents/Info.plist" 2>/dev/null \
+  || "$pb" -c "Add :DragonBuildChannel string Debug" "$APP/Contents/Info.plist"
+
+# Never update: this bundle keeps the release's SUFeedURL, so a check would offer
+# the PRODUCTION appcast and "updating" would swap the debug build for the release
+# one. UpdaterUI already refuses to touch Sparkle on the Debug channel; this is the
+# defense in depth the macos-debug-build recipe asks for, in case anything else
+# reaches the updater. Add, not Set: the release Info.plist doesn't carry the key.
+"$pb" -c "Set :SUEnableAutomaticChecks false" "$APP/Contents/Info.plist" 2>/dev/null \
+  || "$pb" -c "Add :SUEnableAutomaticChecks bool false" "$APP/Contents/Info.plist"
 
 cp AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
 
@@ -97,4 +115,4 @@ echo "Assembled $APP (id ${DEBUG_ID})"
 # stale build in another checkout — so you'd debug a binary you didn't just
 # compile. It also parents the app to launchd, so it outlives this shell.
 open -n "$APP"
-echo "Launched ${APP_NAME} ${SHORT_VERSION} (build ${BUILD}) — runs next to the installed ClipMenu 2."
+echo "Launched ${APP_NAME} v${SHORT_VERSION} Debug (build ${BUILD}) — runs next to the installed ClipMenu 2."

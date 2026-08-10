@@ -96,7 +96,14 @@ final class SettingsWindowController: NSObject {
         panes.append(AnySettingsPane(SyncBackupPane()))
         panes.append(AnySettingsPane(WhatsNewSettingsPane(content: WhatsNewConfig.content)))
         #if SPARKLE
-        panes.append(AnySettingsPane(UpdatesSettingsPane(updater: UpdaterUI.updater)))
+        // Compiled in for the direct build, but skipped on the Debug channel: the
+        // pane's body reads the updater, and `DragonUpdater` starts Sparkle lazily
+        // on that first access — against the release SUFeedURL this bundle still
+        // carries. Same treatment the App Store channel gets above; `show()` below
+        // already resets a persisted selection pointing at a pane this build lacks.
+        if UpdaterUI.isSupported {
+            panes.append(AnySettingsPane(UpdatesSettingsPane(updater: UpdaterUI.updater)))
+        }
         #endif
         panes.append(AnySettingsPane(AboutSettingsPane(content: AboutConfig.content)))
         panes.append(AnySettingsPane(UninstallSettingsPane(config: uninstallConfig, onCancel: { [weak self] in

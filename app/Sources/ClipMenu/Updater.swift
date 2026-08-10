@@ -1,4 +1,5 @@
 import Foundation
+import DragonKit
 
 #if SPARKLE
 import DragonKitUpdates
@@ -19,11 +20,23 @@ enum UpdaterUI {
     #endif
 
     /// Whether in-app updates exist in this build. True only when Sparkle is
-    /// compiled in (the direct / Developer ID build); the Mac App Store build
-    /// returns false and shows no update UI.
+    /// compiled in (the direct / Developer ID build) **and** this is not a local
+    /// Debug build; the Mac App Store build returns false and shows no update UI.
+    ///
+    /// scripts/run-debug.sh links Sparkle on purpose, so the debug build compiles
+    /// the same product the release ships — but a debug bundle keeps the release's
+    /// SUFeedURL, so an actual check would offer the PRODUCTION appcast and
+    /// "updating" would replace the debug build with the release one. The lifecycle
+    /// spec makes that flat: a Debug build "never reads or publishes the production
+    /// appcast". Gating here rather than at each call site reuses the mechanism the
+    /// Mac App Store build already proves: the menu item is passed `nil` and is
+    /// absent (MainMenuController.addAppMenuSection), and the Updates pane is not
+    /// built (SettingsWindowController.settingsPanes) — an inert item would just
+    /// look broken. `DragonUpdater` creates `SPUUpdater` lazily on first property
+    /// access, so "nothing touches it" is exactly what keeps Sparkle from starting.
     static var isSupported: Bool {
         #if SPARKLE
-        return true
+        return !DragonAbout.isDebugBuild()
         #else
         return false
         #endif
@@ -34,6 +47,7 @@ enum UpdaterUI {
     /// first use, so touch it here to begin the scheduled-check timer.
     static func start() {
         #if SPARKLE
+        guard isSupported else { return }
         _ = updater.canCheckForUpdates
         #endif
     }
@@ -44,6 +58,7 @@ enum UpdaterUI {
     static var automaticallyChecksForUpdates: Bool {
         get {
             #if SPARKLE
+            guard isSupported else { return false }
             return updater.automaticallyChecksForUpdates
             #else
             return false
@@ -51,6 +66,7 @@ enum UpdaterUI {
         }
         set {
             #if SPARKLE
+            guard isSupported else { return }
             updater.automaticallyChecksForUpdates = newValue
             #endif
         }
@@ -59,6 +75,7 @@ enum UpdaterUI {
     /// Manual "Check Now" (menu bar item): shows Sparkle's standard UI.
     static func checkNow() {
         #if SPARKLE
+        guard isSupported else { return }
         updater.checkForUpdates()
         #endif
     }

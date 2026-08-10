@@ -93,9 +93,17 @@ enum ActionStore {
     }
 
     /// actions.plist in Application Support (ActionController.m:_saveFilePath).
+    ///
+    /// Built from `AppStore.folder`, not a literal "ClipMenu" — this is the one
+    /// file the app WRITES into that tree, and hardcoding the release folder name
+    /// meant a debug build (`…clipmenu-2.debug`) edited the installed release's
+    /// action set, or wrote the defaults over it on first launch. It is also the
+    /// path `SettingsWindowController.uninstallConfig` already declares
+    /// (`AppStore.folder/actions.plist`), so uninstall was cleaning a file nothing
+    /// wrote. Identical for a release build, where `AppStore.folder` *is*
+    /// `Application Support/ClipMenu` — no migration.
     static var saveURL: URL? {
-        FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
-            .first?.appendingPathComponent("ClipMenu/actions.plist")
+        AppStore.folder.appendingPathComponent("actions.plist")
     }
 
     /// Load the action tree; on first run (no file) generate + save the defaults
