@@ -112,11 +112,52 @@ final class SettingsWindowController: NSObject {
         return panes
     }
 
+    /// The bundle id Homebrew installed: the fallback for the running bundle's id below, and the
+    /// gate the cask token is issued against — deliberately not both at once, see
+    /// ``homebrewCaskToken(channel:actual:)``.
+    static let releaseBundleID = "com.dragonapp.clipmenu-2"
+
+    /// The Homebrew cask token, or `nil` when this bundle is not the one brew installed.
+    ///
+    /// ClipMenu ships as the cask `clipmenu-2` (the token declared by `Casks/clipmenu-2.rb` in
+    /// teddychan/homebrew-tap, not inferred from the repo name). Homebrew never watches the
+    /// filesystem, so an app that deletes itself leaves brew's receipt still claiming the cask is
+    /// installed and `Caskroom/clipmenu-2/<version>/ClipMenu 2.app` a dangling symlink;
+    /// `brew install --cask clipmenu-2` then refuses outright — "already installed" — for an app
+    /// that isn't there, pointing at nothing that would fix it. Naming the token lets the kit's
+    /// post-exit shell run `brew uninstall --cask --force clipmenu-2` and clear that record.
+    ///
+    /// Two builds must be excluded, and they need two different mechanisms:
+    ///
+    /// - The **local Debug build**, which `scripts/run-debug.sh` re-ids `…clipmenu-2.debug`.
+    ///   `brew uninstall --cask` is not bundle-scoped: it deletes whatever the receipt points at,
+    ///   which is the *release* app in /Applications, and `Casks/clipmenu-2.rb` carries
+    ///   `uninstall quit: "com.dragonapp.clipmenu-2"`, so it terminates that app first. The kit's
+    ///   ``UninstallConfig/caskToken(_:ifBundleIs:actual:)`` makes that comparison, and it fails
+    ///   closed — a debug id, another app's id and a *missing* id all return `nil`. The raw
+    ///   `Bundle.main.bundleIdentifier` goes in, never `uninstallConfig`'s fallen-back `bundleID`:
+    ///   that one answers the release id for a build which can't state its own, which is precisely
+    ///   the build with no business authorising a delete. ice-2 shipped exactly that bug.
+    /// - The **Mac App Store build**, which a bundle-id comparison cannot see: it is sandboxed but
+    ///   carries the *same* id as the direct build, so `caskToken` would issue the token. Homebrew
+    ///   never installed it. The kit's post-exit `brew` step is a detached `try?` and a sandboxed
+    ///   process cannot spawn it, so today this is inert either way — but "the sandbox happens to
+    ///   deny it" is not the same as saying so. `DistributionChannel` is the app's existing runtime
+    ///   answer to which channel this is (sandbox presence, not a build flag), already used for the
+    ///   Permissions pane above, and it keeps the decision testable.
+    static func homebrewCaskToken(
+        channel: DistributionChannel = .current,
+        actual: String? = Bundle.main.bundleIdentifier
+    ) -> String? {
+        guard channel == .direct else { return nil }
+        return UninstallConfig.caskToken("clipmenu-2", ifBundleIs: releaseBundleID, actual: actual)
+    }
+
     /// What uninstalling removes. The optional toggle (default off) covers the
     /// user's clipboard history + snippets (the whole Application Support folder);
     /// without it only support files (actions.plist, user scripts) and caches go.
     private var uninstallConfig: UninstallConfig {
-        let bundleID = Bundle.main.bundleIdentifier ?? "com.dragonapp.clipmenu-2"
+        let bundleID = Bundle.main.bundleIdentifier ?? Self.releaseBundleID
         let library = FileManager.default.homeDirectoryForCurrentUser.appending(path: "Library")
         return UninstallConfig(
             appName: MainMenuController.canonicalName,
@@ -132,7 +173,8 @@ final class SettingsWindowController: NSObject {
                 AppStore.folder.appending(path: "script"),
                 library.appending(path: "Caches/\(bundleID)"),
                 library.appending(path: "HTTPStorages/\(bundleID)"),
-            ])
+            ],
+            homebrewCask: Self.homebrewCaskToken())
     }
 
     /// True while the Settings window is on screen.
