@@ -71,11 +71,18 @@ fi
 "$pb" -c "Set :DragonBuildChannel Debug" "$APP/Contents/Info.plist" 2>/dev/null \
   || "$pb" -c "Add :DragonBuildChannel string Debug" "$APP/Contents/Info.plist"
 
-# Never update: this bundle keeps the release's SUFeedURL, so a check would offer
-# the PRODUCTION appcast and "updating" would swap the debug build for the release
-# one. UpdaterUI already refuses to touch Sparkle on the Debug channel; this is the
-# defense in depth the macos-debug-build recipe asks for, in case anything else
-# reaches the updater. Add, not Set: the release Info.plist doesn't carry the key.
+# Never update. This bundle would otherwise inherit the release's SUFeedURL, so a
+# check would offer the PRODUCTION appcast and "updating" would swap the debug build
+# for the release one. Deleting the feed is what makes that structural instead of
+# cosmetic: Sparkle refuses to start without one, DragonUpdater catches the throw and
+# leaves its SPUUpdater nil (DragonKitUpdates/Updates.swift:155-166), so
+# `canCheckForUpdates` is false (:184) and the pane's Check button is disabled (:248).
+# Every route — pane, toggles, button, menu item — then goes inert at the DATA layer
+# rather than depending on some UI remembering to hide itself. The standard across all
+# five Dragon apps. `|| true` because Delete errors when the key is already absent.
+"$pb" -c "Delete :SUFeedURL" "$APP/Contents/Info.plist" 2>/dev/null || true
+# Belt to that brace, and what stops a scheduled check even if a feed ever came back
+# from user defaults. Add, not Set: the release Info.plist doesn't carry the key.
 "$pb" -c "Set :SUEnableAutomaticChecks false" "$APP/Contents/Info.plist" 2>/dev/null \
   || "$pb" -c "Add :SUEnableAutomaticChecks bool false" "$APP/Contents/Info.plist"
 

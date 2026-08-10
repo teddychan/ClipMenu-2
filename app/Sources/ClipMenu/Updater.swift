@@ -24,16 +24,16 @@ enum UpdaterUI {
     /// Debug build; the Mac App Store build returns false and shows no update UI.
     ///
     /// scripts/run-debug.sh links Sparkle on purpose, so the debug build compiles
-    /// the same product the release ships — but a debug bundle keeps the release's
-    /// SUFeedURL, so an actual check would offer the PRODUCTION appcast and
-    /// "updating" would replace the debug build with the release one. The lifecycle
-    /// spec makes that flat: a Debug build "never reads or publishes the production
-    /// appcast". Gating here rather than at each call site reuses the mechanism the
-    /// Mac App Store build already proves: the menu item is passed `nil` and is
-    /// absent (MainMenuController.addAppMenuSection), and the Updates pane is not
-    /// built (SettingsWindowController.settingsPanes) — an inert item would just
-    /// look broken. `DragonUpdater` creates `SPUUpdater` lazily on first property
-    /// access, so "nothing touches it" is exactly what keeps Sparkle from starting.
+    /// the same product the release ships — but that build would inherit the
+    /// release's appcast, and the lifecycle spec is flat about it: a Debug build
+    /// "never reads or publishes the production appcast". The primary defence is in
+    /// the bundle, where run-debug.sh deletes `SUFeedURL` so Sparkle cannot start at
+    /// all; this is the second one, in the app, because the recipe asks for both.
+    /// Gating here rather than at each call site reuses the mechanism the Mac App
+    /// Store build already proves — the menu item is passed `nil` and is therefore
+    /// absent (MainMenuController.addAppMenuSection) rather than present and inert.
+    /// The Updates *pane* is deliberately still built, since with no feed it renders
+    /// inert on its own and the sidebar then matches the release build's.
     static var isSupported: Bool {
         #if SPARKLE
         return !DragonAbout.isDebugBuild()

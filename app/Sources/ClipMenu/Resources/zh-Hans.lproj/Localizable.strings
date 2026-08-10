@@ -268,8 +268,6 @@
 "Switch language instantly — no restart needed." = "即时切换语言，无需重新启动。";
 "Uninstall now confirms right inside Settings instead of a separate window." = "卸载现在直接在设置内确认，不再弹出单独窗口。";
 
-/* What's New (2.20.0) */
-"The About pane is now fully translated, and its links point where they should." = "“关于”面板现已完整翻译，其中的链接也指向正确页面。";
-"Several labels in the About pane stayed in English when ClipMenu was set to another language." = "将 ClipMenu 设为其他语言时，“关于”面板中的部分标签仍显示为英文。";
-"The About pane's Website link opened a redirect page instead of ClipMenu's own page." = "“关于”面板中的网站链接会打开跳转页面，而不是 ClipMenu 自己的页面。";
-"About now credits the original ClipMenu and shows which version of the shared Dragon toolkit the app was built with." = "“关于”面板现在会标注原始 ClipMenu 的作者，并显示构建所用的共享 Dragon 套件版本。";
+/* What's New (2.20.2) */
+"A maintenance release: internal updates only, with no changes to how ClipMenu works." = "这是一个维护版本：仅有内部更新，ClipMenu 的使用方式没有变化。";
+"Updated the shared Dragon toolkit that ClipMenu is built with." = "更新了构建 ClipMenu 所用的共享 Dragon 套件。";
