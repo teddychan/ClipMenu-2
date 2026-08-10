@@ -25,9 +25,20 @@ permissions:
 
 jobs:
   release:
-    uses: teddychan/dragon-release-ci/.github/workflows/release-macos.yml@v5
+    uses: teddychan/dragon-release-ci/.github/workflows/release-macos.yml@v6
     secrets: inherit
     with:
+      # v6's tag gate replaces v5's `VERSION=${TAG##*v}`, which left a value containing no "v"
+      # untouched — so a workflow_dispatch arrived with a BRANCH ref and produced VERSION=main.
+      # It also accepts only exact `vX.Y.Z`, and requires whats_new_path: the two move together,
+      # because passing whats_new_path to v5 fails at startup (v5 does not define the input) and
+      # omitting it on v6 fails the gate.
+      #
+      # ClipMenu's What's New entries are `L("An English sentence.")` — the key IS the text the
+      # release notes show, so new notes cannot exist without this file moving, and the .swift
+      # alone is a real check. spectacle-2 and yahoo-keykey-2 use abstract keys and must list
+      # their Localizable.strings too.
+      whats_new_path: app/Sources/ClipMenu/WhatsNewConfig.swift
       build_kind: swiftpm
       app_slug: clipmenu-2
       release_title_prefix: ''            # title == tag
