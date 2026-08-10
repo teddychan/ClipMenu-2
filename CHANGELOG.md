@@ -5,6 +5,36 @@ Developer-facing notes for ClipMenu. User-facing release notes live in
 
 ## Unreleased
 
+## 2.20.3 — 2026-08-11
+
+One user-visible fix; the other two changes are release plumbing.
+
+- **Uninstalling left Homebrew's records claiming ClipMenu was still installed.**
+  `UninstallConfig` never passed `homebrewCask`, so the in-app uninstall moved the app
+  to the Trash and stopped there. Homebrew never watches the filesystem, so its receipt
+  still said the cask was installed and `Caskroom/clipmenu-2/<version>/ClipMenu 2.app`
+  was a dangling symlink; `brew install --cask clipmenu-2` then refused outright —
+  "already installed" — for an app that wasn't there, with nothing pointing at
+  `brew reinstall` as the way out. ice-2 and dragon-sample-app already passed the token.
+
+  Passing it flat would have been worse: `brew uninstall --cask --force` is not
+  bundle-scoped, and `Casks/clipmenu-2.rb` carries
+  `uninstall quit: "com.dragonapp.clipmenu-2"`, so from the Debug build it would have
+  quit and deleted the installed release. Three builds must issue nothing — the Debug
+  build and a build with no bundle id (both caught by the kit's fail-closed
+  `UninstallConfig.caskToken`), and the Mac App Store build, which no bundle-id
+  comparison can see because it is sandboxed but carries the same id. That one is
+  excluded by `DistributionChannel`, this app's existing runtime channel check.
+- **The release moved to `dragon-release-ci@v6`, with `whats_new_path`.** v6's tag gate
+  accepts only an exact `vX.Y.Z` and requires a What's New source that has changed since
+  the preceding tag. Both halves had to land in one commit: passing `whats_new_path` to
+  v5 fails at startup, and omitting it on v6 fails the gate.
+- **The Sparkle appcast now publishes to this repository as well as the marketing site.**
+  Step 1 of 2 in giving the app its own update feed, per dragon-kit's
+  `docs/MAC-APP-RELEASE-LIFECYCLE.md`. `SUFeedURL` still points at the site — which is
+  still being written — so nothing changes for any existing install; this release is what
+  first populates `docs/clipmenu-2/appcast.xml` here. Step 2 moves `SUFeedURL` to it.
+
 ## 2.20.2 — 2026-08-10
 
 Maintenance only from a user's point of view: every defect below is reachable

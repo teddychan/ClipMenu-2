@@ -261,3 +261,7 @@
 /* What's New (2.20.2) */
 "A maintenance release: internal updates only, with no changes to how ClipMenu works." = "A maintenance release: internal updates only, with no changes to how ClipMenu works.";
 "Updated the shared Dragon toolkit that ClipMenu is built with." = "Updated the shared Dragon toolkit that ClipMenu is built with.";
+
+/* What's New (2.20.3) */
+"A small fix for anyone who installed ClipMenu with Homebrew." = "A small fix for anyone who installed ClipMenu with Homebrew.";
+"Uninstalling from Settings now clears Homebrew's record of ClipMenu too, so installing it again with Homebrew works instead of being refused as already installed." = "Uninstalling from Settings now clears Homebrew's record of ClipMenu too, so installing it again with Homebrew works instead of being refused as already installed.";

@@ -271,3 +271,7 @@
 /* What's New (2.20.2) */
 "A maintenance release: internal updates only, with no changes to how ClipMenu works." = "유지 관리 릴리스입니다. 내부 업데이트만 있으며 ClipMenu 사용 방식은 달라지지 않습니다.";
 "Updated the shared Dragon toolkit that ClipMenu is built with." = "ClipMenu 빌드에 사용하는 공유 Dragon 키트를 업데이트했습니다.";
+
+/* What's New (2.20.3) */
+"A small fix for anyone who installed ClipMenu with Homebrew." = "Homebrew로 ClipMenu를 설치한 분들을 위한 작은 수정입니다.";
+"Uninstalling from Settings now clears Homebrew's record of ClipMenu too, so installing it again with Homebrew works instead of being refused as already installed." = "설정에서 제거하면 Homebrew의 ClipMenu 기록도 함께 지워집니다. 이제 Homebrew로 다시 설치할 때 이미 설치되어 있다며 거부되지 않습니다.";

@@ -271,3 +271,7 @@
 /* What's New (2.20.2) */
 "A maintenance release: internal updates only, with no changes to how ClipMenu works." = "這是一個維護版本：僅有內部更新，ClipMenu 的使用方式沒有變化。";
 "Updated the shared Dragon toolkit that ClipMenu is built with." = "更新了建置 ClipMenu 所用的共享 Dragon 套件。";
+
+/* What's New (2.20.3) */
+"A small fix for anyone who installed ClipMenu with Homebrew." = "針對使用 Homebrew 安裝 ClipMenu 的使用者的小修正。";
+"Uninstalling from Settings now clears Homebrew's record of ClipMenu too, so installing it again with Homebrew works instead of being refused as already installed." = "從設定解除安裝時，現在也會一併清除 Homebrew 中 ClipMenu 的安裝記錄，因此以 Homebrew 重新安裝不會再因為已安裝而被拒絕。";
