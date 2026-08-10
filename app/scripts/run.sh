@@ -116,7 +116,15 @@ fi
 codesign --force --sign "$IDENTITY" "$APP" 2>/dev/null || true
 
 echo "Assembled $APP"
-# Relaunch cleanly if a previous instance is running.
-pkill -x ClipMenu 2>/dev/null || true
-open "$APP"
+# Relaunch cleanly if a previous instance of THIS bundle is running.
+#
+# Anchored on the full path, not `pkill -x ClipMenu`. Both this bundle and the installed
+# /Applications/ClipMenu 2.app name their executable `ClipMenu`, so matching the executable name
+# quit the user's installed release — and any running Debug build — every time this script ran.
+# MAC-APP-RELEASE-LIFECYCLE.md requires launch, quit and cleanup scripts to match only their own
+# bundle; this was the last place in the repo still breaking that rule.
+pkill -f "$APP/Contents/MacOS/" 2>/dev/null || true
+# -n launches the bundle at THIS exact path; a plain `open` resolves through LaunchServices,
+# which is free to activate a different registered copy of the same bundle id.
+open -n "$APP"
 echo "Launched. Look for the clipboard icon in the menu bar (top-right)."
