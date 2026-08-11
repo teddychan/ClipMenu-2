@@ -275,3 +275,6 @@
 /* What's New (2.20.3) */
 "A small fix for anyone who installed ClipMenu with Homebrew." = "Una pequeña corrección para quienes instalaron ClipMenu con Homebrew.";
 "Uninstalling from Settings now clears Homebrew's record of ClipMenu too, so installing it again with Homebrew works instead of being refused as already installed." = "Desinstalar desde Ajustes ahora también borra el registro de ClipMenu en Homebrew, así que volver a instalarlo con Homebrew funciona en lugar de rechazarse por estar ya instalado.";
+
+/* What's New (2.20.4) */
+"ClipMenu now checks for updates from its own repository rather than the website." = "ClipMenu ahora busca actualizaciones en su propio repositorio en lugar de en el sitio web.";
