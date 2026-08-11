@@ -278,3 +278,8 @@
 
 /* What's New (2.20.4) */
 "ClipMenu now checks for updates from its own repository rather than the website." = "ClipMenu recherche désormais les mises à jour dans son propre dépôt plutôt que sur le site web.";
+
+/* What's New (2.20.6) */
+"A fix for the About pane: it now links the original ClipMenu project, and shows a single copyright holder." = "Une correction du panneau À propos : il renvoie désormais au projet ClipMenu d'origine et n'affiche plus qu'un seul détenteur du copyright.";
+"The About pane now links the original ClipMenu project that ClipMenu 2 is based on." = "Le panneau À propos renvoie désormais au projet ClipMenu d'origine dont ClipMenu 2 est issu.";
+"The About pane's copyright line now names one holder instead of two." = "La ligne de copyright du panneau À propos ne nomme plus qu'un seul détenteur au lieu de deux.";

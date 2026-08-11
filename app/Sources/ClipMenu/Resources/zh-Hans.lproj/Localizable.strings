@@ -278,3 +278,8 @@
 
 /* What's New (2.20.4) */
 "ClipMenu now checks for updates from its own repository rather than the website." = "ClipMenu 现在从自己的代码仓库检查更新，而不再从网站获取。";
+
+/* What's New (2.20.6) */
+"A fix for the About pane: it now links the original ClipMenu project, and shows a single copyright holder." = "修复了关于面板：现在会链接到原始的 ClipMenu 项目，并且只显示一位版权所有者。";
+"The About pane now links the original ClipMenu project that ClipMenu 2 is based on." = "关于面板现在会链接到 ClipMenu 2 所基于的原始 ClipMenu 项目。";
+"The About pane's copyright line now names one holder instead of two." = "关于面板的版权行现在只列出一位所有者，而不再是两位。";

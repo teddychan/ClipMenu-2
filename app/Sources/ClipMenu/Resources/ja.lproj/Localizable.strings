@@ -278,3 +278,8 @@
 
 /* What's New (2.20.4) */
 "ClipMenu now checks for updates from its own repository rather than the website." = "ClipMenu はウェブサイトではなく、自身のリポジトリから更新を確認するようになりました。";
+
+/* What's New (2.20.6) */
+"A fix for the About pane: it now links the original ClipMenu project, and shows a single copyright holder." = "「情報」パネルの修正です。オリジナルの ClipMenu プロジェクトへのリンクが追加され、著作権表示は 1 名のみになりました。";
+"The About pane now links the original ClipMenu project that ClipMenu 2 is based on." = "「情報」パネルに、ClipMenu 2 のもとになったオリジナルの ClipMenu プロジェクトへのリンクが追加されました。";
+"The About pane's copyright line now names one holder instead of two." = "「情報」パネルの著作権表示が、2 名から 1 名になりました。";

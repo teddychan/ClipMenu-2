@@ -10,20 +10,22 @@ enum WhatsNewConfig {
             // Version omitted on purpose: it defaults to CFBundleShortVersionString
             // and the kit adds the "v". The pane tracks the current build's notes.
             date: "2026-08-11",
-            // Maintenance-only, and 2.20.5 is 2.20.2 again: the DragonKit pin moves 3.3.0 → 3.4.0
-            // and nothing else in the app changes. The one thing a user can observe is About's
-            // "Built with · DragonKit v3.4.0" row, so the entry claims exactly that and stops.
-            // `.changed` and not `.fixed` — nothing was broken. 3.4.0's own addition is a
-            // `languages` argument on the shared LanguagePicker, added for ice-2, which ships one
-            // translation and would otherwise offer six it cannot deliver; ClipMenu is translated
-            // into all seven languages the kit ships, so it keeps the default and the picker is
-            // identical. Reuses 2.20.2's summary AND entry keys — that release was this same
-            // DragonKit bump, so the copy already exists in seven languages and writing an eighth
-            // near-identical translation of it would be the drift these notes avoid.
-            summary: L("A maintenance release: internal updates only, with no changes to how ClipMenu works."),
+            // `.fixed`, and the first release since 2.20.3 that earns it: two rows of the About
+            // pane were wrong, and both are things a user can open the pane and look at. New copy
+            // rather than 2.20.2's reused keys — the last three releases had nothing observable to
+            // report and said so; this one does.
+            //
+            // The DragonKit pin moving 3.4.0 → 4.0.0 is deliberately NOT a third entry, even
+            // though About's "Built with" row changes with it. 4.0.0 is the vehicle for these two
+            // fixes, not a separate claim: it makes the pane's slots compile-enforced, which is
+            // what stops either defect returning. Listing the bump beside them would report the
+            // means twice and bury the effect — and 2.20.5 already claimed a kit bump on its own,
+            // because there it WAS the whole release.
+            summary: L("A fix for the About pane: it now links the original ClipMenu project, and shows a single copyright holder."),
             sections: [
-                ChangeSection(kind: .changed, entries: [
-                    L("Updated the shared Dragon toolkit that ClipMenu is built with."),
+                ChangeSection(kind: .fixed, entries: [
+                    L("The About pane now links the original ClipMenu project that ClipMenu 2 is based on."),
+                    L("The About pane's copyright line now names one holder instead of two."),
                 ]),
             ]
         )

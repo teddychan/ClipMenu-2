@@ -96,30 +96,35 @@ import DragonKit
         #expect(!content.summary.isEmpty)
     }
 
-    /// 2.20.5's notes: a single `changed` section with one entry. The release is the DragonKit pin
-    /// moving 3.3.0 → 3.4.0 and nothing else, so the entry claims the framework bump and stops —
-    /// About's "Built with · DragonKit v3.4.0" row is the only part of it a user can see. Same
-    /// shape as 2.20.4, and reached the same way: `.changed` because nothing was broken, one entry
-    /// because there is exactly one thing to say. It reuses 2.20.2's entry key, that release having
-    /// been the same bump, so the shape holding steady here is the claim staying honest rather than
-    /// the notes going unrevised — the file's own diff is what the release gate checks.
+    /// 2.20.6's notes: a single `fixed` section with two entries. The first release since 2.20.3 to
+    /// claim `.fixed`, and it earns it — two rows of the About pane were wrong, and both are things
+    /// a user can open the pane and look at: the `Original project` link was absent while `Based on`
+    /// credited the project it should have linked, and the copyright named an upstream holder this
+    /// binary reuses no source from.
     ///
-    /// 2.20.4 pinned this shape for moving SUFeedURL off the marketing site onto the app's own
-    /// repository, which no user can observe — updates keep arriving, from the same signing key, at
-    /// the same cadence — so `.changed` was the honest kind there too.
+    /// Two entries, not three. The DragonKit pin moving 3.4.0 → 4.0.0 changes About's "Built with"
+    /// row as well, but 4.0.0 is the *vehicle* for these two fixes — it makes the pane's slots
+    /// compile-enforced, which is what stops either defect returning — so listing it beside them
+    /// would report the means twice and bury the effect.
     ///
-    /// 2.20.3 was the opposite case and pinned `[.fixed]`: exactly one thing in it was observable,
-    /// uninstalling clearing Homebrew's receipt. 2.20.2 pinned `[.changed]` for this same reason —
-    /// everything it fixed was reachable only from a local Debug build, so claiming a fix a user
-    /// could look for would have been false. Pinned per release alongside the WhatsNewConfig copy
-    /// itself — the section shape IS the claim, so updating the notes has to update this, which is
-    /// the point. The release gate checks that the notes CHANGED; this checks that they changed to
-    /// what was meant.
-    @Test func contentIsASingleChangedSection() {
+    /// 2.20.5 pinned `[.changed]` with one entry for the opposite case: the DragonKit pin moving
+    /// 3.3.0 → 3.4.0 WAS the whole release, About's "Built with" row its only observable part, so
+    /// the bump was the honest claim there and it reused 2.20.2's entry key rather than adding an
+    /// eighth near-identical sentence to seven .lproj files. 2.20.4 pinned that shape too, for
+    /// moving SUFeedURL onto the app's own repository — updates keep arriving, from the same
+    /// signing key, at the same cadence, so no user can observe it.
+    ///
+    /// 2.20.3 was the last `[.fixed]`: exactly one thing in it was observable, uninstalling
+    /// clearing Homebrew's receipt. 2.20.2 pinned `[.changed]` because everything it fixed was
+    /// reachable only from a local Debug build, so claiming a fix a user could look for would have
+    /// been false. Pinned per release alongside the WhatsNewConfig copy itself — the section shape
+    /// IS the claim, so updating the notes has to update this, which is the point. The release gate
+    /// checks that the notes CHANGED; this checks that they changed to what was meant.
+    @Test func contentIsASingleFixedSection() {
         let sections = WhatsNewConfig.content.sections
         #expect(sections.count == 1)
-        #expect(sections.map(\.kind) == [.changed])
-        #expect(sections.map(\.entries.count) == [1])
+        #expect(sections.map(\.kind) == [.fixed])
+        #expect(sections.map(\.entries.count) == [2])
         for entry in sections.flatMap(\.entries) {
             #expect(!entry.isEmpty)
         }

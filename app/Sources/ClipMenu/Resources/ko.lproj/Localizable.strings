@@ -278,3 +278,8 @@
 
 /* What's New (2.20.4) */
 "ClipMenu now checks for updates from its own repository rather than the website." = "ClipMenu가 이제 웹사이트가 아닌 자체 저장소에서 업데이트를 확인합니다.";
+
+/* What's New (2.20.6) */
+"A fix for the About pane: it now links the original ClipMenu project, and shows a single copyright holder." = "정보 패널 수정입니다. 이제 원본 ClipMenu 프로젝트로 연결되고, 저작권자를 한 명만 표시합니다.";
+"The About pane now links the original ClipMenu project that ClipMenu 2 is based on." = "정보 패널에 ClipMenu 2가 기반으로 삼은 원본 ClipMenu 프로젝트 링크가 추가되었습니다.";
+"The About pane's copyright line now names one holder instead of two." = "정보 패널의 저작권 줄이 이제 두 명이 아닌 한 명만 표시합니다.";
