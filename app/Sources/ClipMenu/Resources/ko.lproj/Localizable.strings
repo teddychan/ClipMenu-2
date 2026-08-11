@@ -287,3 +287,6 @@
 /* What's New (2.20.7) */
 "A fix for the copyright notice: the one macOS shows in Finder's Get Info panel described the app instead of naming a copyright holder." = "저작권 표시 수정입니다. macOS가 Finder의 정보 가져오기 창에 표시하는 저작권 표시가 저작권자가 아니라 앱 설명이었습니다.";
 "Finder's Get Info panel now shows ClipMenu's copyright holders instead of a one-line description of the app." = "Finder의 정보 가져오기 창에 앱 설명 대신 ClipMenu의 저작권자가 표시됩니다.";
+
+/* What's New (2.20.8) */
+"Finder's Get Info panel now shows ClipMenu's copyright instead of a one-line description of the app." = "Finder의 정보 가져오기 창에 앱 설명 대신 ClipMenu의 저작권 표시가 표시됩니다.";

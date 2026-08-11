@@ -287,3 +287,6 @@
 /* What's New (2.20.7) */
 "A fix for the copyright notice: the one macOS shows in Finder's Get Info panel described the app instead of naming a copyright holder." = "Une correction de la mention de copyright : celle que macOS affiche dans la fenêtre Lire les informations du Finder décrivait l'app au lieu de nommer un détenteur du copyright.";
 "Finder's Get Info panel now shows ClipMenu's copyright holders instead of a one-line description of the app." = "La fenêtre Lire les informations du Finder affiche désormais les détenteurs du copyright de ClipMenu au lieu d'une description de l'app en une ligne.";
+
+/* What's New (2.20.8) */
+"Finder's Get Info panel now shows ClipMenu's copyright instead of a one-line description of the app." = "La fenêtre Lire les informations du Finder affiche désormais le copyright de ClipMenu au lieu d'une description de l'app en une ligne.";

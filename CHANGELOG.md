@@ -5,6 +5,45 @@ Developer-facing notes for ClipMenu. User-facing release notes live in
 
 ## Unreleased
 
+## 2.20.8 — 2026-08-11
+
+Ships #82, which finishes what 2.20.7 started an hour earlier and gets the second half right.
+
+- **The bundle's copyright notice names one holder.** `NSHumanReadableCopyright` is now
+  `Copyright © 2026 Teddy Chan`. 2.20.7 had just set it to
+  `Copyright © 2008–2014 Naotaka Morimoto · © 2026 Teddy Chan`; the part of that release worth
+  keeping is that the key held `ClipMenu modern rewrite.` — a tagline where a copyright
+  belongs — and the part worth undoing is the second holder.
+
+- **The field is presentation, and that is what decides it.**
+  `NSHumanReadableCopyright` is an **optional** Apple key. No licence names it and nothing
+  requires it to exist — spectacle-2, yahoo-keykey-2 and dragon-sample-app ship no value at
+  all. MIT's "include the above copyright notice in all copies" is discharged by `LICENSE`,
+  which is untouched and still names both holders.
+
+  So the same argument that settled About's copyright row — one holder, the app's own, with
+  lineage carried by the `Original project` link and the `Based on` credit — reaches this field
+  too. 2.20.7 reasoned that because CONFORMANCE §R14 leaves the key out of scope, it should
+  mirror `LICENSE` instead. Out of scope means the rule does not reach the field; it does not
+  mean the field must therefore disagree. The second reading is what left the About pane and
+  Finder's Get Info panel making different claims about the same app.
+
+- **ice-2 deliberately does not follow this.** It keeps both holders in its
+  `INFOPLIST_KEY_NSHumanReadableCopyright`, and should: it is a git **fork** carrying Jordan
+  Baird's actual source and history under GPL-3.0, whose §4 requires his notice to travel with
+  the work, where ClipMenu 2 is an independent reimplementation reusing none of Naotaka
+  Morimoto's source. The rationale is recorded in ice-2's own `AboutConfig.swift`. All five
+  Dragon apps' About **panes** already render `© 2026 Teddy Chan` — that is DragonKit 4.0.0
+  canon and no app can opt out, the two-holder overload being `@available(*, unavailable)`.
+
+- **The notes describe the end state, not this version's delta.** The What's New pane shows
+  only the current version's notes, and 2.20.7 existed for about an hour, so nearly every user
+  arrives here from 2.20.6 and needs to be told the tagline is gone — not told about a
+  distinction between two copyright values they never saw. The summary key is reused verbatim
+  from 2.20.7 because it is still exactly true; only the entry is restated, plural to singular,
+  in all seven languages. 2.20.5 set the precedent for reusing a key that still says the right
+  thing.
+
 ## 2.20.7 — 2026-08-11
 
 Ships #80, and nothing else. One string, in the one field where a wrong value is a legal

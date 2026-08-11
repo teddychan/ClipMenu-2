@@ -287,3 +287,6 @@
 /* What's New (2.20.7) */
 "A fix for the copyright notice: the one macOS shows in Finder's Get Info panel described the app instead of naming a copyright holder." = "修正了版權聲明：macOS 在 Finder「顯示簡介」中顯示的版權聲明是應用程式的一句描述，而不是版權所有者。";
 "Finder's Get Info panel now shows ClipMenu's copyright holders instead of a one-line description of the app." = "Finder 的「顯示簡介」現在會顯示 ClipMenu 的版權所有者，而不再是一句應用程式描述。";
+
+/* What's New (2.20.8) */
+"Finder's Get Info panel now shows ClipMenu's copyright instead of a one-line description of the app." = "Finder 的「顯示簡介」現在會顯示 ClipMenu 的版權聲明，而不再是一句應用程式描述。";

@@ -111,21 +111,26 @@ import DragonKit
         #expect(!content.summary.isEmpty)
     }
 
-    /// 2.20.7's notes: a single `fixed` section with ONE entry. `NSHumanReadableCopyright` said
+    /// 2.20.8's notes: a single `fixed` section with ONE entry. `NSHumanReadableCopyright` said
     /// "ClipMenu modern rewrite." — a tagline in the slot macOS reserves for the bundle's copyright
-    /// notice (#80). One entry because that is the whole release; the fix is narrow but observable,
-    /// which is what keeps `.fixed` honest here — Finder's Get Info panel reads the key, so ⌘I on
-    /// ClipMenu.app shows it. 2.20.3 claimed `.fixed` on a surface just as small (Homebrew's
-    /// receipt), and 2.20.2 refused the claim precisely because its fixes were reachable only from
-    /// a local Debug build.
+    /// notice (#80) — and it now names one holder, ClipMenu 2's own (#82). The fix is narrow but
+    /// observable, which is what keeps `.fixed` honest here: Finder's Get Info panel reads the key,
+    /// so ⌘I on ClipMenu.app shows it. 2.20.3 claimed `.fixed` on a surface just as small
+    /// (Homebrew's receipt), and 2.20.2 refused the claim precisely because its fixes were
+    /// reachable only from a local Debug build.
     ///
-    /// Not a reversal of 2.20.6's "names one holder instead of two", though the two releases touch
-    /// the word copyright hours apart. Different fields, different jobs, and they are MEANT to
-    /// differ: About's row is a presentation slot DragonKit fixes at one holder (CONFORMANCE §R14,
-    /// pinned by `contentSingleSourcesNameAndCopyright` above), while that key is the bundle's legal
-    /// notice and carries what `LICENSE` carries — §R14 puts `LICENSE`, `NSHumanReadableCopyright`
-    /// and the licences page out of its own scope, and ice-2 keeps both holders in its `Info.plist`
-    /// while rendering one in About.
+    /// The shape is unchanged from 2.20.7 on purpose. 2.20.7 shipped this same section for the same
+    /// key, naming two holders; 2.20.8 restates the entry in the singular and reuses the summary
+    /// key verbatim, because the notes describe the END STATE rather than the delta. The pane shows
+    /// only the current version's notes, and 2.20.7 existed for about an hour, so nearly every user
+    /// arrives from 2.20.6 and needs to be told the tagline is gone — not told about a distinction
+    /// between two copyright values they never saw.
+    ///
+    /// Why one holder: `NSHumanReadableCopyright` is an OPTIONAL Apple key that no licence names,
+    /// so it is presentation, and the same argument that fixes About's row at one holder
+    /// (CONFORMANCE §R14, pinned by `contentSingleSourcesNameAndCopyright` above) reaches it.
+    /// `LICENSE` is where MIT's grant lives and still names both. ice-2 keeps both in its plist and
+    /// is right to — a git fork carrying Jordan Baird's source under GPL-3.0 is not this case.
     ///
     /// 2.20.6 pinned two `.fixed` entries: the `Original project` link was absent while `Based on`
     /// credited the project it should have linked, and About's copyright named two holders. 2.20.5
