@@ -5,6 +5,61 @@ Developer-facing notes for ClipMenu. User-facing release notes live in
 
 ## Unreleased
 
+## 2.20.6 — 2026-08-11
+
+A real fix, unlike the last three patches: two rows of the About pane were wrong, and both
+are things a user can open the pane and look at. Both were found the same way — by putting
+all five Dragon apps' About panes side by side — and DragonKit 4.0.0, which this release
+pins, is what makes each of them impossible to reintroduce.
+
+- **`Original project` was missing from the links.** `AboutContent.originalWork` carried a
+  name and an author but no URL: the URL was a separate optional `originalProjectURL:`
+  parameter, and ClipMenu never passed it. So Credits read "Based on ClipMenu by Naotaka
+  Morimoto" while the pane linked to ClipMenu nowhere — crediting a project and then not
+  pointing at it. ice-2 had the identical gap; the other three apps did not.
+
+  4.0.0 folds the URL into `OriginalWork`, which now drives both the link row and the
+  credit, so half of it can no longer be supplied. The URL is
+  `https://github.com/naotaka/ClipMenu` — the same repository `LICENSE` and `README.md`
+  already cite, kept in one `private static let` so the pane cannot name a different fork
+  or casing than the notices do.
+
+- **The copyright named two holders.** It rendered
+  `© 2008–2014 Naotaka Morimoto · © 2026 Teddy Chan`. Only ClipMenu and ice-2 did that, so
+  two of five panes carried a line the other three lacked, and consistency is the smaller
+  half of why it is gone. ClipMenu 2 is an independent Swift 6 reimplementation that reuses
+  none of the original's source, so asserting Naotaka Morimoto's copyright over *this*
+  binary states something the app's own notices contradict — yahoo-keykey-2 had already
+  reasoned its way to the single-holder form for exactly that reason.
+
+  The lineage is not lost by dropping it: it is carried twice over, by the `Original
+  project` link and the `Based on` credit, and the original's licence text travels on the
+  licences page. `LICENSE` keeps both holders and should — it is the licence document, and
+  its upstream grant is what the MIT terms require. The About row is not that document.
+
+- **DragonKit 3.4.0 → 4.0.0, and it is breaking.** Three call-site changes, all in
+  `AboutConfig.swift`: `licensesURL` is required and moves to its fixed position after
+  `supportURL`; `OriginalWork` takes `url:`; and `DragonAbout.copyright(original:)` is gone
+  in favour of `copyright(years:holder:)`, with an `@available(*, unavailable)` overload
+  left behind to turn a stale call into a readable error rather than "extra argument".
+
+  Nothing else in the app needed adapting — the kit's About slots are compile-enforced now,
+  which is the point of the major. `licensesURL` stays **ungated** on purpose: the four
+  bundled JavaScript libraries behind the Actions transforms ship in every build, including
+  the Mac App Store one where Sparkle does not, so the page always has something to say.
+  `attributions` keeps its `SPARKLE` gating for the same reason inverted — the MAS build
+  bundles no third-party code and must not claim it does.
+
+- **Three new What's New keys, translated into all seven languages.** No reuse this time.
+  2.20.5 deliberately reused 2.20.2's copy because it was the same release (a kit bump with
+  nothing user-facing); this one has something new to say, so it says it. The notes name the
+  About pane the way each locale's UI does — `DragonKit.pane.about` renders as Acerca de,
+  À propos, 情報, 정보, 关于 and 關於 — rather than transliterating "About".
+
+- **The appcast mirror stays.** `appcast_mirror_repo` is retired by the next MINOR release,
+  per the trigger recorded in `release.yml` at 2.20.5. This is a patch, so it keeps
+  publishing to both locations.
+
 ## 2.20.5 — 2026-08-11
 
 Maintenance only, and unusually literally so: the only thing that changed about the shipped
