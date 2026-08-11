@@ -11,17 +11,21 @@ import DragonKit
 @MainActor
 @Suite struct AboutConfigCoverageTests {
 
+    /// One copyright holder, ClipMenu 2's own. Pinned as a literal because the value is the
+    /// claim: this asserted an upstream holder too until DragonKit 4.0.0, which ClipMenu had no
+    /// standing to do — it reimplements the original rather than reusing its source. The
+    /// lineage moved to `originalWork`, asserted below in both of the rows it now fills.
     @Test func contentSingleSourcesNameAndCopyright() {
         let content = AboutConfig.content
         #expect(content.appName == AppInfo.displayName)
-        #expect(content.copyright == "© 2008–2014 Naotaka Morimoto · © 2026 Teddy Chan")
+        #expect(content.copyright == "© 2026 Teddy Chan")
         #expect(content.versionString == DragonAbout.versionString())
         #expect(!content.versionString.isEmpty)
     }
 
-    @Test func contentHasWebsiteSupportAndLicensesLinks() {
+    @Test func contentHasWebsiteSupportOriginalAndLicensesLinks() {
         let links = AboutConfig.content.linkRows
-        #expect(links.count == 3)
+        #expect(links.count == 4)
 
         let website = links[0]
         #expect(website.detail == "dragonapp.com/clipmenu-2")
@@ -33,12 +37,18 @@ import DragonKit
         #expect(support.systemImage == "lifepreserver")
         #expect(support.url.absoluteString == "https://github.com/teddychan/clipmenu-2/issues")
 
-        // No "Original project" row between Support and this one: `originalWork` carries a
-        // name and author but no URL, so the kit emits it as a credit, not a link.
-        //
+        // The row this suite used to assert was ABSENT. `originalWork` carried a name and an
+        // author but no URL — optional until DragonKit 4.0.0 — so the pane credited "Based on
+        // ClipMenu by Naotaka Morimoto" and linked to ClipMenu nowhere. Asserting its presence
+        // here, beside the credit below, is what keeps the two halves from parting again.
+        let original = links[2]
+        #expect(original.detail == "naotaka/ClipMenu")
+        #expect(original.systemImage == "heart")
+        #expect(original.url.absoluteString == "https://github.com/naotaka/ClipMenu")
+
         // The detail is DERIVED from the URL by the kit, never typed beside it — asserting the
         // derived string here is what proves the trailing slash does not leak into the row.
-        let licenses = links[2]
+        let licenses = links[3]
         #expect(licenses.detail == "dragonapp.com/clipmenu-2/licenses")
         #expect(licenses.systemImage == "doc.text")
         #expect(licenses.url.absoluteString == "https://www.dragonapp.com/clipmenu-2/licenses/")
