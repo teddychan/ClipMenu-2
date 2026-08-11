@@ -12,9 +12,17 @@ import DragonKit
 @Suite struct AboutConfigCoverageTests {
 
     /// One copyright holder, ClipMenu 2's own. Pinned as a literal because the value is the
-    /// claim: this asserted an upstream holder too until DragonKit 4.0.0, which ClipMenu had no
-    /// standing to do — it reimplements the original rather than reusing its source. The
-    /// lineage moved to `originalWork`, asserted below in both of the rows it now fills.
+    /// claim: this asserted an upstream holder too until DragonKit 4.0.0. The lineage moved to
+    /// `originalWork`, asserted below in both of the rows it now fills.
+    ///
+    /// The reason is a presentation rule and NOT a claim about who holds the copyright — this
+    /// comment argued the latter until the `NSHumanReadableCopyright` fix, that ClipMenu had no
+    /// standing to name Naotaka Morimoto because it reimplements the original rather than reusing
+    /// its source. DragonKit tried the same reasoning and retracted it (dragon-kit #63); ClipMenu's
+    /// own `LICENSE` names two holders outright, so the app's notices contradicted it. What
+    /// CONFORMANCE §R14 actually fixes is a row in a settings pane, and it leaves `LICENSE`,
+    /// `NSHumanReadableCopyright` and the licences page alone — which is why the bundle's copyright
+    /// notice can name both holders without touching this literal.
     @Test func contentSingleSourcesNameAndCopyright() {
         let content = AboutConfig.content
         #expect(content.appName == AppInfo.displayName)

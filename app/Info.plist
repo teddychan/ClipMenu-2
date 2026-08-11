@@ -29,7 +29,7 @@
 	<key>LSUIElement</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string>ClipMenu modern rewrite.</string>
+	<string>Copyright © 2008–2014 Naotaka Morimoto · © 2026 Teddy Chan</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>SUFeedURL</key>
