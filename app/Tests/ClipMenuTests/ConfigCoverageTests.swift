@@ -86,21 +86,22 @@ import DragonKit
         #expect(!content.summary.isEmpty)
     }
 
-    /// 2.20.3's notes: a single `fixed` section with one entry, because exactly one thing in
-    /// the release is observable — uninstalling now clears Homebrew's receipt, so reinstalling
-    /// with brew works instead of being refused. The other two changes are release plumbing (the
-    /// stricter tag gate, and the appcast publishing here as well as to the marketing site) and
-    /// alter nothing a user can see or do.
+    /// 2.20.4's notes: a single `changed` section with one entry. The release moves SUFeedURL off
+    /// the marketing site onto the app's own repository, which no user can observe — updates keep
+    /// arriving, from the same signing key, at the same cadence — so `.changed` is the honest kind.
+    /// `.fixed` would claim something was broken, and nothing was.
     ///
-    /// 2.20.2 was the opposite case and pinned `[.changed]` for it: everything that release fixed
-    /// was reachable only from a local Debug build, so claiming a fix a user could look for would
-    /// have been false. Pinned per release alongside the WhatsNewConfig copy itself — the section
-    /// shape IS the claim, so updating the notes has to update this, which is the point. The
-    /// release gate checks that the notes CHANGED; this checks that they changed to what was meant.
-    @Test func contentIsASingleFixedSection() {
+    /// 2.20.3 was the opposite case and pinned `[.fixed]`: exactly one thing in it was observable,
+    /// uninstalling clearing Homebrew's receipt. 2.20.2 pinned `[.changed]` for this same reason —
+    /// everything it fixed was reachable only from a local Debug build, so claiming a fix a user
+    /// could look for would have been false. Pinned per release alongside the WhatsNewConfig copy
+    /// itself — the section shape IS the claim, so updating the notes has to update this, which is
+    /// the point. The release gate checks that the notes CHANGED; this checks that they changed to
+    /// what was meant.
+    @Test func contentIsASingleChangedSection() {
         let sections = WhatsNewConfig.content.sections
         #expect(sections.count == 1)
-        #expect(sections.map(\.kind) == [.fixed])
+        #expect(sections.map(\.kind) == [.changed])
         #expect(sections.map(\.entries.count) == [1])
         for entry in sections.flatMap(\.entries) {
             #expect(!entry.isEmpty)

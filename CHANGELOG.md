@@ -5,6 +5,32 @@ Developer-facing notes for ClipMenu. User-facing release notes live in
 
 ## Unreleased
 
+## 2.20.4 — 2026-08-11
+
+Maintenance only from a user's point of view. Step 2 of 2 in giving ClipMenu its own
+Sparkle update feed.
+
+- **`SUFeedURL` now points at this repository** —
+  `raw.githubusercontent.com/teddychan/clipmenu-2/main/docs/clipmenu-2/appcast.xml` —
+  instead of `www.dragonapp.com/clipmenu-2/appcast.xml`. dragon-kit's
+  `docs/MAC-APP-RELEASE-LIFECYCLE.md`: "Sparkle appcasts are update infrastructure, not
+  marketing content. Each app should host its production appcast in its own repository so
+  an outage, permission problem, or rejected change in the marketing-site repository
+  cannot interfere with update delivery."
+
+  2.20.3 was step 1: it set `appcast_repo` to this repo and `appcast_mirror_repo` to the
+  site, which is what first created `docs/clipmenu-2/appcast.xml` here. The order matters
+  in one direction only — flipping `SUFeedURL` before a release had populated the new
+  location would have pointed every install at a 404. Verified before this change: both
+  copies exist and are byte-identical (sha256 `8c56943…`), and the new URL serves 200.
+
+  `appcast_mirror_repo` deliberately stays. Every copy at 2.20.3 or earlier still reads
+  the site, and it is the release after which no supported version does that may drop it.
+- **The Mac App Store workflow no longer owns a `mas-v*` tag series.** It is dispatch-only
+  and takes an existing public `vX.Y.Z`, per the same spec's "one public tag namespace per
+  repository". Nothing about the shipped app changes; the nine historical `mas-v*` tags stay
+  for provenance.
+
 ## 2.20.3 — 2026-08-11
 
 One user-visible fix; the other two changes are release plumbing.
