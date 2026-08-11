@@ -86,10 +86,17 @@ import DragonKit
         #expect(!content.summary.isEmpty)
     }
 
-    /// 2.20.4's notes: a single `changed` section with one entry. The release moves SUFeedURL off
-    /// the marketing site onto the app's own repository, which no user can observe — updates keep
-    /// arriving, from the same signing key, at the same cadence — so `.changed` is the honest kind.
-    /// `.fixed` would claim something was broken, and nothing was.
+    /// 2.20.5's notes: a single `changed` section with one entry. The release is the DragonKit pin
+    /// moving 3.3.0 → 3.4.0 and nothing else, so the entry claims the framework bump and stops —
+    /// About's "Built with · DragonKit v3.4.0" row is the only part of it a user can see. Same
+    /// shape as 2.20.4, and reached the same way: `.changed` because nothing was broken, one entry
+    /// because there is exactly one thing to say. It reuses 2.20.2's entry key, that release having
+    /// been the same bump, so the shape holding steady here is the claim staying honest rather than
+    /// the notes going unrevised — the file's own diff is what the release gate checks.
+    ///
+    /// 2.20.4 pinned this shape for moving SUFeedURL off the marketing site onto the app's own
+    /// repository, which no user can observe — updates keep arriving, from the same signing key, at
+    /// the same cadence — so `.changed` was the honest kind there too.
     ///
     /// 2.20.3 was the opposite case and pinned `[.fixed]`: exactly one thing in it was observable,
     /// uninstalling clearing Homebrew's receipt. 2.20.2 pinned `[.changed]` for this same reason —

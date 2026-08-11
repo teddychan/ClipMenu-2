@@ -5,6 +5,36 @@ Developer-facing notes for ClipMenu. User-facing release notes live in
 
 ## Unreleased
 
+## 2.20.5 — 2026-08-11
+
+Maintenance only, and unusually literally so: the only thing that changed about the shipped
+app is which version of the shared kit it links, and the only place that is visible is the
+About pane.
+
+- **DragonKit 3.3.0 → 3.4.0 is the whole release.** `app/Package.swift`'s pin moved, so
+  About's Credits now reads "Built with · DragonKit v3.4.0" instead of v3.3.0. That row is
+  the single observable difference; no behaviour, setting, shortcut or stored file changes.
+
+  Both of 3.4.0's new parameters are defaulted — `LanguagePicker(languages:onChange:)` —
+  so the bump is source-compatible and nothing here had to be adapted for it. ClipMenu
+  calls `LanguagePicker()` in `PreferencesPanes.swift` and deliberately keeps the default
+  language list: the argument was added for ice-2, which has translated its own strings
+  into Simplified Chinese only and whose picker therefore offered six languages it could
+  not deliver, whereas ClipMenu ships all seven the kit does. The picker it renders is
+  byte-for-byte the one 2.20.4 rendered.
+
+  The What's New notes reuse 2.20.2's summary *and* entry keys rather than adding an eighth
+  near-identical sentence across seven `.lproj` files. 2.20.2 was this same release —
+  DragonKit 3.2.0 → 3.3.0, nothing user-facing — and
+  "Updated the shared Dragon toolkit that ClipMenu is built with." was already the vetted
+  translation of it. `2.20.4`'s SUFeedURL sentence stays in the strings files: it describes
+  a release users can still be upgrading from.
+- **No release-plumbing change, despite `release.yml` moving.** The other commit since
+  v2.20.4 was comment-only — it replaced the mirror's unmeasurable retirement condition
+  ("when no supported version still reads the site") with a real trigger, the next MINOR
+  release. `appcast_mirror_repo` therefore stays through this patch and goes away at
+  2.21.0; the parsed workflow is identical to v2.20.4's.
+
 ## 2.20.4 — 2026-08-11
 
 Maintenance only from a user's point of view. Step 2 of 2 in giving ClipMenu its own
