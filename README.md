@@ -192,8 +192,12 @@ launches a bare executable.
 
 Releases are automated in GitHub Actions. Pushing a `vX.Y.Z` tag builds, signs
 (Developer ID), notarizes, and publishes the GitHub Release, the Sparkle appcast, and
-the Homebrew cask; pushing a `mas-vX.Y.Z` tag builds and uploads the Mac App Store
-package. See [`.github/workflows/release.yml`](.github/workflows/release.yml) and
+the Homebrew cask.
+
+The Mac App Store package is a second distribution channel for that same release, not a
+second version series: run **Release (Mac App Store)** from the Actions tab and give it the
+existing `vX.Y.Z` tag. It refuses anything that is not an exact public tag. See
+[`.github/workflows/release.yml`](.github/workflows/release.yml) and
 [`.github/workflows/release-mas.yml`](.github/workflows/release-mas.yml).
 
 ## Tests

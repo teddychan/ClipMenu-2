@@ -10,7 +10,18 @@ name: Release (Mac App Store)
 # App Store submissions go through App Review on a different cadence. Runs on a
 # GitHub-hosted macOS runner (free for public repos).
 #
-# Trigger: run manually from the Actions tab, or push a tag like `mas-v2.12.0`.
+# Trigger: run manually from the Actions tab, naming an EXISTING public `vX.Y.Z` tag of this
+# repo — the very tag release.yml already built, signed and published. The App Store is a
+# distribution channel, not a version series, so it never gets a tag of its own.
+#
+# This used to trigger on `push: tags: mas-v*`, which dragon-kit's
+# docs/MAC-APP-RELEASE-LIFECYCLE.md forbids: "Multiple distribution channels do not create
+# multiple version series ... A channel-specific workflow may run separately, but it must
+# reference that existing exact tag rather than inventing `mas-v*` or another prefixed tag."
+# A second series is not cosmetic — `mas-v2.20.1` and `v2.20.1` could be pushed from different
+# commits and ship two different apps under one version number, and the direct release's tag
+# gate (exact-tag format, What's New changed since the preceding tag) never ran on the `mas-v*`
+# side at all. The nine existing `mas-v*` tags stay for provenance; do not create another.
 #
 # Required repository secrets:
 #   MAS_SIGNING_P12_BASE64    base64 of a .p12 holding the "Apple Distribution" +
@@ -23,10 +34,12 @@ name: Release (Mac App Store)
 #                             App Store Connect API key (used for the upload)
 
 on:
-  workflow_dispatch: {}
-  push:
-    tags:
-      - 'mas-v*'
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Existing public release tag to submit, e.g. v2.20.3. Must already exist.'
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -36,7 +49,46 @@ jobs:
     # ClipMenu targets the macOS 26 SDK — build on the macos-26 hosted image.
     runs-on: macos-26
     steps:
+      - name: Gate — release_tag must be an exact public tag
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          set -euo pipefail
+          # Before checkout on purpose. actions/checkout resolves a bare `ref` against branches
+          # too, so a dispatch naming `main` would otherwise sail through and put an untagged,
+          # ungated build in front of App Review under whatever version the branch's plist held.
+          # That is the lifecycle spec's "a branch name can never become a release version".
+          if ! printf '%s' "$RELEASE_TAG" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "::error::release_tag '${RELEASE_TAG}' is not an exact public release tag (expected ^v[0-9]+\.[0-9]+\.[0-9]+\$).
+            The App Store consumes the app's existing tag; prefixed families such as mas-v* are
+            not permitted. Push the public release first, then dispatch this workflow with it." >&2
+            exit 1
+          fi
+          echo "Submitting the existing public tag ${RELEASE_TAG}."
+
       - uses: actions/checkout@v7
+        with:
+          # Fully qualified so this can ONLY resolve a tag. `ref: v2.20.3` would also match a
+          # branch of that name; refs/tags/ cannot. Combined with the gate above, the build is
+          # provably the commit the public release was cut from.
+          ref: refs/tags/${{ inputs.release_tag }}
+
+      - name: Assert the tag matches the version being submitted
+        working-directory: app
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          set -euo pipefail
+          # The same assertion release.yml gets from the shared workflow's assert_tag_matches_plist,
+          # which this self-contained workflow does not call. Without it a tag whose commit predates
+          # a version bump would upload a .pkg whose marketing version disagrees with the tag it was
+          # dispatched for — and App Store Connect keeps whatever it is sent.
+          PLIST_VERSION="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' Info.plist)"
+          if [ "${RELEASE_TAG#v}" != "$PLIST_VERSION" ]; then
+            echo "::error::${RELEASE_TAG} does not match app/Info.plist CFBundleShortVersionString '${PLIST_VERSION}'." >&2
+            exit 1
+          fi
+          echo "Tag ${RELEASE_TAG} matches CFBundleShortVersionString ${PLIST_VERSION}."
 
       - name: Select newest Xcode
         run: |
