@@ -10,22 +10,27 @@ enum WhatsNewConfig {
             // Version omitted on purpose: it defaults to CFBundleShortVersionString
             // and the kit adds the "v". The pane tracks the current build's notes.
             date: "2026-08-11",
-            // `.fixed`, and the first release since 2.20.3 that earns it: two rows of the About
-            // pane were wrong, and both are things a user can open the pane and look at. New copy
-            // rather than 2.20.2's reused keys — the last three releases had nothing observable to
-            // report and said so; this one does.
+            // `.fixed` with one entry: `NSHumanReadableCopyright` — the bundle's copyright notice —
+            // read "ClipMenu modern rewrite.", a tagline in the slot macOS reserves for a legal
+            // notice. The same defect class DragonKit records from yahoo-keykey-2, which shipped
+            // `倉頡／簡易 輸入法` there.
             //
-            // The DragonKit pin moving 3.4.0 → 4.0.0 is deliberately NOT a third entry, even
-            // though About's "Built with" row changes with it. 4.0.0 is the vehicle for these two
-            // fixes, not a separate claim: it makes the pane's slots compile-enforced, which is
-            // what stops either defect returning. Listing the bump beside them would report the
-            // means twice and bury the effect — and 2.20.5 already claimed a kit bump on its own,
-            // because there it WAS the whole release.
-            summary: L("A fix for the About pane: it now links the original ClipMenu project, and shows a single copyright holder."),
+            // Narrow but observable, which is what earns `.fixed`: Finder's Get Info panel reads
+            // this key, so a user can select ClipMenu.app, press ⌘I and see it. (The standard
+            // AppKit About panel reads it too, but ClipMenu never opens one — its About is
+            // DragonKit's settings pane.) 2.20.3 claimed `.fixed` on a comparably small surface.
+            //
+            // Deliberately NOT presented as walking back 2.20.6's "names one holder instead of
+            // two". These are two different fields with two different jobs, and they are meant to
+            // differ: the About pane's row is a presentation slot the kit fixes at one holder
+            // (CONFORMANCE §R14), while this key is the bundle's legal notice and carries what
+            // LICENSE carries. DragonKit says so outright — §R14 leaves `LICENSE`,
+            // `NSHumanReadableCopyright` and the licences page out of scope, and ice-2 keeps both
+            // holders in its Info.plist while rendering one in About.
+            summary: L("A fix for the copyright notice: the one macOS shows in Finder's Get Info panel described the app instead of naming a copyright holder."),
             sections: [
                 ChangeSection(kind: .fixed, entries: [
-                    L("The About pane now links the original ClipMenu project that ClipMenu 2 is based on."),
-                    L("The About pane's copyright line now names one holder instead of two."),
+                    L("Finder's Get Info panel now shows ClipMenu's copyright holders instead of a one-line description of the app."),
                 ]),
             ]
         )

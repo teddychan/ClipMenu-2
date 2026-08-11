@@ -104,35 +104,35 @@ import DragonKit
         #expect(!content.summary.isEmpty)
     }
 
-    /// 2.20.6's notes: a single `fixed` section with two entries. The first release since 2.20.3 to
-    /// claim `.fixed`, and it earns it — two rows of the About pane were wrong, and both are things
-    /// a user can open the pane and look at: the `Original project` link was absent while `Based on`
-    /// credited the project it should have linked, and the copyright named an upstream holder this
-    /// binary reuses no source from.
+    /// 2.20.7's notes: a single `fixed` section with ONE entry. `NSHumanReadableCopyright` said
+    /// "ClipMenu modern rewrite." — a tagline in the slot macOS reserves for the bundle's copyright
+    /// notice (#80). One entry because that is the whole release; the fix is narrow but observable,
+    /// which is what keeps `.fixed` honest here — Finder's Get Info panel reads the key, so ⌘I on
+    /// ClipMenu.app shows it. 2.20.3 claimed `.fixed` on a surface just as small (Homebrew's
+    /// receipt), and 2.20.2 refused the claim precisely because its fixes were reachable only from
+    /// a local Debug build.
     ///
-    /// Two entries, not three. The DragonKit pin moving 3.4.0 → 4.0.0 changes About's "Built with"
-    /// row as well, but 4.0.0 is the *vehicle* for these two fixes — it makes the pane's slots
-    /// compile-enforced, which is what stops either defect returning — so listing it beside them
-    /// would report the means twice and bury the effect.
+    /// Not a reversal of 2.20.6's "names one holder instead of two", though the two releases touch
+    /// the word copyright hours apart. Different fields, different jobs, and they are MEANT to
+    /// differ: About's row is a presentation slot DragonKit fixes at one holder (CONFORMANCE §R14,
+    /// pinned by `contentSingleSourcesNameAndCopyright` above), while that key is the bundle's legal
+    /// notice and carries what `LICENSE` carries — §R14 puts `LICENSE`, `NSHumanReadableCopyright`
+    /// and the licences page out of its own scope, and ice-2 keeps both holders in its `Info.plist`
+    /// while rendering one in About.
     ///
-    /// 2.20.5 pinned `[.changed]` with one entry for the opposite case: the DragonKit pin moving
-    /// 3.3.0 → 3.4.0 WAS the whole release, About's "Built with" row its only observable part, so
-    /// the bump was the honest claim there and it reused 2.20.2's entry key rather than adding an
-    /// eighth near-identical sentence to seven .lproj files. 2.20.4 pinned that shape too, for
-    /// moving SUFeedURL onto the app's own repository — updates keep arriving, from the same
-    /// signing key, at the same cadence, so no user can observe it.
+    /// 2.20.6 pinned two `.fixed` entries: the `Original project` link was absent while `Based on`
+    /// credited the project it should have linked, and About's copyright named two holders. 2.20.5
+    /// and 2.20.4 pinned `[.changed]` with one entry — a DragonKit bump whose only observable part
+    /// was About's "Built with" row, and the SUFeedURL move, which no user can observe at all.
     ///
-    /// 2.20.3 was the last `[.fixed]`: exactly one thing in it was observable, uninstalling
-    /// clearing Homebrew's receipt. 2.20.2 pinned `[.changed]` because everything it fixed was
-    /// reachable only from a local Debug build, so claiming a fix a user could look for would have
-    /// been false. Pinned per release alongside the WhatsNewConfig copy itself — the section shape
-    /// IS the claim, so updating the notes has to update this, which is the point. The release gate
-    /// checks that the notes CHANGED; this checks that they changed to what was meant.
+    /// Pinned per release alongside the WhatsNewConfig copy itself — the section shape IS the claim,
+    /// so updating the notes has to update this, which is the point. The release gate checks that
+    /// the notes CHANGED; this checks that they changed to what was meant.
     @Test func contentIsASingleFixedSection() {
         let sections = WhatsNewConfig.content.sections
         #expect(sections.count == 1)
         #expect(sections.map(\.kind) == [.fixed])
-        #expect(sections.map(\.entries.count) == [2])
+        #expect(sections.map(\.entries.count) == [1])
         for entry in sections.flatMap(\.entries) {
             #expect(!entry.isEmpty)
         }
