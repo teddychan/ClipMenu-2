@@ -21,8 +21,15 @@ import DragonKit
     /// its source. DragonKit tried the same reasoning and retracted it (dragon-kit #63); ClipMenu's
     /// own `LICENSE` names two holders outright, so the app's notices contradicted it. What
     /// CONFORMANCE §R14 actually fixes is a row in a settings pane, and it leaves `LICENSE`,
-    /// `NSHumanReadableCopyright` and the licences page alone — which is why the bundle's copyright
-    /// notice can name both holders without touching this literal.
+    /// `NSHumanReadableCopyright` and the licences page alone.
+    ///
+    /// The bundle's copyright notice now names one holder too, but by a separate decision rather
+    /// than because §R14 reached it: `NSHumanReadableCopyright` is an optional Apple key that no
+    /// licence names, so it is presentation, and the same argument that settled this row settles
+    /// it. `LICENSE` is where the MIT grant lives and it still names both holders; the upstream
+    /// project is credited by `originalWork` below. ice-2 is the app that goes the other way and
+    /// keeps both in its `Info.plist` — it is a git fork carrying Jordan Baird's actual source
+    /// under GPL-3.0, where ClipMenu 2 reuses none of Naotaka Morimoto's.
     @Test func contentSingleSourcesNameAndCopyright() {
         let content = AboutConfig.content
         #expect(content.appName == AppInfo.displayName)
