@@ -283,3 +283,7 @@
 "A fix for the About pane: it now links the original ClipMenu project, and shows a single copyright holder." = "「情報」パネルの修正です。オリジナルの ClipMenu プロジェクトへのリンクが追加され、著作権表示は 1 名のみになりました。";
 "The About pane now links the original ClipMenu project that ClipMenu 2 is based on." = "「情報」パネルに、ClipMenu 2 のもとになったオリジナルの ClipMenu プロジェクトへのリンクが追加されました。";
 "The About pane's copyright line now names one holder instead of two." = "「情報」パネルの著作権表示が、2 名から 1 名になりました。";
+
+/* What's New (2.20.7) */
+"A fix for the copyright notice: the one macOS shows in Finder's Get Info panel described the app instead of naming a copyright holder." = "著作権表示の修正です。macOS が Finder の「情報を見る」に表示する著作権表示が、著作権者ではなくアプリの説明文になっていました。";
+"Finder's Get Info panel now shows ClipMenu's copyright holders instead of a one-line description of the app." = "Finder の「情報を見る」に、アプリの説明文ではなく ClipMenu の著作権者が表示されるようになりました。";

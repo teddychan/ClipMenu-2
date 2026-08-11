@@ -5,6 +5,70 @@ Developer-facing notes for ClipMenu. User-facing release notes live in
 
 ## Unreleased
 
+## 2.20.7 — 2026-08-11
+
+Ships #80, and nothing else. One string, in the one field where a wrong value is a legal
+notice rather than a typo.
+
+- **`NSHumanReadableCopyright` was a tagline, not a copyright.** `app/Info.plist` set it to
+  `ClipMenu modern rewrite.` — a description of the app in the key macOS reserves for the
+  bundle's copyright notice. It now reads
+  `Copyright © 2008–2014 Naotaka Morimoto · © 2026 Teddy Chan`.
+
+  Exactly the defect DragonKit records from yahoo-keykey-2, which once shipped
+  `倉頡／簡易 輸入法` in its About copyright slot — see the doc comment on
+  `DragonAbout.copyright(years:holder:)`. Both are the same mistake: a field that answers
+  "who holds the copyright" filled with an answer to "what is this app".
+
+  Narrow but observable, which is why it ships as `.fixed` rather than as maintenance.
+  Finder's Get Info panel reads the key, so ⌘I on ClipMenu.app displays it. (The standard
+  AppKit About panel reads it too; ClipMenu never opens one — its About is DragonKit's
+  settings pane, which does not consult this key.) No ClipMenu source reads it either, so no
+  behaviour changes.
+
+- **The value tracks `LICENSE`, and the two dashes in it are not the same character.**
+  `LICENSE` names two holders — `Copyright (c) 2008-2014 Naotaka Morimoto (original ClipMenu
+  — …)` and `Copyright (c) 2026 Teddy Chan (this reimplementation)` — and the plist now names
+  the same two, with the same years, in the same order.
+
+  It does not copy `LICENSE`'s ASCII typography, because the plist value is display text and
+  the licence document is not: `(c)` becomes `©`, and the hyphen in `2008-2014` becomes an en
+  dash. That is the repo's own rendering of these two holders, not an invention — the About
+  pane displayed `© 2008–2014 Naotaka Morimoto · © 2026 Teddy Chan`, en dash included, from
+  #62 until #78 removed it. The `Copyright © … · © …` shape matches ice-2's
+  `INFOPLIST_KEY_NSHumanReadableCopyright`, which is the only other Dragon app that has two
+  holders to name.
+
+- **This does not walk back 2.20.6's "names one holder instead of two".** Two different fields
+  with two different jobs, and they are meant to differ. About's copyright row is a
+  presentation slot DragonKit fixes at one holder — CONFORMANCE §R14 — and that rule puts
+  `LICENSE`, `NSHumanReadableCopyright` and the licences page explicitly out of its own scope.
+  ice-2 is the worked example: both holders in its `Info.plist`, one rendered in About.
+  `AboutConfig` is untouched, and `contentSingleSourcesNameAndCopyright` still pins
+  `© 2026 Teddy Chan`.
+
+  Worth recording that DragonKit has since narrowed *why*. 2.20.6's note below justified the
+  single-holder About row by arguing that ClipMenu 2 reuses none of the original's source and
+  so has no upstream copyright to assert. The kit tried the same reasoning and retracted it
+  (dragon-kit #63): it holds for yahoo-keykey-2 and fails for the two apps the change actually
+  touched — ice-2 is a GPL-3.0 fork whose §4 requires the upstream notice to travel, and
+  ClipMenu's own `LICENSE` names two holders outright. What survives is narrower and is all
+  §R14 ever needed: the About row is a slot in a settings pane that read one way in three apps
+  and another in two. Nothing about it displaces a legal notice, which is precisely why this
+  release can fix one without touching the other. #80 corrects that reasoning where it was
+  written down, in `contentSingleSourcesNameAndCopyright`'s doc comment; the 2.20.6 entry
+  below is left as it shipped.
+
+- **Two new What's New keys, translated into all seven languages.** The notes name the surface
+  as each locale's Finder does — 情報を見る, 顯示簡介, 显示简介, Obtener información, Lire les
+  informations — rather than transliterating "Get Info".
+
+- **Nothing guards the key yet.** `swift test` runs without the app bundle, which is why
+  `AppInfoCoverageTests` pins shapes rather than literals and why nothing here caught this in
+  twenty patch releases. A guard belongs in DragonKit's conformance checker, where one rule
+  would cover all five apps at once, rather than in a bespoke test in this repo — three of the
+  five omit the key entirely.
+
 ## 2.20.6 — 2026-08-11
 
 A real fix, unlike the last three patches: two rows of the About pane were wrong, and both

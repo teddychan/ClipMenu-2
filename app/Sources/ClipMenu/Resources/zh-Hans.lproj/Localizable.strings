@@ -283,3 +283,7 @@
 "A fix for the About pane: it now links the original ClipMenu project, and shows a single copyright holder." = "修复了关于面板：现在会链接到原始的 ClipMenu 项目，并且只显示一位版权所有者。";
 "The About pane now links the original ClipMenu project that ClipMenu 2 is based on." = "关于面板现在会链接到 ClipMenu 2 所基于的原始 ClipMenu 项目。";
 "The About pane's copyright line now names one holder instead of two." = "关于面板的版权行现在只列出一位所有者，而不再是两位。";
+
+/* What's New (2.20.7) */
+"A fix for the copyright notice: the one macOS shows in Finder's Get Info panel described the app instead of naming a copyright holder." = "修复了版权声明：macOS 在访达“显示简介”中显示的版权声明是应用的一句描述，而不是版权所有者。";
+"Finder's Get Info panel now shows ClipMenu's copyright holders instead of a one-line description of the app." = "访达的“显示简介”现在会显示 ClipMenu 的版权所有者，而不再是一句应用描述。";

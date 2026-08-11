@@ -283,3 +283,7 @@
 "A fix for the About pane: it now links the original ClipMenu project, and shows a single copyright holder." = "Une correction du panneau À propos : il renvoie désormais au projet ClipMenu d'origine et n'affiche plus qu'un seul détenteur du copyright.";
 "The About pane now links the original ClipMenu project that ClipMenu 2 is based on." = "Le panneau À propos renvoie désormais au projet ClipMenu d'origine dont ClipMenu 2 est issu.";
 "The About pane's copyright line now names one holder instead of two." = "La ligne de copyright du panneau À propos ne nomme plus qu'un seul détenteur au lieu de deux.";
+
+/* What's New (2.20.7) */
+"A fix for the copyright notice: the one macOS shows in Finder's Get Info panel described the app instead of naming a copyright holder." = "Une correction de la mention de copyright : celle que macOS affiche dans la fenêtre Lire les informations du Finder décrivait l'app au lieu de nommer un détenteur du copyright.";
+"Finder's Get Info panel now shows ClipMenu's copyright holders instead of a one-line description of the app." = "La fenêtre Lire les informations du Finder affiche désormais les détenteurs du copyright de ClipMenu au lieu d'une description de l'app en une ligne.";
