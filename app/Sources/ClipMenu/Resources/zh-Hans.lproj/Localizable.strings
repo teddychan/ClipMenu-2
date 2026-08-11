@@ -194,6 +194,7 @@
 "Backup saved." = "备份已保存。";
 "No changes since the last backup." = "自上次备份以来没有更改。";
 "No backups yet." = "暂无备份。";
+"items in this folder aren't ClipMenu backups (for example, exports from an older app)." = "个项目不是 ClipMenu 备份（例如，来自旧版应用的导出文件）。";
 "Restore this backup?" = "要恢复此备份吗？";
 "This replaces all your current snippets and folders. Your current snippets are backed up first." = "这将替换您当前所有的片段和文件夹。您当前的片段会先备份。";
 "folders" = "个文件夹";
