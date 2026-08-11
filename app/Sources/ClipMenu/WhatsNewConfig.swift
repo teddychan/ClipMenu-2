@@ -21,23 +21,26 @@ enum WhatsNewConfig {
             // DragonKit's settings pane.) 2.20.3 claimed `.fixed` on a comparably small surface.
             //
             // The notes describe the END STATE, not this version's delta, and that is deliberate.
-            // 2.20.7 fixed the tagline but named two holders; 2.20.8 drops the second (#82). The
-            // pane shows only the current version's notes, so a user coming from 2.20.6 — which is
-            // nearly all of them, 2.20.7 having existed for about an hour — would otherwise never
-            // be told the tagline is gone, and would instead read a note about a distinction
-            // between two copyright values they never saw. The summary key is reused verbatim from
-            // 2.20.7 because it is still exactly true; only the entry is restated, plural to
-            // singular. 2.20.5 set the precedent for reuse when a key still says the right thing.
+            // Three releases touched this one key in a few hours: 2.20.7 fixed the tagline but
+            // named two holders, 2.20.8 dropped the second (#82), and 2.20.9 drops the word
+            // "Copyright" so the value matches the About row byte for byte (#85). The pane shows
+            // only the current version's notes, and nearly every user arrives from 2.20.6, so the
+            // entry names what they will actually see change — the tagline replaced by a
+            // copyright — rather than narrating three steps none of them observed. The summary key
+            // is reused verbatim from 2.20.7 because it is still exactly true; only the entry is
+            // restated. 2.20.5 set the precedent for reuse when a key still says the right thing.
             //
-            // On the second holder: `NSHumanReadableCopyright` is an OPTIONAL Apple key that no
-            // licence names, so it is presentation, and the same argument that fixes About's row at
-            // one holder (CONFORMANCE §R14) reaches it. `LICENSE` is where MIT's grant lives and it
-            // still names both. ice-2 keeps both in its plist and is right to — it is a git fork
-            // carrying Jordan Baird's source under GPL-3.0, not a reimplementation.
+            // Why one holder, and why this exact string: `NSHumanReadableCopyright` is an OPTIONAL
+            // Apple key that no licence names, so it is presentation, and the same argument that
+            // fixes About's row at one holder (CONFORMANCE §R14) reaches it. `LICENSE` is where
+            // MIT's grant lives and it still names both. All five Dragon apps now carry the
+            // identical value in both places — ice-2 was the last holdout and gave way in 2.14.7,
+            // its GPL-3.0 §4 obligation being carried by its LICENSE and bundled acknowledgements
+            // rather than by an optional display key.
             summary: L("A fix for the copyright notice: the one macOS shows in Finder's Get Info panel described the app instead of naming a copyright holder."),
             sections: [
                 ChangeSection(kind: .fixed, entries: [
-                    L("Finder's Get Info panel now shows ClipMenu's copyright instead of a one-line description of the app."),
+                    L("Finder's Get Info panel now shows ClipMenu's copyright, the same line the About pane shows."),
                 ]),
             ]
         )

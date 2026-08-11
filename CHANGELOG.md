@@ -5,6 +5,41 @@ Developer-facing notes for ClipMenu. User-facing release notes live in
 
 ## Unreleased
 
+## 2.20.9 — 2026-08-11
+
+Ships #85, the last step of unifying one field across all five Dragon apps.
+
+- **The bundle's copyright notice matches the About row byte for byte.**
+  `NSHumanReadableCopyright` drops the word "Copyright": `Copyright © 2026 Teddy Chan` becomes
+  `© 2026 Teddy Chan`, exactly what `DragonAbout.copyright(years:holder:)` renders.
+
+  2.20.8 set the holder right and left the prefix, on the platform convention that Apple's own
+  apps write `Copyright © 2024 Apple Inc.`. The convention is real, but it was the wrong
+  tie-break: the point of this field is to say the same thing About says, and a value differing
+  by one word still has to be compared rather than recognised.
+
+- **All five apps now carry the identical value in both places.** The field held four different
+  states when the audit started — a tagline here, two holders in Ice 2, and nothing at all in
+  Spectacle 2, Yahoo! KeyKey 2 and Dragon Sample App. It shipped as ClipMenu 2.20.9, Ice 2
+  2.14.7, Spectacle 2 2.5.5, Yahoo! KeyKey 2 2.12.1 and Dragon Sample App 1.4.5.
+
+  Ice 2 was the last holdout and the interesting one: it kept both holders deliberately, on the
+  reasoning that GPL-3.0 §4 makes this plist key the binary's copyright notice. §4's requirement
+  is real; the identification of the key with it was not. `NSHumanReadableCopyright` is an
+  **optional** Apple key that no licence names, and §4 is carried by Ice 2's `LICENSE` — which
+  fills in the GPL's own notice template with Jordan Baird's name and year — and by its bundled
+  acknowledgements. Both still name him.
+
+- **`LICENSE` is untouched and still names both holders.** It is the licence document; this key
+  is a display string. That distinction is the whole reason the two are allowed to differ, and
+  the reason this release could change one without touching the other.
+
+- **The notes describe the end state, not the delta.** Three releases touched this key within a
+  few hours. Nearly every user arrives from 2.20.6, so the entry names what they will actually
+  see change — a tagline replaced by a copyright — rather than narrating three steps none of
+  them observed. The summary key is reused verbatim from 2.20.7; only the entry is restated, in
+  all seven languages.
+
 ## 2.20.8 — 2026-08-11
 
 Ships #82, which finishes what 2.20.7 started an hour earlier and gets the second half right.

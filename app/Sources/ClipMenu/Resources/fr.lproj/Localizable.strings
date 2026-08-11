@@ -290,4 +290,4 @@
 "Finder's Get Info panel now shows ClipMenu's copyright holders instead of a one-line description of the app." = "La fenêtre Lire les informations du Finder affiche désormais les détenteurs du copyright de ClipMenu au lieu d'une description de l'app en une ligne.";
 
 /* What's New (2.20.8) */
-"Finder's Get Info panel now shows ClipMenu's copyright instead of a one-line description of the app." = "La fenêtre Lire les informations du Finder affiche désormais le copyright de ClipMenu au lieu d'une description de l'app en une ligne.";
+"Finder's Get Info panel now shows ClipMenu's copyright, the same line the About pane shows." = "La fenêtre Lire les informations du Finder affiche désormais le copyright de ClipMenu, la même ligne que celle du panneau À propos.";
