@@ -290,4 +290,4 @@
 "Finder's Get Info panel now shows ClipMenu's copyright holders instead of a one-line description of the app." = "访达的“显示简介”现在会显示 ClipMenu 的版权所有者，而不再是一句应用描述。";
 
 /* What's New (2.20.8) */
-"Finder's Get Info panel now shows ClipMenu's copyright instead of a one-line description of the app." = "访达的“显示简介”现在会显示 ClipMenu 的版权声明，而不再是一句应用描述。";
+"Finder's Get Info panel now shows ClipMenu's copyright, the same line the About pane shows." = "访达的“显示简介”现在会显示 ClipMenu 的版权声明，与关于面板中的一行相同。";

@@ -290,4 +290,4 @@
 "Finder's Get Info panel now shows ClipMenu's copyright holders instead of a one-line description of the app." = "Finder の「情報を見る」に、アプリの説明文ではなく ClipMenu の著作権者が表示されるようになりました。";
 
 /* What's New (2.20.8) */
-"Finder's Get Info panel now shows ClipMenu's copyright instead of a one-line description of the app." = "Finder の「情報を見る」に、アプリの説明文ではなく ClipMenu の著作権表示が表示されるようになりました。";
+"Finder's Get Info panel now shows ClipMenu's copyright, the same line the About pane shows." = "Finder の「情報を見る」に、「情報」パネルと同じ ClipMenu の著作権表示が表示されるようになりました。";
