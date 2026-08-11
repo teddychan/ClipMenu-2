@@ -194,6 +194,7 @@
 "Backup saved." = "Sauvegarde enregistrée.";
 "No changes since the last backup." = "Aucune modification depuis la dernière sauvegarde.";
 "No backups yet." = "Aucune sauvegarde pour l'instant.";
+"items in this folder aren't ClipMenu backups (for example, exports from an older app)." = "éléments de ce dossier ne sont pas des sauvegardes ClipMenu (par exemple, des exportations d'une app plus ancienne).";
 "Restore this backup?" = "Restaurer cette sauvegarde ?";
 "This replaces all your current snippets and folders. Your current snippets are backed up first." = "Cela remplace tous vos extraits et dossiers actuels. Vos extraits actuels sont d'abord sauvegardés.";
 "folders" = "dossiers";

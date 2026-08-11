@@ -194,6 +194,7 @@
 "Backup saved." = "백업이 저장되었습니다.";
 "No changes since the last backup." = "마지막 백업 이후 변경 사항이 없습니다.";
 "No backups yet." = "아직 백업이 없습니다.";
+"items in this folder aren't ClipMenu backups (for example, exports from an older app)." = "개의 항목은 ClipMenu 백업이 아닙니다 (예: 이전 버전 앱에서 내보낸 파일).";
 "Restore this backup?" = "이 백업을 복원하시겠습니까?";
 "This replaces all your current snippets and folders. Your current snippets are backed up first." = "현재의 모든 스니펫과 폴더를 대체합니다. 현재 스니펫은 먼저 백업됩니다.";
 "folders" = "폴더";
