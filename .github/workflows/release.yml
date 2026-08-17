@@ -16,7 +16,21 @@ on:
   push:
     tags:
       - 'v*'
-  workflow_dispatch: {}
+  # A verification-only dispatch, the shape dragon-sample-app has had since v6: run the tag gate
+  # and the whole build, publish nothing. It is the only way to exercise this pipeline from a
+  # branch with no tag — which is what a change to the BUILD, rather than to the app, needs. The
+  # §R16 move of Info.plist and AppIcon.icns into App/ was exactly such a change, and without this
+  # the only way to test it was to cut a public release.
+  workflow_dispatch:
+    inputs:
+      verify_only:
+        description: 'Run the gate and build, publish nothing'
+        type: boolean
+        default: true
+      release_tag:
+        description: 'Optional: an EXISTING exact vX.Y.Z tag to build. The job checks out that commit rather than the branch head. Leave empty to build this branch.'
+        type: string
+        default: ''
 
 # The reusable release workflow creates the GitHub Release and uploads assets,
 # which needs contents: write. This repo's default workflow token is read-only,
@@ -29,6 +43,13 @@ jobs:
     uses: teddychan/dragon-release-ci/.github/workflows/release-macos.yml@v6
     secrets: inherit
     with:
+      # `inputs` only exists for workflow_dispatch. On a TAG PUSH it is absent, so a bare
+      # `${{ inputs.verify_only }}` evaluates to '' and GitHub rejects the whole run with
+      # "evaluate reusable workflow inputs … Unexpected value ''" — 0 jobs, no log, and a public
+      # tag spent for nothing. dragon-sample-app burned v1.4.1 on exactly that. Guard on the event
+      # so a push resolves to a literal false.
+      verify_only: ${{ github.event_name == 'workflow_dispatch' && inputs.verify_only || false }}
+      release_tag: ${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || '' }}
       # v6's tag gate replaces v5's `VERSION=${TAG##*v}`, which left a value containing no "v"
       # untouched — so a workflow_dispatch arrived with a BRANCH ref and produced VERSION=main.
       # It also accepts only exact `vX.Y.Z`, and requires whats_new_path: the two move together,
