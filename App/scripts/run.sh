@@ -9,7 +9,7 @@
 # Usage:  ./scripts/run.sh [debug|release]
 set -euo pipefail
 
-cd "$(dirname "$0")/.."           # package root (app/)
+cd "$(dirname "$0")/.."           # package root (App/), which also holds the bundle inputs
 CONFIG="${1:-debug}"
 
 # Build the direct / Developer ID variant: compile in Sparkle so the auto-update

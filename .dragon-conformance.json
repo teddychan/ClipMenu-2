@@ -1,9 +1,9 @@
 {
   "app": "ClipMenu 2",
-  "sources": ["app/Sources"],
-  "strings": ["app/Sources/**/*.lproj/Localizable.strings"],
-  "pin": { "file": "app/Package.swift", "pattern": "dragon-kit\", from: \"([0-9.]+)\"" },
-  "paneOrder": { "file": "app/Sources/ClipMenu/SettingsWindowController.swift" },
+  "sources": ["App/Sources"],
+  "strings": ["App/Sources/**/*.lproj/Localizable.strings"],
+  "pin": { "file": "App/Package.swift", "pattern": "dragon-kit\", from: \"([0-9.]+)\"" },
+  "paneOrder": { "file": "App/Sources/ClipMenu/SettingsWindowController.swift" },
   "traits": ["sparkle", "mac-app-store"],
   "exceptions": []
 }

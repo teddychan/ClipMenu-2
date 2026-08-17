@@ -39,7 +39,7 @@ jobs:
       # release notes show, so new notes cannot exist without this file moving, and the .swift
       # alone is a real check. spectacle-2 and yahoo-keykey-2 use abstract keys and must list
       # their Localizable.strings too.
-      whats_new_path: app/Sources/ClipMenu/WhatsNewConfig.swift
+      whats_new_path: App/Sources/ClipMenu/WhatsNewConfig.swift
       # Moving the appcast off the marketing site. Steps 1 and 2 are done; the mirror stays.
       #
       # MAC-APP-RELEASE-LIFECYCLE.md: "Sparkle appcasts are update infrastructure, not marketing
@@ -89,16 +89,21 @@ jobs:
       app_slug: clipmenu-2
       release_title_prefix: ''            # title == tag
       bot_name: ClipMenu Release Bot
-      swiftpm_working_directory: app
+      # DragonKit CONFORMANCE §R16 puts the bundle inputs — Info.plist, AppIcon.icns and
+      # the entitlements — in App/ at the repo root. This package's root IS that directory
+      # (as yahoo-keykey-2's is), so the assembly reads them from the working directory and
+      # swiftpm_bundle_inputs_directory stays unset. spectacle-2 and dragon-sample-app keep
+      # Package.swift at the repo root instead, so they pass it.
+      swiftpm_working_directory: App
       swiftpm_sparkle: true
       # ClipMenu targets the macOS 26 SDK, so build on the macos-26 hosted image.
       swiftpm_runner: macos-26
       # Sign the free direct/Homebrew build with iCloud: embeds the Developer ID iCloud
       # provisioning profile (PROVISIONING_PROFILE_BASE64) + these entitlements. Falls
       # back to local-only if the profile secret is absent.
-      swiftpm_icloud_entitlements_path: app/ClipMenu.entitlements
+      swiftpm_icloud_entitlements_path: App/ClipMenu.entitlements
       # Fail the release (before notarization) if the tag doesn't match
-      # app/Info.plist's CFBundleShortVersionString, so a forgotten version bump
+      # App/Info.plist's CFBundleShortVersionString, so a forgotten version bump
       # can't ship a zip named for the tag containing an app reporting the old
       # version — and can't put a stale version in the Sparkle appcast.
       assert_tag_matches_plist: true

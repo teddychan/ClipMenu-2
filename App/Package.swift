@@ -6,7 +6,7 @@ import Foundation
 // Built as a SwiftPM executable so it compiles with the Command Line Tools
 // toolchain (no full Xcode required). Agent / menu-bar behavior is established
 // at runtime via NSApp.setActivationPolicy(.accessory); the bundled .app uses
-// the LSUIElement Info.plist at app/Info.plist (SwiftPM forbids Info.plist as
+// the LSUIElement Info.plist at App/Info.plist (SwiftPM forbids Info.plist as
 // a target resource, so it lives outside Sources and is applied when the .app
 // bundle / Xcode project is produced later).
 //
