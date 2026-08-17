@@ -118,7 +118,7 @@ copied and pasted for you. Settings ▸ Action decides which modifier does what 
 Shift-, Option-, and Command-click do nothing by default — and can invoke a lone
 action immediately instead of showing a menu.
 
-Bundled actions live in `app/Sources/ClipMenu/Resources/script/action`:
+Bundled actions live in `App/Sources/ClipMenu/Resources/script/action`:
 
 | Group | What it does |
 |---|---|
@@ -186,7 +186,9 @@ launches a bare executable.
 
 ### Project layout
 
-- `app/` — the Swift app: `Sources/`, `Tests/`, bundled `Resources/`, and `scripts/`.
+- `App/` — the Swift app: `Sources/`, `Tests/`, bundled `Resources/`, and `scripts/`,
+  alongside the bundle inputs `Info.plist`, `AppIcon.icns` and `ClipMenu.entitlements`
+  (DragonKit CONFORMANCE §R16 places those, in every Dragon app).
 
 ### Releasing
 
@@ -202,7 +204,7 @@ existing `vX.Y.Z` tag. It refuses anything that is not an exact public tag. See
 
 ## Tests
 
-The suite lives in `app/Tests/ClipMenuTests` and runs on Swift Testing, no simulator
+The suite lives in `App/Tests/ClipMenuTests` and runs on Swift Testing, no simulator
 or granted permissions required. It covers clipboard capture and privacy filtering, the
 history and snippet stores with their migrations, JavaScript and built-in actions, menu
 building and search, hotkey rebinding, the Settings panes, and folder backup and
@@ -212,7 +214,7 @@ restore. CI runs the whole suite on every pull request via
 [![Tests](https://github.com/teddychan/clipmenu-2/actions/workflows/tests.yml/badge.svg)](https://github.com/teddychan/clipmenu-2/actions/workflows/tests.yml)
 
 ```bash
-app/scripts/test.sh
+App/scripts/test.sh
 ```
 
 Use the script rather than a bare `swift test`: it runs the suite serially
@@ -229,9 +231,9 @@ state such as `NSPasteboard.general`.
 
 Bug reports and feature requests are welcome on the
 [issues page](https://github.com/teddychan/clipmenu-2/issues). For pull requests, keep
-changes focused, run `app/scripts/test.sh` before you push, and record notable
+changes focused, run `App/scripts/test.sh` before you push, and record notable
 changes in [CHANGELOG.md](CHANGELOG.md) (developer-facing notes; the user-facing
-release notes live in `app/Sources/ClipMenu/WhatsNewConfig.swift`).
+release notes live in `App/Sources/ClipMenu/WhatsNewConfig.swift`).
 
 ## Credits
 

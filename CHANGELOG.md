@@ -1,7 +1,7 @@
 # Changelog
 
 Developer-facing notes for ClipMenu. User-facing release notes live in
-`app/Sources/ClipMenu/WhatsNewConfig.swift` (shown in the in-app What's New pane).
+`App/Sources/ClipMenu/WhatsNewConfig.swift` (shown in the in-app What's New pane).
 
 ## Unreleased
 

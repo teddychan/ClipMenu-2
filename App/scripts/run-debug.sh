@@ -10,7 +10,7 @@
 #
 # Usage:  ./scripts/run-debug.sh
 set -euo pipefail
-cd "$(dirname "$0")/.."            # package root (app/)
+cd "$(dirname "$0")/.."            # package root (App/), which also holds the bundle inputs
 
 # Compile the SAME product the release ships: CLIPMENU_SPARKLE=1 links
 # DragonKitUpdates and defines SPARKLE, so the debug build exercises the direct /
@@ -65,7 +65,7 @@ fi
 SHORT_VERSION="$("$pb" -c 'Print :CFBundleShortVersionString' "$APP/Contents/Info.plist")"
 if ! [[ "$SHORT_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
     echo "error: CFBundleShortVersionString is '${SHORT_VERSION}', not a numeric X.Y.Z candidate." >&2
-    echo "       Fix app/Info.plist: the public vX.Y.Z tag is checked against this field." >&2
+    echo "       Fix App/Info.plist: the public vX.Y.Z tag is checked against this field." >&2
     exit 1
 fi
 "$pb" -c "Set :DragonBuildChannel Debug" "$APP/Contents/Info.plist" 2>/dev/null \

@@ -2,7 +2,7 @@ name: Release (Mac App Store)
 
 # Build the SANDBOXED Mac App Store variant of ClipMenu and upload the signed
 # .pkg to App Store Connect. This is a self-contained CI port of the old local
-# app/scripts/build-appstore.sh — that script and the MAS entitlements are kept
+# App/scripts/build-appstore.sh — that script and the MAS entitlements are kept
 # private (not mirrored to this public repo by sync-public.sh), so this workflow
 # carries the sandbox entitlements inline.
 #
@@ -74,7 +74,7 @@ jobs:
           ref: refs/tags/${{ inputs.release_tag }}
 
       - name: Assert the tag matches the version being submitted
-        working-directory: app
+        working-directory: App
         env:
           RELEASE_TAG: ${{ inputs.release_tag }}
         run: |
@@ -85,7 +85,7 @@ jobs:
           # dispatched for — and App Store Connect keeps whatever it is sent.
           PLIST_VERSION="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' Info.plist)"
           if [ "${RELEASE_TAG#v}" != "$PLIST_VERSION" ]; then
-            echo "::error::${RELEASE_TAG} does not match app/Info.plist CFBundleShortVersionString '${PLIST_VERSION}'." >&2
+            echo "::error::${RELEASE_TAG} does not match App/Info.plist CFBundleShortVersionString '${PLIST_VERSION}'." >&2
             exit 1
           fi
           echo "Tag ${RELEASE_TAG} matches CFBundleShortVersionString ${PLIST_VERSION}."
@@ -98,20 +98,20 @@ jobs:
           swift --version
 
       - name: Build (release, arm64)
-        working-directory: app
+        working-directory: App
         # Apple Silicon only by product policy (macOS 26 still supports some Intel
         # Macs; macOS 27 is Apple-silicon-only): a single arm64 slice.
         run: swift build -c release --arch arm64
 
       - name: Assemble sandboxed .app
-        working-directory: app
+        working-directory: App
         run: |
           set -euo pipefail
           BIN_PATH="$(swift build -c release --arch arm64 --show-bin-path)"
           VERSION="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' Info.plist)"
           MAJOR="${VERSION%%.*}"
           APP_NAME="ClipMenu ${MAJOR}"
-          OUT="$GITHUB_WORKSPACE/app/.build/appstore"
+          OUT="$GITHUB_WORKSPACE/App/.build/appstore"
           APP="$OUT/${APP_NAME}.app"
           rm -rf "$OUT"; mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 

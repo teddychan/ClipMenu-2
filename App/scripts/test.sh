@@ -8,9 +8,9 @@
 # Swift Testing's `.serialized` trait only orders tests *within* a suite, not
 # across suites, so serial execution is what keeps the run deterministic.
 #
-# Usage: app/scripts/test.sh [extra swift-test args]
-#   app/scripts/test.sh --enable-code-coverage
-#   app/scripts/test.sh --filter BackupManagerTests
+# Usage: App/scripts/test.sh [extra swift-test args]
+#   App/scripts/test.sh --enable-code-coverage
+#   App/scripts/test.sh --filter BackupManagerTests
 set -e
 cd "$(dirname "$0")/.."
 # Sparkle stays unlinked for tests (matches CI); arm64 per the single-slice policy.

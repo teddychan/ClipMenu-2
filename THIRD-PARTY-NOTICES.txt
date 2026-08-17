@@ -2,7 +2,7 @@ THIRD-PARTY NOTICES
 ===================
 
 ClipMenu bundles the following third-party JavaScript libraries, used by the
-built-in "Actions" text transforms (app/Sources/ClipMenu/Resources/script/lib/).
+built-in "Actions" text transforms (App/Sources/ClipMenu/Resources/script/lib/).
 Each is distributed under a permissive (MIT- or BSD-style) license that permits
 commercial use and redistribution, provided its copyright and permission notice
 is retained. Those notices are reproduced below.
