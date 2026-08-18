@@ -115,34 +115,27 @@ import DragonKit
         #expect(!content.summary.isEmpty)
     }
 
-    /// 2.20.10's notes: a single `changed` section with ONE entry — the same shape 2.20.5 and 2.20.4
-    /// pinned, because it is the same kind of release. Two things moved since 2.20.9 and neither is
-    /// a feature: the DragonKit pin 4.0.0 → 4.1.0 (#88), and `app/` → `App/` so the bundle inputs
-    /// sit where CONFORMANCE §R16 puts them (#87). The rename touched 107 Swift files and changed
-    /// no behaviour — paths moved, code did not — so it is developer-facing and lives in
-    /// CHANGELOG.md.
+    /// 2.21.0's notes: NO sections, the summary alone. The first ClipMenu release to take this
+    /// shape, and the assertion is inverted from every release before it, so it is deliberately
+    /// spelled out rather than deleted.
     ///
-    /// `.changed` and not `.fixed`: nothing was broken. The only part a user can observe is About's
-    /// "Built with · DragonKit v4.1.0" row, and the entry claims exactly that. 2.20.2 refused
-    /// `.fixed` on the same reasoning when its fixes were reachable only from a local Debug build;
-    /// 2.20.3 and 2.20.6–2.20.9 earned `.fixed` because Finder's Get Info panel or the About pane
-    /// actually showed the difference.
+    /// One thing moved since 2.20.10 and it is a publish destination: `release.yml` stopped passing
+    /// `appcast_mirror_repo`, so the Sparkle appcast goes only to this repository (#92). No code in
+    /// the shipped app differs — `SUFeedURL` moved to the app-owned URL back in 2.20.4 — so there is
+    /// no honest entry to write. 2.20.10's entry would be FALSE here: the DragonKit pin does not
+    /// move this release. Reusing it to preserve the familiar one-section shape is the lie the
+    /// release gate exists to catch, which is why this test flips instead of the notes bending.
     ///
-    /// Both localized keys are reused verbatim from 2.20.2, as 2.20.5 reused them: the copy already
-    /// exists in all seven languages and is still exactly true, so no new `.lproj` key enters this
-    /// release. The release gate watches WhatsNewConfig.swift and still sees a diff — the date and
-    /// the section kind both moved.
+    /// Empty is a supported shape. dragon-release-ci's tag-gate.sh check 6 accepts an explicit
+    /// maintenance-only statement in place of entries, and whats-new-export.py names the case
+    /// legitimate; the summary key carries the word both of them look for. It is reused verbatim
+    /// from 2.20.2 and still exactly true, so no new `.lproj` key enters this release.
     ///
     /// Pinned per release alongside the WhatsNewConfig copy itself — the section shape IS the claim,
     /// so updating the notes has to update this, which is the point. The release gate checks that
-    /// the notes CHANGED; this checks that they changed to what was meant.
-    @Test func contentIsASingleChangedSection() {
-        let sections = WhatsNewConfig.content.sections
-        #expect(sections.count == 1)
-        #expect(sections.map(\.kind) == [.changed])
-        #expect(sections.map(\.entries.count) == [1])
-        for entry in sections.flatMap(\.entries) {
-            #expect(!entry.isEmpty)
-        }
+    /// the notes CHANGED; this checks that they changed to what was meant. A future release with
+    /// real user-facing content restores a section here and this assertion goes back the other way.
+    @Test func contentHasNoSections() {
+        #expect(WhatsNewConfig.content.sections.isEmpty)
     }
 }

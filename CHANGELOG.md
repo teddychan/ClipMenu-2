@@ -5,6 +5,33 @@ Developer-facing notes for ClipMenu. User-facing release notes live in
 
 ## Unreleased
 
+## 2.21.0 — 2026-08-18
+
+Retires the last Sparkle appcast mirror in the Dragon fleet. Nothing a user can observe changed —
+this release exists to move a publish destination, and the What's New pane says so rather than
+dressing it up.
+
+- **The appcast is published only to this repository** (#92). `release.yml` no longer passes
+  `appcast_mirror_repo: teddychan/www.dragonapp.com`, so `docs/clipmenu-2/appcast.xml` here is the
+  single destination. `MAC-APP-RELEASE-LIFECYCLE.md`: "Sparkle appcasts are update infrastructure,
+  not marketing content." ClipMenu 2 was the last of the five apps still mirroring — spectacle-2
+  and dragon-sample-app never did, ice-2 retired its mirror at v2.15.0 and yahoo-keykey-2 at
+  v2.12.0 — so no Dragon app now publishes an appcast to the marketing site.
+
+  Invisible to users by construction: `SUFeedURL` moved to the app-owned URL back in 2.20.4, and
+  the mirror has only ever been a second copy of a feed nothing has read since. The release also
+  stops depending on `PUBLIC_RELEASE_TOKEN` reaching the marketing-site repo; the built-in
+  `GITHUB_TOKEN` publishes here, and that token is now used only for the Homebrew cask bump.
+
+- **`www.dragonapp.com/clipmenu-2/appcast.xml` is left in place, frozen at v2.20.10.** It is
+  deliberately not deleted: a stale feed offers an old version to anything still reading it, which
+  is recoverable, while a 404 is not.
+
+- **This had to ride a minor.** The trigger was chosen on 2026-08-11 to replace "when no supported
+  version still reads the site", which named no measurable condition — the site is GitHub Pages and
+  exposes no per-path traffic, so the last reader is unobservable. Dropping the mirror on a 2.20.x
+  patch would have stranded copies still at 2.20.3 or older, which read the site and only the site.
+
 ## 2.20.10 — 2026-08-18
 
 A maintenance release. Nothing in the app's own behaviour changed; both entries below are
