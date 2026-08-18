@@ -62,25 +62,29 @@ jobs:
       # alone is a real check. spectacle-2 and yahoo-keykey-2 use abstract keys and must list
       # their Localizable.strings too.
       whats_new_path: App/Sources/ClipMenu/WhatsNewConfig.swift
-      # Moving the appcast off the marketing site. Steps 1 and 2 are done; the mirror stays.
+      # Moving the appcast off the marketing site. DONE as of v2.21.0 — the mirror is retired and
+      # ClipMenu 2's update feed now lives only in this repository.
       #
       # MAC-APP-RELEASE-LIFECYCLE.md: "Sparkle appcasts are update infrastructure, not marketing
       # content. Each app should host its production appcast in its own repository so an outage,
       # permission problem, or rejected change in the marketing-site repository cannot interfere
-      # with update delivery." spectacle-2 and dragon-sample-app already did; ice-2 and
-      # yahoo-keykey-2 still publish to teddychan/www.dragonapp.com.
+      # with update delivery." spectacle-2 and dragon-sample-app migrated first; ice-2 retired its
+      # mirror at v2.15.0 and yahoo-keykey-2 at v2.12.0. ClipMenu 2 was the last app still
+      # mirroring, so with this release no Dragon app publishes an appcast to the marketing site.
       #
       # The same spec says to migrate "by mirroring the old and new locations until installed
       # versions have moved to the app-owned URL", and that is why this was two releases rather
       # than one. Every ClipMenu installed at the time read its SUFeedURL from the site, so
       # flipping the destination alone would have left all of them silently unable to see updates.
       #
-      #   step 1  v2.20.3  published to BOTH, with app/Info.plist still pointing at the site, so
+      #   step 1  v2.20.3  published to BOTH, with App/Info.plist still pointing at the site, so
       #                    nothing changed for anyone — but the app-owned feed came into existence
       #                    and was current. Both copies verified byte-identical afterwards.
+      #                    (That file was spelled app/Info.plist until §R16 renamed the directory.)
       #   step 2  v2.20.4  SUFeedURL moved to
       #                    https://raw.githubusercontent.com/teddychan/clipmenu-2/main/docs/clipmenu-2/appcast.xml
-      #   step 3  v2.21.0  drop appcast_mirror_repo. The NEXT MINOR RELEASE retires the mirror.
+      #   step 3  v2.21.0  appcast_mirror_repo dropped — this release. ClipMenu 2's production
+      #                    feed is now published to this repository only.
       #
       # That trigger was chosen on 2026-08-11, replacing "when no supported version still reads
       # the site" — which read like a rule but named no measurable condition, so it would have
@@ -88,25 +92,31 @@ jobs:
       # there is no way to observe when the last reader stops reading. A minor release is instead a
       # real, deliberate event that already opens a PR here, so the removal rides one rather than
       # needing its own; and Sparkle checks daily by default, so anyone who launches ClipMenu even
-      # once between 2.20.4 and that release has already moved to the app-owned feed.
+      # once between 2.20.4 and this release has already moved to the app-owned feed.
       #
-      # Do not drop the mirror before then. Every copy still at 2.20.3 or older reads the site and
-      # only the site; the mirror is the whole reason flipping SUFeedURL did not strand them.
-      # The accepted cost is the other direction: shipping no minor for a long time keeps the
-      # mirror that long. That is the safe way to be wrong — an unnecessary mirror costs one extra
-      # publish per release, while a premature drop silently strands installs that cannot tell the
-      # difference between "no update" and "feed gone".
+      # The mirror was not dropped before this point. Every copy still at 2.20.3 or older reads the
+      # site and only the site; the mirror is the whole reason flipping SUFeedURL did not strand
+      # them. The accepted cost was the other direction: shipping no minor for a long time would
+      # have kept the mirror that long. That is the safe way to be wrong — an unnecessary mirror
+      # costs one extra publish per release, while a premature drop silently strands installs that
+      # cannot tell the difference between "no update" and "feed gone".
       #
-      # Needs dragon-release-ci >= v6.3.0, which added the second destination. The appcast is
-      # generated once and copied to both, so the two locations cannot disagree. Publishing here
-      # uses the built-in GITHUB_TOKEN (this repo, contents: write above); the mirror is a different
-      # repo and so needs PUBLIC_RELEASE_TOKEN, which `secrets: inherit` already supplies — it is
-      # the same token that publishes to the site today.
+      # This edit is only safe in the same PR that bumps the version to 2.21.0. Merged on its own it
+      # would take effect on whatever tag ships next — a 2.20.x patch would then drop the mirror
+      # early, which is precisely the stranding the two-step migration existed to prevent.
+      #
+      # What this means from now on: www.dragonapp.com/clipmenu-2/appcast.xml stops being updated.
+      # The last version it ever offers is the final 2.20.x release. It is deliberately left in
+      # place rather than deleted — a stale feed offers an old version to anything still reading
+      # it, which is recoverable; a 404 is not.
+      #
+      # Publishing to this repo uses the built-in GITHUB_TOKEN (contents: write is granted above),
+      # so the release no longer depends on PUBLIC_RELEASE_TOKEN reaching the marketing-site repo
+      # at all — that token is still inherited, but now only the Homebrew cask bump uses it.
       #
       # No GitHub Pages setup required: the app-owned URL is served by raw.githubusercontent.com,
       # exactly as spectacle-2's has been since it migrated.
       appcast_repo: teddychan/clipmenu-2
-      appcast_mirror_repo: teddychan/www.dragonapp.com
       build_kind: swiftpm
       app_slug: clipmenu-2
       release_title_prefix: ''            # title == tag
