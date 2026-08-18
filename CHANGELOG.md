@@ -5,6 +5,32 @@ Developer-facing notes for ClipMenu. User-facing release notes live in
 
 ## Unreleased
 
+## 2.20.10 — 2026-08-18
+
+A maintenance release. Nothing in the app's own behaviour changed; both entries below are
+internal, and the What's New pane says so rather than dressing them up.
+
+- **DragonKit 4.0.0 → 4.1.0** (#88). The pin was already stale enough that CONFORMANCE §R10 was
+  failing every PR in this repo, which is what prompted the bump. 4.1.0 adds §R16 to the kit's
+  conformance spec and rewrites the kit's own changelog; it moves no shared pane, string or
+  public signature, so every ClipMenu surface DragonKit owns renders identically to 2.20.9's.
+  The one part a user can observe is About's `Built with · DragonKit v4.1.0` row — the same
+  single observable the 2.20.4 and 2.20.5 notes claimed, and the reason this release reuses
+  those notes' wording instead of inventing new copy.
+
+- **`app/` is now `App/`** (#87), so the bundle inputs live where DragonKit CONFORMANCE §R16
+  puts them: `App/Info.plist`, `App/AppIcon.icns`, `App/ClipMenu.entitlements`. 107 Swift files
+  moved and none changed — paths, not code. `release.yml` already passed
+  `swiftpm_working_directory: App` and `whats_new_path: App/Sources/…`, and the §R16 move is
+  what `release.yml`'s `verify_only` dispatch was added for: a change to the build rather than
+  to the app, previously testable only by cutting a public release.
+
+- **The What's New notes reuse 2.20.2's two localized keys verbatim,** exactly as 2.20.5 did.
+  The copy is already present in all seven `.lproj` files and is still exactly true, so no new
+  key enters this release; a near-identical eighth translation of a true sentence is the drift
+  those notes exist to avoid. The release gate still sees this file move, because the date and
+  the section kind did.
+
 ## 2.20.9 — 2026-08-11
 
 Ships #85, the last step of unifying one field across all five Dragon apps.

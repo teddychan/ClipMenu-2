@@ -9,38 +9,31 @@ enum WhatsNewConfig {
         WhatsNewContent(
             // Version omitted on purpose: it defaults to CFBundleShortVersionString
             // and the kit adds the "v". The pane tracks the current build's notes.
-            date: "2026-08-11",
-            // `.fixed` with one entry: `NSHumanReadableCopyright` — the bundle's copyright notice —
-            // read "ClipMenu modern rewrite.", a tagline in the slot macOS reserves for a copyright.
-            // The same defect class DragonKit records from yahoo-keykey-2, which shipped
-            // `倉頡／簡易 輸入法` there.
+            date: "2026-08-18",
+            // Maintenance-only, and 2.20.10 is 2.20.5 again — the same shape for the same reason.
+            // Two things changed since 2.20.9 and neither is a feature: the DragonKit pin moves
+            // 4.0.0 → 4.1.0 (#88), and `app/` was renamed to `App/` so the bundle inputs sit where
+            // CONFORMANCE §R16 puts them (#87). The rename touched 107 Swift files and changed no
+            // behaviour at all — it moved paths, not code — so it is developer-facing and belongs
+            // in CHANGELOG.md, which is what that file is for. Inventing a feature entry to fill
+            // the pane would be the lie the release gate exists to catch (2.20.2 refused the same
+            // temptation).
             //
-            // Narrow but observable, which is what earns `.fixed`: Finder's Get Info panel reads
-            // this key, so a user can select ClipMenu.app, press ⌘I and see it. (The standard
-            // AppKit About panel reads it too, but ClipMenu never opens one — its About is
-            // DragonKit's settings pane.) 2.20.3 claimed `.fixed` on a comparably small surface.
+            // The one thing a user can observe is About's "Built with · DragonKit v4.1.0" row, so
+            // the entry claims exactly that and stops. `.changed` and not `.fixed` — nothing here
+            // was broken. 4.1.0's own content is a §R16 conformance rule and a rewritten changelog
+            // in the kit's own repository; no shared pane, string or public signature moved, so
+            // every ClipMenu surface the kit owns renders identically to 2.20.9's.
             //
-            // The notes describe the END STATE, not this version's delta, and that is deliberate.
-            // Three releases touched this one key in a few hours: 2.20.7 fixed the tagline but
-            // named two holders, 2.20.8 dropped the second (#82), and 2.20.9 drops the word
-            // "Copyright" so the value matches the About row byte for byte (#85). The pane shows
-            // only the current version's notes, and nearly every user arrives from 2.20.6, so the
-            // entry names what they will actually see change — the tagline replaced by a
-            // copyright — rather than narrating three steps none of them observed. The summary key
-            // is reused verbatim from 2.20.7 because it is still exactly true; only the entry is
-            // restated. 2.20.5 set the precedent for reuse when a key still says the right thing.
-            //
-            // Why one holder, and why this exact string: `NSHumanReadableCopyright` is an OPTIONAL
-            // Apple key that no licence names, so it is presentation, and the same argument that
-            // fixes About's row at one holder (CONFORMANCE §R14) reaches it. `LICENSE` is where
-            // MIT's grant lives and it still names both. All five Dragon apps now carry the
-            // identical value in both places — ice-2 was the last holdout and gave way in 2.14.7,
-            // its GPL-3.0 §4 obligation being carried by its LICENSE and bundled acknowledgements
-            // rather than by an optional display key.
-            summary: L("A fix for the copyright notice: the one macOS shows in Finder's Get Info panel described the app instead of naming a copyright holder."),
+            // Reuses 2.20.2's summary AND entry keys, exactly as 2.20.5 did: those releases were
+            // this same maintenance shape, the copy already exists in all seven languages, and a
+            // near-identical eighth translation of a sentence that is already true is the drift
+            // these notes avoid. So no new key enters the seven `.lproj` files this release, and
+            // the gate on this file still moves, because the date and the section did.
+            summary: L("A maintenance release: internal updates only, with no changes to how ClipMenu works."),
             sections: [
-                ChangeSection(kind: .fixed, entries: [
-                    L("Finder's Get Info panel now shows ClipMenu's copyright, the same line the About pane shows."),
+                ChangeSection(kind: .changed, entries: [
+                    L("Updated the shared Dragon toolkit that ClipMenu is built with."),
                 ]),
             ]
         )
