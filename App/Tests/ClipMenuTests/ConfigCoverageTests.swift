@@ -111,43 +111,35 @@ import DragonKit
 
     @Test func contentHasDateAndSummary() {
         let content = WhatsNewConfig.content
-        #expect(content.date == "2026-08-11")
+        #expect(content.date == "2026-08-18")
         #expect(!content.summary.isEmpty)
     }
 
-    /// 2.20.8's notes: a single `fixed` section with ONE entry. `NSHumanReadableCopyright` said
-    /// "ClipMenu modern rewrite." — a tagline in the slot macOS reserves for the bundle's copyright
-    /// notice (#80) — and it now names one holder, ClipMenu 2's own (#82). The fix is narrow but
-    /// observable, which is what keeps `.fixed` honest here: Finder's Get Info panel reads the key,
-    /// so ⌘I on ClipMenu.app shows it. 2.20.3 claimed `.fixed` on a surface just as small
-    /// (Homebrew's receipt), and 2.20.2 refused the claim precisely because its fixes were
-    /// reachable only from a local Debug build.
+    /// 2.20.10's notes: a single `changed` section with ONE entry — the same shape 2.20.5 and 2.20.4
+    /// pinned, because it is the same kind of release. Two things moved since 2.20.9 and neither is
+    /// a feature: the DragonKit pin 4.0.0 → 4.1.0 (#88), and `app/` → `App/` so the bundle inputs
+    /// sit where CONFORMANCE §R16 puts them (#87). The rename touched 107 Swift files and changed
+    /// no behaviour — paths moved, code did not — so it is developer-facing and lives in
+    /// CHANGELOG.md.
     ///
-    /// The shape is unchanged from 2.20.7 on purpose. 2.20.7 shipped this same section for the same
-    /// key, naming two holders; 2.20.8 restates the entry in the singular and reuses the summary
-    /// key verbatim, because the notes describe the END STATE rather than the delta. The pane shows
-    /// only the current version's notes, and 2.20.7 existed for about an hour, so nearly every user
-    /// arrives from 2.20.6 and needs to be told the tagline is gone — not told about a distinction
-    /// between two copyright values they never saw.
+    /// `.changed` and not `.fixed`: nothing was broken. The only part a user can observe is About's
+    /// "Built with · DragonKit v4.1.0" row, and the entry claims exactly that. 2.20.2 refused
+    /// `.fixed` on the same reasoning when its fixes were reachable only from a local Debug build;
+    /// 2.20.3 and 2.20.6–2.20.9 earned `.fixed` because Finder's Get Info panel or the About pane
+    /// actually showed the difference.
     ///
-    /// Why one holder: `NSHumanReadableCopyright` is an OPTIONAL Apple key that no licence names,
-    /// so it is presentation, and the same argument that fixes About's row at one holder
-    /// (CONFORMANCE §R14, pinned by `contentSingleSourcesNameAndCopyright` above) reaches it.
-    /// `LICENSE` is where MIT's grant lives and still names both. ice-2 keeps both in its plist and
-    /// is right to — a git fork carrying Jordan Baird's source under GPL-3.0 is not this case.
-    ///
-    /// 2.20.6 pinned two `.fixed` entries: the `Original project` link was absent while `Based on`
-    /// credited the project it should have linked, and About's copyright named two holders. 2.20.5
-    /// and 2.20.4 pinned `[.changed]` with one entry — a DragonKit bump whose only observable part
-    /// was About's "Built with" row, and the SUFeedURL move, which no user can observe at all.
+    /// Both localized keys are reused verbatim from 2.20.2, as 2.20.5 reused them: the copy already
+    /// exists in all seven languages and is still exactly true, so no new `.lproj` key enters this
+    /// release. The release gate watches WhatsNewConfig.swift and still sees a diff — the date and
+    /// the section kind both moved.
     ///
     /// Pinned per release alongside the WhatsNewConfig copy itself — the section shape IS the claim,
     /// so updating the notes has to update this, which is the point. The release gate checks that
     /// the notes CHANGED; this checks that they changed to what was meant.
-    @Test func contentIsASingleFixedSection() {
+    @Test func contentIsASingleChangedSection() {
         let sections = WhatsNewConfig.content.sections
         #expect(sections.count == 1)
-        #expect(sections.map(\.kind) == [.fixed])
+        #expect(sections.map(\.kind) == [.changed])
         #expect(sections.map(\.entries.count) == [1])
         for entry in sections.flatMap(\.entries) {
             #expect(!entry.isEmpty)
