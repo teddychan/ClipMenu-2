@@ -9,6 +9,20 @@ as a menu-bar agent with no Dock icon: press ⌘⇧V to pop the menu at the curs
 pick a clip, and it is pasted into the app you were working in. Snippets,
 JavaScript text actions, and folder-based backup of your settings come with it.
 
+## Screenshots
+
+#### Clipboard history and snippets, popped at the cursor
+
+![Clipboard history menu](docs/images/menu-history.png)
+
+#### Settings, in any of seven languages
+
+![General settings](docs/images/settings-general.png)
+
+#### Transform a clip with a built-in or your own JavaScript action
+
+![Actions and snippets](docs/images/actions-snippets.png)
+
 [![Download](https://img.shields.io/badge/download-latest-brightgreen?style=flat-square)](https://github.com/teddychan/clipmenu-2/releases/latest)
 ![Platform](https://img.shields.io/badge/platform-macOS-blue?style=flat-square)
 ![Requirements](https://img.shields.io/badge/requirements-macOS%2026%2B-fa4e49?style=flat-square)
@@ -17,6 +31,7 @@ JavaScript text actions, and folder-based backup of your settings come with it.
 
 ## Contents
 
+- [Screenshots](#screenshots)
 - [Requirements](#requirements)
 - [Install](#install)
 - [Features](#features)
