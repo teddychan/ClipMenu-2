@@ -22,6 +22,13 @@ nothing else — the release also carries a debug-only fix that no user could ev
   no user could hit it. Recorded here rather than in the What's New pane, which is for changes a
   user can observe.
 
+- **The app calls itself "ClipMenu 2" again.** `CFBundleName` had drifted to a bare "ClipMenu" —
+  the only Dragon app missing the version number Ice 2, Spectacle 2 and Yahoo! KeyKey 2 all carry,
+  even though the bundle's own filename (`ClipMenu 2.app`, what the Homebrew cask installs) already
+  had it. Visible in the menu bar tooltip, the Settings window title and the About pane.
+  `AppStore.folder`'s Application Support path stays the hardcoded literal "ClipMenu" it always
+  was, so no one's clipboard history or snippets move.
+
 ## 2.21.0 — 2026-08-18
 
 Retires the last Sparkle appcast mirror in the Dragon fleet. Nothing a user can observe changed —
