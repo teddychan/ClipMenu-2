@@ -111,31 +111,35 @@ import DragonKit
 
     @Test func contentHasDateAndSummary() {
         let content = WhatsNewConfig.content
-        #expect(content.date == "2026-08-18")
+        #expect(content.date == "2026-08-20")
         #expect(!content.summary.isEmpty)
     }
 
-    /// 2.21.0's notes: NO sections, the summary alone. The first ClipMenu release to take this
-    /// shape, and the assertion is inverted from every release before it, so it is deliberately
-    /// spelled out rather than deleted.
+    /// 2.21.1's notes: a `.fixed` section and a `.changed` section, one entry each — the first
+    /// ClipMenu release to carry two different section kinds together, so the shape is spelled
+    /// out rather than inferred from a single `#expect`.
     ///
-    /// One thing moved since 2.20.10 and it is a publish destination: `release.yml` stopped passing
-    /// `appcast_mirror_repo`, so the Sparkle appcast goes only to this repository (#92). No code in
-    /// the shipped app differs — `SUFeedURL` moved to the app-owned URL back in 2.20.4 — so there is
-    /// no honest entry to write. 2.20.10's entry would be FALSE here: the DragonKit pin does not
-    /// move this release. Reusing it to preserve the familiar one-section shape is the lie the
-    /// release gate exists to catch, which is why this test flips instead of the notes bending.
+    /// `.fixed` names the real user-facing change, inherited from the DragonKit 4.1.0 -> 4.1.1
+    /// pin bump (#94): Uninstall now refuses to run when it finds more than one copy of ClipMenu
+    /// on the Mac, because settings, the login item, support files and the Homebrew record are
+    /// keyed to the app's identity rather than its location, so a spare copy's uninstall could
+    /// otherwise destroy the real copy's data. `.changed` names the DragonKit bump itself — the
+    /// one further thing a user can observe is About's "Built with · DragonKit v4.1.1" row.
     ///
-    /// Empty is a supported shape. dragon-release-ci's tag-gate.sh check 6 accepts an explicit
-    /// maintenance-only statement in place of entries, and whats-new-export.py names the case
-    /// legitimate; the summary key carries the word both of them look for. It is reused verbatim
-    /// from 2.20.2 and still exactly true, so no new `.lproj` key enters this release.
+    /// DragonKit 4.1.1's other fix — a raw developer error reachable only from local Debug
+    /// builds — earns no entry here: no shipped copy could ever hit it, and inventing one would
+    /// be the lie the release gate exists to catch. It is recorded in CHANGELOG.md instead.
     ///
     /// Pinned per release alongside the WhatsNewConfig copy itself — the section shape IS the claim,
     /// so updating the notes has to update this, which is the point. The release gate checks that
-    /// the notes CHANGED; this checks that they changed to what was meant. A future release with
-    /// real user-facing content restores a section here and this assertion goes back the other way.
-    @Test func contentHasNoSections() {
-        #expect(WhatsNewConfig.content.sections.isEmpty)
+    /// the notes CHANGED; this checks that they changed to what was meant.
+    @Test func contentIsAFixedSectionThenAChangedSection() {
+        let sections = WhatsNewConfig.content.sections
+        #expect(sections.count == 2)
+        #expect(sections.map(\.kind) == [.fixed, .changed])
+        #expect(sections.map(\.entries.count) == [1, 1])
+        for entry in sections.flatMap(\.entries) {
+            #expect(!entry.isEmpty)
+        }
     }
 }

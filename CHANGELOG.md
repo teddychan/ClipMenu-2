@@ -5,6 +5,23 @@ Developer-facing notes for ClipMenu. User-facing release notes live in
 
 ## Unreleased
 
+## 2.21.1 — 2026-08-20
+
+One user-facing fix, inherited from a DragonKit dependency bump. The What's New pane names it and
+nothing else — the release also carries a debug-only fix that no user could ever see.
+
+- **Uninstall now refuses to run when more than one copy of ClipMenu is on the Mac** (#94,
+  DragonKit 4.1.0 → 4.1.1). Settings, the login item, support files and the Homebrew record are
+  all keyed to the app's identity rather than its location, so two copies share every one of them
+  and there is no way to tell whose is whose. Moving the running copy to the Trash was always
+  safe; uninstalling a spare copy was not; it could silently remove the settings belonging to the
+  copy actually in use. It now stops before removing anything and lists where the copies are.
+
+- **DragonKit 4.1.1 also fixes a raw developer error surfaced by Settings > Updates** (#94), but
+  only in local Debug builds — the real update checker was never reachable from a shipped copy, so
+  no user could hit it. Recorded here rather than in the What's New pane, which is for changes a
+  user can observe.
+
 ## 2.21.0 — 2026-08-18
 
 Retires the last Sparkle appcast mirror in the Dragon fleet. Nothing a user can observe changed —

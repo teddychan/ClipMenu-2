@@ -9,34 +9,40 @@ enum WhatsNewConfig {
         WhatsNewContent(
             // Version omitted on purpose: it defaults to CFBundleShortVersionString
             // and the kit adds the "v". The pane tracks the current build's notes.
-            date: "2026-08-18",
-            // 2.21.0 is the first ClipMenu release with NO sections at all, and the summary alone
-            // is the whole of the notes. One thing changed since 2.20.10 and it is a publish
-            // destination: `release.yml` stopped passing `appcast_mirror_repo`, so the Sparkle
-            // appcast now goes only to this repository (#92). That is the last appcast mirror in
-            // the Dragon fleet — ice-2 retired its at v2.15.0, yahoo-keykey-2 at v2.12.0.
+            date: "2026-08-20",
+            // One user-facing change, inherited from the DragonKit 4.1.0 -> 4.1.1 pin bump (#94):
+            // Uninstall now refuses to run when it finds more than one copy of ClipMenu on the
+            // Mac. Moving the running copy to the Trash was always safe, but settings, the login
+            // item, support files and the Homebrew record are all keyed to the app's identity
+            // rather than its location, so two copies share every one of them and there is no way
+            // to tell whose is whose — uninstalling a spare copy could wipe the settings belonging
+            // to the copy actually in use. `.fixed`, not `.changed`: something was broken (a spare
+            // copy could silently destroy the real copy's data), and now it cannot.
             //
-            // A user cannot observe it, in the strict sense that no code in the shipped app is
-            // different: `SUFeedURL` moved to the app-owned URL back in 2.20.4, and the mirror has
-            // only ever been a second copy of a feed nothing has read since. So there is no honest
-            // entry to write. 2.20.10's entry — "Updated the shared Dragon toolkit…" — would be
-            // FALSE here, because the DragonKit pin does not move this release, and reusing it to
-            // keep the familiar one-section shape is exactly the lie the gate exists to catch
-            // (2.20.2 refused the same temptation from the other direction).
+            // DragonKit 4.1.1 also carries a second fix — a raw developer error that
+            // Settings > Updates could surface — but that only ever reached local Debug builds,
+            // never a shipped copy, so no entry claims it here. Writing one anyway would be
+            // exactly the lie the release gate exists to catch (2.20.2 and 2.21.0 both refused the
+            // same temptation from either direction); it is recorded in CHANGELOG.md instead, which
+            // is where developer-facing fixes belong.
             //
-            // Empty is a supported shape, not a workaround. dragon-release-ci's tag-gate.sh check 6
-            // takes an explicit maintenance-only statement in place of entries, and
-            // whats-new-export.py calls that case legitimate in as many words; the gate on this
-            // file still moves, because the notes lost a section. The summary key is reused verbatim
-            // from 2.20.2 — it is still exactly true and already exists in all seven `.lproj` files,
-            // so no new key enters this release, and it carries the word the gate greps for.
+            // The `.changed` entry names the DragonKit bump itself, the same shape 2.20.10's did
+            // for its own pin move: the one thing a user can observe beyond the fix above is
+            // About's "Built with · DragonKit v4.1.1" row, and the entry claims exactly that.
             //
-            // Why a minor for an invisible change: the mirror could not be dropped on a 2.20.x
-            // patch. Copies still at 2.20.3 or older read the marketing site and only the site, and
-            // the site is GitHub Pages, which exposes no per-path traffic — so "when the last
-            // reader stops reading" is unobservable and a minor was chosen on 2026-08-11 as the
-            // measurable substitute. The full reasoning is in release.yml beside the removal.
-            summary: L("A maintenance release: internal updates only, with no changes to how ClipMenu works.")
+            // Three new keys enter the `.lproj` files this release — summary, fixed, changed — none
+            // of the earlier maintenance-release keys apply to a release with real user-facing
+            // content, so this is the first time since 2.20.10 the notes need fresh translations
+            // rather than reusing verbatim ones.
+            summary: L("A safety fix in Uninstall, inherited from the shared framework ClipMenu is built on. Your clipboard history and snippets are unchanged."),
+            sections: [
+                ChangeSection(kind: .fixed, entries: [
+                    L("Uninstall now stops if it finds more than one copy of ClipMenu on your Mac. Moving the copy you are running to the Trash was always safe, but your settings, login item and support files are stored under the app's identity rather than its location — so two copies share all of them, and there is no way to tell whose is whose. Uninstalling a spare copy could remove the settings belonging to the copy you actually use. It now stops before removing anything and lists where the copies are, so you can trash the ones you do not want and try again. If you have one copy, which is nearly everyone, nothing changes."),
+                ]),
+                ChangeSection(kind: .changed, entries: [
+                    L("Updated to DragonKit 4.1.1, the shared framework behind Settings, About, What's New and software updates. The fix above comes from it; none of those panes look or behave differently."),
+                ]),
+            ]
         )
     }
 }

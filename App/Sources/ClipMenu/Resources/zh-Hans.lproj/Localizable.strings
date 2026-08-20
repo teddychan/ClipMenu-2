@@ -291,3 +291,8 @@
 
 /* What's New (2.20.8) */
 "Finder's Get Info panel now shows ClipMenu's copyright, the same line the About pane shows." = "访达的“显示简介”现在会显示 ClipMenu 的版权声明，与关于面板中的一行相同。";
+
+/* What's New (2.21.1) */
+"A safety fix in Uninstall, inherited from the shared framework ClipMenu is built on. Your clipboard history and snippets are unchanged." = "卸载功能的一项安全修复，来自 ClipMenu 所基于的共享框架。你的剪贴板历史和片段功能没有变化。";
+"Uninstall now stops if it finds more than one copy of ClipMenu on your Mac. Moving the copy you are running to the Trash was always safe, but your settings, login item and support files are stored under the app's identity rather than its location — so two copies share all of them, and there is no way to tell whose is whose. Uninstalling a spare copy could remove the settings belonging to the copy you actually use. It now stops before removing anything and lists where the copies are, so you can trash the ones you do not want and try again. If you have one copy, which is nearly everyone, nothing changes." = "如果在你的 Mac 上发现不止一份 ClipMenu 副本，卸载现在会停止执行。把正在运行的这份副本移入废纸篓一直是安全的，但你的设置、登录项和支持文件都是按应用的身份而不是位置存储的——因此两份副本会共享全部这些内容，也无法分辨哪份是哪份。卸载多余的副本可能会删除你实际使用的那份副本的设置。现在它会在删除任何内容之前停止，并列出各份副本所在的位置，方便你先清理掉不需要的副本，再重新尝试。如果你只有一份副本——这是绝大多数人的情况——则不会有任何变化。";
+"Updated to DragonKit 4.1.1, the shared framework behind Settings, About, What's New and software updates. The fix above comes from it; none of those panes look or behave differently." = "更新到 DragonKit 4.1.1，这是支撑设置、关于、新功能和软件更新的共享框架。上面的修复正是来自它；这些面板的外观和行为都没有变化。";
