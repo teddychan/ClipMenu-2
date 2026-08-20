@@ -148,7 +148,7 @@ struct OnboardingView: View {
             accessibilityGranted: permissions.accessibility) {
         case .advance: return L("Continue")
         case .skip:    return L("Skip this step")
-        case .finish:  return L("Open ClipMenu")
+        case .finish:  return L("Open ClipMenu 2")
         }
     }
 
@@ -247,7 +247,7 @@ private struct PermissionsStep: View {
             if isAppStore {
                 StepHeader(symbol: "checkmark.shield",
                            title: L("No permissions needed"),
-                           subtitle: L("ClipMenu works the moment you continue."))
+                           subtitle: L("ClipMenu 2 works the moment you continue."))
                 Card {
                     HStack(alignment: .top, spacing: 12) {
                         Image(systemName: "checkmark.circle.fill")
@@ -269,7 +269,7 @@ private struct PermissionsStep: View {
             } else {
                 StepHeader(symbol: "accessibility",
                            title: L("Accessibility (optional)"),
-                           subtitle: L("Lets ClipMenu paste the item you pick straight into the app you're using."))
+                           subtitle: L("Lets ClipMenu 2 paste the item you pick straight into the app you're using."))
                 Card {
                     HStack(spacing: 12) {
                         Image(systemName: permissions.accessibility ? "checkmark.circle.fill" : "exclamationmark.circle.fill")
@@ -321,7 +321,7 @@ private struct HistoryStep: View {
         VStack(spacing: 20) {
             StepHeader(symbol: "clock.arrow.circlepath",
                        title: L("History essentials"),
-                       subtitle: L("Tune what ClipMenu remembers. Change any of it later in Settings."))
+                       subtitle: L("Tune what ClipMenu 2 remembers. Change any of it later in Settings."))
             Card {
                 row {
                     labelStack(L("Items to keep"), L("Oldest are dropped past this count."))
@@ -389,7 +389,7 @@ private struct FeaturesStep: View {
                     checkRow(isOn: $inputPasteCommand) {
                         VStack(alignment: .leading, spacing: 2) {
                             Text(L("Paste automatically after picking")).foregroundStyle(.white)
-                            Text(L("ClipMenu presses ⌘V for you.")).font(.system(size: 12)).foregroundStyle(OB.hint)
+                            Text(L("ClipMenu 2 presses ⌘V for you.")).font(.system(size: 12)).foregroundStyle(OB.hint)
                         }
                     }
                 }
@@ -444,7 +444,7 @@ private struct DoneStep: View {
         VStack(spacing: 20) {
             StepHeader(symbol: "checkmark.circle.fill", symbolColor: .green,
                        title: L("You're all set"),
-                       subtitle: L("ClipMenu is live in your menu bar."))
+                       subtitle: L("ClipMenu 2 is live in your menu bar."))
             Card {
                 VStack(spacing: 12) {
                     HStack(spacing: 6) {
@@ -452,7 +452,7 @@ private struct DoneStep: View {
                     }
                     Text(L("Open your clipboard history anytime."))
                         .font(.system(size: 14)).foregroundStyle(Color(white: 0.82))
-                    Text(L("You can also click the ClipMenu icon in the menu bar."))
+                    Text(L("You can also click the ClipMenu 2 icon in the menu bar."))
                         .font(.system(size: 13)).foregroundStyle(OB.hint)
                         .multilineTextAlignment(.center)
                 }

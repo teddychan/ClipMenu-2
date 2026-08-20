@@ -237,7 +237,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let appItem = NSMenuItem()
         mainMenu.addItem(appItem)
         let appMenu = NSMenu()
-        appMenu.addItem(withTitle: L("Quit ClipMenu"),
+        appMenu.addItem(withTitle: L("Quit ClipMenu 2"),
                         action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         appItem.submenu = appMenu
 
@@ -317,7 +317,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         guard !alreadyLoginItem, !suppressed else { return }
 
         let alert = NSAlert()
-        alert.messageText = L("Launch ClipMenu on system startup?")
+        alert.messageText = L("Launch ClipMenu 2 on system startup?")
         alert.informativeText = L("You can change this setting in the Preferences if you want.")
         alert.addButton(withTitle: L("Launch on system startup"))
         alert.addButton(withTitle: L("Don't Launch"))

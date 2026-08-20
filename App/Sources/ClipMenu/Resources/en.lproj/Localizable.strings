@@ -107,7 +107,7 @@
 "Clear History" = "Clear History";
 "Edit Snippets…" = "Edit Snippets…";
 "Preferences…" = "Preferences…";
-"Quit ClipMenu" = "Quit ClipMenu";
+"Quit ClipMenu 2" = "Quit ClipMenu 2";
 "Snippets" = "Snippets";
 "History" = "History";
 "(Image)" = "(Image)";
@@ -134,7 +134,7 @@
 "Select All" = "Select All";
 
 /* Login-item prompt */
-"Launch ClipMenu on system startup?" = "Launch ClipMenu on system startup?";
+"Launch ClipMenu 2 on system startup?" = "Launch ClipMenu 2 on system startup?";
 "You can change this setting in the Preferences if you want." = "You can change this setting in the Preferences if you want.";
 "Launch on system startup" = "Launch on system startup";
 "Don't Launch" = "Don't Launch";
@@ -185,8 +185,8 @@
 /* Auto-paste info popover (App Store build) */
 "About automatic paste" = "About automatic paste";
 "When you pick a clip, this version copies it to the clipboard. Mac App Store apps run in a sandbox and aren't allowed to paste into other apps for you, so you press ⌘V yourself." = "When you pick a clip, this version copies it to the clipboard. Mac App Store apps run in a sandbox and aren't allowed to paste into other apps for you, so you press ⌘V yourself.";
-"To paste automatically after selecting a clip, download ClipMenu from GitHub or install it with Homebrew." = "To paste automatically after selecting a clip, download ClipMenu from GitHub or install it with Homebrew.";
-"Download ClipMenu" = "Download ClipMenu";
+"To paste automatically after selecting a clip, download ClipMenu 2 from GitHub or install it with Homebrew." = "To paste automatically after selecting a clip, download ClipMenu 2 from GitHub or install it with Homebrew.";
+"Download ClipMenu 2" = "Download ClipMenu 2";
 
 "Clipboard History Export" = "Clipboard History Export";
 "Back up now" = "Back up now";
@@ -195,7 +195,7 @@
 "Backup saved." = "Backup saved.";
 "No changes since the last backup." = "No changes since the last backup.";
 "No backups yet." = "No backups yet.";
-"items in this folder aren't ClipMenu backups (for example, exports from an older app)." = "items in this folder aren't ClipMenu backups (for example, exports from an older app).";
+"items in this folder aren't ClipMenu 2 backups (for example, exports from an older app)." = "items in this folder aren't ClipMenu 2 backups (for example, exports from an older app).";
 "Restore this backup?" = "Restore this backup?";
 "This replaces all your current snippets and folders. Your current snippets are backed up first." = "This replaces all your current snippets and folders. Your current snippets are backed up first.";
 "folders" = "folders";
@@ -217,11 +217,11 @@
 "Open it with a shortcut" = "Open it with a shortcut";
 "Pop up your history anywhere, pick an item, done." = "Pop up your history anywhere, pick an item, done.";
 "No permissions needed" = "No permissions needed";
-"ClipMenu works the moment you continue." = "ClipMenu works the moment you continue.";
+"ClipMenu 2 works the moment you continue." = "ClipMenu 2 works the moment you continue.";
 "Your clipboard stays on this Mac" = "Your clipboard stays on this Mac";
 "History is stored locally. Nothing is uploaded or sent anywhere." = "History is stored locally. Nothing is uploaded or sent anywhere.";
 "Accessibility (optional)" = "Accessibility (optional)";
-"Lets ClipMenu paste the item you pick straight into the app you're using." = "Lets ClipMenu paste the item you pick straight into the app you're using.";
+"Lets ClipMenu 2 paste the item you pick straight into the app you're using." = "Lets ClipMenu 2 paste the item you pick straight into the app you're using.";
 "Accessibility" = "Accessibility";
 "Granted" = "Granted";
 "Not granted" = "Not granted";
@@ -229,7 +229,7 @@
 "Open System Settings…" = "Open System Settings…";
 "You can skip this and turn it on later in Settings." = "You can skip this and turn it on later in Settings.";
 "History essentials" = "History essentials";
-"Tune what ClipMenu remembers. Change any of it later in Settings." = "Tune what ClipMenu remembers. Change any of it later in Settings.";
+"Tune what ClipMenu 2 remembers. Change any of it later in Settings." = "Tune what ClipMenu 2 remembers. Change any of it later in Settings.";
 "Items to keep" = "Items to keep";
 "Oldest are dropped past this count." = "Oldest are dropped past this count.";
 "Keep history after quitting" = "Keep history after quitting";
@@ -239,18 +239,18 @@
 "Turn on what you want now. Everything is in Settings later." = "Turn on what you want now. Everything is in Settings later.";
 "Launch at login" = "Launch at login";
 "Paste automatically after picking" = "Paste automatically after picking";
-"ClipMenu presses ⌘V for you." = "ClipMenu presses ⌘V for you.";
+"ClipMenu 2 presses ⌘V for you." = "ClipMenu 2 presses ⌘V for you.";
 "Global shortcuts" = "Global shortcuts";
 "History menu" = "History menu";
 "Main menu" = "Main menu";
 "Snippets menu" = "Snippets menu";
 "You're all set" = "You're all set";
-"ClipMenu is live in your menu bar." = "ClipMenu is live in your menu bar.";
+"ClipMenu 2 is live in your menu bar." = "ClipMenu 2 is live in your menu bar.";
 "Open your clipboard history anytime." = "Open your clipboard history anytime.";
-"You can also click the ClipMenu icon in the menu bar." = "You can also click the ClipMenu icon in the menu bar.";
+"You can also click the ClipMenu 2 icon in the menu bar." = "You can also click the ClipMenu 2 icon in the menu bar.";
 "Continue" = "Continue";
 "Skip this step" = "Skip this step";
-"Open ClipMenu" = "Open ClipMenu";
+"Open ClipMenu 2" = "Open ClipMenu 2";
 "Back" = "Back";
 "Show Setup Guide…" = "Show Setup Guide…";
 
@@ -282,6 +282,5 @@
 "Finder's Get Info panel now shows ClipMenu's copyright, the same line the About pane shows." = "Finder's Get Info panel now shows ClipMenu's copyright, the same line the About pane shows.";
 
 /* What's New (2.21.1) */
-"app.whatsNew.summary" = "A safety fix in Uninstall, inherited from the shared framework ClipMenu 2 is built on. Your clipboard history and snippets are unchanged.";
-"app.whatsNew.fixed1" = "Uninstall now stops if it finds more than one copy of ClipMenu 2 on your Mac. Moving the copy you are running to the Trash was always safe, but your settings, login item and support files are stored under the app's identity rather than its location — so two copies share all of them, and there is no way to tell whose is whose. Uninstalling a spare copy could remove the settings belonging to the copy you actually use. It now stops before removing anything and lists where the copies are, so you can trash the ones you do not want and try again. If you have one copy, which is nearly everyone, nothing changes.";
-"app.whatsNew.changed1" = "Updated to DragonKit 4.1.1, the shared framework behind Settings, About, What's New and software updates. The fix above comes from it; none of those panes look or behave differently.";
+"app.whatsNew.summary" = "ClipMenu 2 now calls itself by the same name everywhere in its own interface. Your clipboard history, snippets and settings are unchanged.";
+"app.whatsNew.changed1" = "The app is called \"ClipMenu 2\" throughout. Twelve places in its own interface still said \"ClipMenu\" — Quit, Open, the onboarding screens, the launch-at-login prompt and the paste-permission hint among them — while the menu bar and About showed \"ClipMenu 2\". The app disagreed with itself about its own name. Every one of those now matches. References to the original ClipMenu by Naotaka Morimoto, which this app is a rebuild of, deliberately keep the original name.";

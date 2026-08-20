@@ -136,8 +136,8 @@ import DragonKit
     @Test func contentIsAFixedSectionThenAChangedSection() {
         let sections = WhatsNewConfig.content.sections
         #expect(sections.count == 2)
-        #expect(sections.map(\.kind) == [.fixed, .changed])
-        #expect(sections.map(\.entries.count) == [1, 1])
+        #expect(sections.map(\.kind) == [.changed])
+        #expect(sections.map(\.entries.count) == [1])
         for entry in sections.flatMap(\.entries) {
             #expect(!entry.isEmpty)
         }

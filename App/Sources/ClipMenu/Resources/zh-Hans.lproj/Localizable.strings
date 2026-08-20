@@ -106,7 +106,7 @@
 "Clear History" = "清除历史";
 "Edit Snippets…" = "编辑片段…";
 "Preferences…" = "偏好设置…";
-"Quit ClipMenu" = "退出 ClipMenu";
+"Quit ClipMenu 2" = "退出 ClipMenu 2";
 "Snippets" = "片段";
 "History" = "历史";
 "(Image)" = "（图片）";
@@ -133,7 +133,7 @@
 "Select All" = "全选";
 
 /* Login-item prompt */
-"Launch ClipMenu on system startup?" = "在系统启动时启动 ClipMenu？";
+"Launch ClipMenu 2 on system startup?" = "在系统启动时启动 ClipMenu 2？";
 "You can change this setting in the Preferences if you want." = "您可以稍后在偏好设置中更改此设置。";
 "Launch on system startup" = "在系统启动时启动";
 "Don't Launch" = "不启动";
@@ -184,8 +184,8 @@
 /* Auto-paste info popover (App Store build) */
 "About automatic paste" = "关于自动粘贴";
 "When you pick a clip, this version copies it to the clipboard. Mac App Store apps run in a sandbox and aren't allowed to paste into other apps for you, so you press ⌘V yourself." = "选择一个条目时，此版本会将其复制到剪贴板。Mac App Store 应用在沙盒中运行，无法替你粘贴到其他应用，因此请自行按 ⌘V。";
-"To paste automatically after selecting a clip, download ClipMenu from GitHub or install it with Homebrew." = "若要在选择条目后自动粘贴，请从 GitHub 下载 ClipMenu 或使用 Homebrew 安装。";
-"Download ClipMenu" = "下载 ClipMenu";
+"To paste automatically after selecting a clip, download ClipMenu 2 from GitHub or install it with Homebrew." = "若要在选择条目后自动粘贴，请从 GitHub 下载 ClipMenu 2 或使用 Homebrew 安装。";
+"Download ClipMenu 2" = "下载 ClipMenu 2";
 
 "Clipboard History Export" = "剪贴板历史导出";
 "Back up now" = "立即备份";
@@ -194,7 +194,7 @@
 "Backup saved." = "备份已保存。";
 "No changes since the last backup." = "自上次备份以来没有更改。";
 "No backups yet." = "暂无备份。";
-"items in this folder aren't ClipMenu backups (for example, exports from an older app)." = "个项目不是 ClipMenu 备份（例如，来自旧版应用的导出文件）。";
+"items in this folder aren't ClipMenu 2 backups (for example, exports from an older app)." = "个项目不是 ClipMenu 2 备份（例如，来自旧版应用的导出文件）。";
 "Restore this backup?" = "要恢复此备份吗？";
 "This replaces all your current snippets and folders. Your current snippets are backed up first." = "这将替换您当前所有的片段和文件夹。您当前的片段会先备份。";
 "folders" = "个文件夹";
@@ -216,11 +216,11 @@
 "Open it with a shortcut" = "用快捷键打开";
 "Pop up your history anywhere, pick an item, done." = "在任意位置弹出历史，选中一项即可。";
 "No permissions needed" = "无需任何权限";
-"ClipMenu works the moment you continue." = "继续后 ClipMenu 立即可用。";
+"ClipMenu 2 works the moment you continue." = "继续后 ClipMenu 2 立即可用。";
 "Your clipboard stays on this Mac" = "你的剪贴板只保留在这台 Mac 上";
 "History is stored locally. Nothing is uploaded or sent anywhere." = "历史保存在本地，不会上传或发送到任何地方。";
 "Accessibility (optional)" = "辅助功能（可选）";
-"Lets ClipMenu paste the item you pick straight into the app you're using." = "让 ClipMenu 将你选中的项目直接粘贴到正在使用的应用中。";
+"Lets ClipMenu 2 paste the item you pick straight into the app you're using." = "让 ClipMenu 2 将你选中的项目直接粘贴到正在使用的应用中。";
 "Accessibility" = "辅助功能";
 "Granted" = "已授权";
 "Not granted" = "未授权";
@@ -228,7 +228,7 @@
 "Open System Settings…" = "打开系统设置…";
 "You can skip this and turn it on later in Settings." = "你可以跳过此步骤，稍后在设置中开启。";
 "History essentials" = "历史基本设置";
-"Tune what ClipMenu remembers. Change any of it later in Settings." = "调整 ClipMenu 记录的内容，稍后可在设置中更改。";
+"Tune what ClipMenu 2 remembers. Change any of it later in Settings." = "调整 ClipMenu 2 记录的内容，稍后可在设置中更改。";
 "Items to keep" = "保留的项目数";
 "Oldest are dropped past this count." = "超过此数量后将删除最旧的项目。";
 "Keep history after quitting" = "退出后保留历史";
@@ -238,18 +238,18 @@
 "Turn on what you want now. Everything is in Settings later." = "现在开启你想要的功能，所有项目稍后都在设置中。";
 "Launch at login" = "登录时启动";
 "Paste automatically after picking" = "选取后自动粘贴";
-"ClipMenu presses ⌘V for you." = "ClipMenu 会替你按下 ⌘V。";
+"ClipMenu 2 presses ⌘V for you." = "ClipMenu 2 会替你按下 ⌘V。";
 "Global shortcuts" = "全局快捷键";
 "History menu" = "历史菜单";
 "Main menu" = "主菜单";
 "Snippets menu" = "片段菜单";
 "You're all set" = "全部就绪";
-"ClipMenu is live in your menu bar." = "ClipMenu 已在你的菜单栏中运行。";
+"ClipMenu 2 is live in your menu bar." = "ClipMenu 2 已在你的菜单栏中运行。";
 "Open your clipboard history anytime." = "随时打开你的剪贴板历史。";
-"You can also click the ClipMenu icon in the menu bar." = "你也可以点按菜单栏中的 ClipMenu 图标。";
+"You can also click the ClipMenu 2 icon in the menu bar." = "你也可以点按菜单栏中的 ClipMenu 2 图标。";
 "Continue" = "继续";
 "Skip this step" = "跳过此步骤";
-"Open ClipMenu" = "打开 ClipMenu";
+"Open ClipMenu 2" = "打开 ClipMenu 2";
 "Back" = "返回";
 "Show Setup Guide…" = "显示设置向导…";
 
@@ -293,6 +293,5 @@
 "Finder's Get Info panel now shows ClipMenu's copyright, the same line the About pane shows." = "访达的“显示简介”现在会显示 ClipMenu 的版权声明，与关于面板中的一行相同。";
 
 /* What's New (2.21.1) */
-"app.whatsNew.summary" = "卸载功能的一项安全修复，来自 ClipMenu 2 所基于的共享框架。你的剪贴板历史和片段功能没有变化。";
-"app.whatsNew.fixed1" = "如果在你的 Mac 上发现不止一份 ClipMenu 2 副本，卸载现在会停止执行。把正在运行的这份副本移入废纸篓一直是安全的，但你的设置、登录项和支持文件都是按应用的身份而不是位置存储的——因此两份副本会共享全部这些内容，也无法分辨哪份是哪份。卸载多余的副本可能会删除你实际使用的那份副本的设置。现在它会在删除任何内容之前停止，并列出各份副本所在的位置，方便你先清理掉不需要的副本，再重新尝试。如果你只有一份副本——这是绝大多数人的情况——则不会有任何变化。";
-"app.whatsNew.changed1" = "更新到 DragonKit 4.1.1，这是支撑设置、关于、新功能和软件更新的共享框架。上面的修复正是来自它；这些面板的外观和行为都没有变化。";
+"app.whatsNew.summary" = "ClipMenu 2 现在在应用界面各处都使用同一个名称。你的剪贴板历史、片段与设置都没有变化。";
+"app.whatsNew.changed1" = "应用在各处都称自己为“ClipMenu 2”。菜单栏与“关于”显示的是“ClipMenu 2”，但退出、打开、初次设置界面、开机启动询问、粘贴权限说明等 12 处仍写着“ClipMenu”，应用对自己的名称前后不一致。现在这些都已统一。对 Naotaka Morimoto 所写、本应用据以重写的原版 ClipMenu 的指称，仍有意保留原名。";

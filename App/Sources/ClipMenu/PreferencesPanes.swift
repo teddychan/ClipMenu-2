@@ -321,7 +321,7 @@ struct RestoreVersionsView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(L("No backups yet.")).foregroundStyle(.secondary)
                     if otherFiles > 0 {
-                        Text("\(otherFiles) " + L("items in this folder aren't ClipMenu backups (for example, exports from an older app)."))
+                        Text("\(otherFiles) " + L("items in this folder aren't ClipMenu 2 backups (for example, exports from an older app)."))
                             .font(.caption).foregroundStyle(.secondary)
                     }
                 }
@@ -912,10 +912,10 @@ private struct AutoPasteInfoPopover: View {
                 .font(.headline)
             Text(L("When you pick a clip, this version copies it to the clipboard. Mac App Store apps run in a sandbox and aren't allowed to paste into other apps for you, so you press ⌘V yourself."))
                 .fixedSize(horizontal: false, vertical: true)
-            Text(L("To paste automatically after selecting a clip, download ClipMenu from GitHub or install it with Homebrew."))
+            Text(L("To paste automatically after selecting a clip, download ClipMenu 2 from GitHub or install it with Homebrew."))
                 .fixedSize(horizontal: false, vertical: true)
                 .foregroundStyle(.secondary)
-            Link(L("Download ClipMenu"), destination: Self.downloadURL)
+            Link(L("Download ClipMenu 2"), destination: Self.downloadURL)
         }
         .padding()
         .frame(width: 320)

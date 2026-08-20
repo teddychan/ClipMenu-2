@@ -106,7 +106,7 @@
 "Clear History" = "履歴を消去";
 "Edit Snippets…" = "スニペットを編集…";
 "Preferences…" = "環境設定…";
-"Quit ClipMenu" = "ClipMenu を終了";
+"Quit ClipMenu 2" = "ClipMenu 2 を終了";
 "Snippets" = "スニペット";
 "History" = "履歴";
 "(Image)" = "（画像）";
@@ -133,7 +133,7 @@
 "Select All" = "すべてを選択";
 
 /* Login-item prompt */
-"Launch ClipMenu on system startup?" = "システム起動時に ClipMenu を起動しますか？";
+"Launch ClipMenu 2 on system startup?" = "システム起動時に ClipMenu 2 を起動しますか？";
 "You can change this setting in the Preferences if you want." = "この設定は後で環境設定で変更できます。";
 "Launch on system startup" = "システム起動時に起動";
 "Don't Launch" = "起動しない";
@@ -184,8 +184,8 @@
 /* Auto-paste info popover (App Store build) */
 "About automatic paste" = "自動ペーストについて";
 "When you pick a clip, this version copies it to the clipboard. Mac App Store apps run in a sandbox and aren't allowed to paste into other apps for you, so you press ⌘V yourself." = "クリップを選ぶと、このバージョンはそれをクリップボードにコピーします。Mac App Store のアプリはサンドボックスで動作し、他のアプリへ代わりにペーストすることが許可されていないため、⌘V はご自身で押してください。";
-"To paste automatically after selecting a clip, download ClipMenu from GitHub or install it with Homebrew." = "クリップを選択した後に自動でペーストするには、GitHub から ClipMenu をダウンロードするか、Homebrew でインストールしてください。";
-"Download ClipMenu" = "ClipMenu をダウンロード";
+"To paste automatically after selecting a clip, download ClipMenu 2 from GitHub or install it with Homebrew." = "クリップを選択した後に自動でペーストするには、GitHub から ClipMenu 2 をダウンロードするか、Homebrew でインストールしてください。";
+"Download ClipMenu 2" = "ClipMenu 2 をダウンロード";
 
 "Clipboard History Export" = "クリップボード履歴の書き出し";
 "Back up now" = "今すぐバックアップ";
@@ -194,7 +194,7 @@
 "Backup saved." = "バックアップを保存しました。";
 "No changes since the last backup." = "前回のバックアップから変更はありません。";
 "No backups yet." = "まだバックアップがありません。";
-"items in this folder aren't ClipMenu backups (for example, exports from an older app)." = "個の項目は ClipMenu のバックアップではありません（古いアプリからの書き出しなど）。";
+"items in this folder aren't ClipMenu 2 backups (for example, exports from an older app)." = "個の項目は ClipMenu 2 のバックアップではありません（古いアプリからの書き出しなど）。";
 "Restore this backup?" = "このバックアップを復元しますか？";
 "This replaces all your current snippets and folders. Your current snippets are backed up first." = "現在のすべてのスニペットとフォルダを置き換えます。現在のスニペットは先にバックアップされます。";
 "folders" = "フォルダ";
@@ -216,11 +216,11 @@
 "Open it with a shortcut" = "ショートカットで開く";
 "Pop up your history anywhere, pick an item, done." = "どこでも履歴を表示し、項目を選ぶだけ。";
 "No permissions needed" = "権限は不要";
-"ClipMenu works the moment you continue." = "続けるとすぐに ClipMenu が使えます。";
+"ClipMenu 2 works the moment you continue." = "続けるとすぐに ClipMenu 2 が使えます。";
 "Your clipboard stays on this Mac" = "クリップボードはこの Mac に保存されます";
 "History is stored locally. Nothing is uploaded or sent anywhere." = "履歴はローカルに保存されます。どこにもアップロードや送信はされません。";
 "Accessibility (optional)" = "アクセシビリティ（任意）";
-"Lets ClipMenu paste the item you pick straight into the app you're using." = "選んだ項目を、使用中のアプリに ClipMenu が直接ペーストできるようにします。";
+"Lets ClipMenu 2 paste the item you pick straight into the app you're using." = "選んだ項目を、使用中のアプリに ClipMenu 2 が直接ペーストできるようにします。";
 "Accessibility" = "アクセシビリティ";
 "Granted" = "許可済み";
 "Not granted" = "未許可";
@@ -228,7 +228,7 @@
 "Open System Settings…" = "システム設定を開く…";
 "You can skip this and turn it on later in Settings." = "これはスキップして、後で設定でオンにできます。";
 "History essentials" = "履歴の基本設定";
-"Tune what ClipMenu remembers. Change any of it later in Settings." = "ClipMenu が記憶する内容を調整できます。後で設定で変更できます。";
+"Tune what ClipMenu 2 remembers. Change any of it later in Settings." = "ClipMenu 2 が記憶する内容を調整できます。後で設定で変更できます。";
 "Items to keep" = "保持する項目数";
 "Oldest are dropped past this count." = "この数を超えると古いものから削除されます。";
 "Keep history after quitting" = "終了後も履歴を保持";
@@ -238,18 +238,18 @@
 "Turn on what you want now. Everything is in Settings later." = "今すぐ使いたい機能をオンに。すべて後で設定から変更できます。";
 "Launch at login" = "ログイン時に起動";
 "Paste automatically after picking" = "選択後に自動でペースト";
-"ClipMenu presses ⌘V for you." = "ClipMenu が代わりに ⌘V を押します。";
+"ClipMenu 2 presses ⌘V for you." = "ClipMenu 2 が代わりに ⌘V を押します。";
 "Global shortcuts" = "グローバルショートカット";
 "History menu" = "履歴メニュー";
 "Main menu" = "メインメニュー";
 "Snippets menu" = "スニペットメニュー";
 "You're all set" = "準備完了";
-"ClipMenu is live in your menu bar." = "ClipMenu がメニューバーで動作中です。";
+"ClipMenu 2 is live in your menu bar." = "ClipMenu 2 がメニューバーで動作中です。";
 "Open your clipboard history anytime." = "いつでもクリップボード履歴を開けます。";
-"You can also click the ClipMenu icon in the menu bar." = "メニューバーの ClipMenu アイコンをクリックしても開けます。";
+"You can also click the ClipMenu 2 icon in the menu bar." = "メニューバーの ClipMenu 2 アイコンをクリックしても開けます。";
 "Continue" = "続ける";
 "Skip this step" = "このステップをスキップ";
-"Open ClipMenu" = "ClipMenu を開く";
+"Open ClipMenu 2" = "ClipMenu 2 を開く";
 "Back" = "戻る";
 "Show Setup Guide…" = "設定ガイドを表示…";
 
@@ -293,6 +293,5 @@
 "Finder's Get Info panel now shows ClipMenu's copyright, the same line the About pane shows." = "Finder の「情報を見る」に、「情報」パネルと同じ ClipMenu の著作権表示が表示されるようになりました。";
 
 /* What's New (2.21.1) */
-"app.whatsNew.summary" = "アンインストールの安全性に関する修正です。ClipMenu 2 のビルドに使われている共有フレームワークに由来します。クリップボード履歴とスニペットの使い方は変わりません。";
-"app.whatsNew.fixed1" = "Mac 上に ClipMenu 2 のコピーが 2 つ以上見つかった場合、アンインストールは実行前に停止するようになりました。実行中のコピーをゴミ箱に移動すること自体は常に安全でしたが、設定・ログイン項目・サポートファイルはアプリの場所ではなく識別情報に紐づけて保存されているため、2 つのコピーはこれらすべてを共有してしまい、どちらのものか区別できません。予備のコピーをアンインストールすると、実際に使っているコピーの設定が削除されてしまう可能性がありました。そこで、何かを削除する前に停止し、コピーがどこにあるかを一覧表示するようになりました。不要なコピーをゴミ箱に移動してから、もう一度お試しください。コピーが 1 つしかない場合（ほとんどの方がそうです）は、何も変わりません。";
-"app.whatsNew.changed1" = "DragonKit 4.1.1 に更新しました。これは「設定」「情報」「新機能」やソフトウェアアップデートを支える共有フレームワークです。上記の修正はここから来ていますが、これらのパネルの見た目や動作は変わりません。";
+"app.whatsNew.summary" = "ClipMenu 2 のアプリ内表記が、すべて同じ名称に揃いました。クリップボード履歴、スニペット、設定は変わりません。";
+"app.whatsNew.changed1" = "アプリの名称がすべて「ClipMenu 2」になりました。メニューバーと「このアプリについて」は「ClipMenu 2」と表示していたのに、終了・開く・初回設定画面・ログイン時に起動するかの確認・貼り付け権限の説明など 12 か所は「ClipMenu」のままで、アプリが自分の名前について食い違っていました。これらすべてを揃えました。このアプリが作り直しの元とした Naotaka Morimoto 氏によるオリジナルの ClipMenu への言及は、意図的に元の名称のままにしています。";
