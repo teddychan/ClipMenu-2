@@ -67,8 +67,9 @@ import DragonKit
         let saved = snapshot(); defer { restore(saved) }
         let sut = wizard(on: .welcome)
 
-        // App name is a literal (not localized) hero title.
-        #expect(try sut.inspect().find(text: "ClipMenu").string() == "ClipMenu")
+        // Hero title reads the bundle name rather than a literal, so it cannot drift from
+        // whatever the build named the app. Outside a configured bundle that is the fallback.
+        #expect(try sut.inspect().find(text: AppInfo.displayName).string() == AppInfo.displayName)
         _ = try sut.inspect().find(text: L("Your clipboard history and snippets, one keystroke away."))
         _ = try sut.inspect().find(text: L("Language"))
 
@@ -100,7 +101,7 @@ import DragonKit
 
         // Header + hint are shown regardless of the machine's grant state.
         _ = try sut.inspect().find(text: L("Accessibility (optional)"))
-        _ = try sut.inspect().find(text: L("Lets ClipMenu paste the item you pick straight into the app you're using."))
+        _ = try sut.inspect().find(text: L("Lets ClipMenu 2 paste the item you pick straight into the app you're using."))
         _ = try sut.inspect().find(text: L("Accessibility"))
         _ = try sut.inspect().find(text: L("You can skip this and turn it on later in Settings."))
         #expect(try hasSymbol(sut, "accessibility"))
@@ -114,7 +115,7 @@ import DragonKit
         let sut = wizard(on: .history)
 
         _ = try sut.inspect().find(text: L("History essentials"))
-        _ = try sut.inspect().find(text: L("Tune what ClipMenu remembers. Change any of it later in Settings."))
+        _ = try sut.inspect().find(text: L("Tune what ClipMenu 2 remembers. Change any of it later in Settings."))
         _ = try sut.inspect().find(text: L("Items to keep"))
         _ = try sut.inspect().find(text: L("Keep history after quitting"))
         _ = try sut.inspect().find(text: L("Store copied images"))
@@ -148,7 +149,7 @@ import DragonKit
         let sut = wizard(on: .done)
 
         _ = try sut.inspect().find(text: L("You're all set"))
-        _ = try sut.inspect().find(text: L("ClipMenu is live in your menu bar."))
+        _ = try sut.inspect().find(text: L("ClipMenu 2 is live in your menu bar."))
         _ = try sut.inspect().find(text: L("Open your clipboard history anytime."))
         // The paste-history key combo, rendered as three keycaps.
         _ = try sut.inspect().find(text: "⌘")
@@ -156,7 +157,7 @@ import DragonKit
         _ = try sut.inspect().find(text: "V")
         #expect(try hasSymbol(sut, "checkmark.circle.fill"))
         // Last step's footer primary finishes the wizard.
-        _ = try sut.inspect().find(button: L("Open ClipMenu"))
+        _ = try sut.inspect().find(button: L("Open ClipMenu 2"))
     }
 
     // MARK: Footer shared across steps
@@ -168,9 +169,9 @@ import DragonKit
             let sut = wizard(on: step)
             #expect((try? sut.inspect().find(button: L("Continue"))) != nil)
         }
-        // Done finishes → "Open ClipMenu".
+        // Done finishes → "Open ClipMenu 2".
         let done = wizard(on: .done)
-        #expect((try? done.inspect().find(button: L("Open ClipMenu"))) != nil)
+        #expect((try? done.inspect().find(button: L("Open ClipMenu 2"))) != nil)
     }
 
     @Test func footerBackButtonEnabledPastWelcome() throws {

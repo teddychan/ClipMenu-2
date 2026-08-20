@@ -115,29 +115,25 @@ import DragonKit
         #expect(!content.summary.isEmpty)
     }
 
-    /// 2.21.1's notes: a `.fixed` section and a `.changed` section, one entry each — the first
-    /// ClipMenu release to carry two different section kinds together, so the shape is spelled
-    /// out rather than inferred from a single `#expect`.
+    /// 2.21.2's notes: ONE `.changed` section with one entry — the app now calls itself
+    /// "ClipMenu 2" throughout its own interface, where twelve strings still said "ClipMenu"
+    /// while the menu bar and About said otherwise.
     ///
-    /// `.fixed` names the real user-facing change, inherited from the DragonKit 4.1.0 -> 4.1.1
-    /// pin bump (#94): Uninstall now refuses to run when it finds more than one copy of ClipMenu
-    /// on the Mac, because settings, the login item, support files and the Homebrew record are
-    /// keyed to the app's identity rather than its location, so a spare copy's uninstall could
-    /// otherwise destroy the real copy's data. `.changed` names the DragonKit bump itself — the
-    /// one further thing a user can observe is About's "Built with · DragonKit v4.1.1" row.
+    /// `.changed`, not `.fixed`: nothing was broken. Not `.improved` either, which would dress a
+    /// consistency correction up as an enhancement.
     ///
-    /// DragonKit 4.1.1's other fix — a raw developer error reachable only from local Debug
-    /// builds — earns no entry here: no shipped copy could ever hit it, and inventing one would
-    /// be the lie the release gate exists to catch. It is recorded in CHANGELOG.md instead.
+    /// 2.21.1's `.fixed` uninstall entry is deliberately NOT carried forward. It shipped in
+    /// 2.21.1, and repeating it would tell a user the same fix landed twice — the class of
+    /// unearned claim the release gate exists to catch, in the half of the notes it cannot read.
     ///
     /// Pinned per release alongside the WhatsNewConfig copy itself — the section shape IS the claim,
     /// so updating the notes has to update this, which is the point. The release gate checks that
     /// the notes CHANGED; this checks that they changed to what was meant.
-    @Test func contentIsAFixedSectionThenAChangedSection() {
+    @Test func contentIsASingleChangedSection() {
         let sections = WhatsNewConfig.content.sections
-        #expect(sections.count == 2)
-        #expect(sections.map(\.kind) == [.fixed, .changed])
-        #expect(sections.map(\.entries.count) == [1, 1])
+        #expect(sections.count == 1)
+        #expect(sections.map(\.kind) == [.changed])
+        #expect(sections.map(\.entries.count) == [1])
         for entry in sections.flatMap(\.entries) {
             #expect(!entry.isEmpty)
         }

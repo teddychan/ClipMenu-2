@@ -5,6 +5,32 @@ Developer-facing notes for ClipMenu. User-facing release notes live in
 
 ## Unreleased
 
+## 2.21.2 — 2026-08-20
+
+The app agrees with itself about its own name.
+
+### Changed
+- **Twelve user-facing strings renamed "ClipMenu" → "ClipMenu 2".** 2.21.1 set `CFBundleName`
+  to "ClipMenu 2" and stopped there, so the menu bar and About said one name while Quit, Open,
+  the onboarding screens, the launch-at-login prompt, the paste-permission hint and the backup
+  folder warning said another. All twelve are `L()` call sites; the dead What's New strings from
+  earlier releases were left alone, and `AboutConfig`'s credit to Naotaka Morimoto's original
+  ClipMenu deliberately keeps the original name.
+
+  Because this app localizes with **the English sentence as the localization key**, each rename
+  moved the key as well as the text — so the Swift call site and all seven `.strings` files had
+  to change in lockstep or the six translations would have orphaned. Verified after the fact by
+  diffing every live `L(…ClipMenu…)` call site against `en.lproj`'s key set: zero unresolved.
+  This coupling is the reason the fleet is moving off English-as-key.
+
+- **`AppInfo.displayName`'s fallback is now "ClipMenu 2".** It read "ClipMenu" while
+  `MainMenuController.canonicalName`'s equivalent fallback read "ClipMenu 2" — a documented
+  inconsistency whose own comment pointed at it ("whose fallback drops the \"2\""). Only reachable
+  outside a configured bundle, e.g. `swift run`.
+
+- 2.21.1's `.fixed` uninstall entry is **dropped** from What's New rather than carried forward.
+  It shipped in 2.21.1; repeating it would tell a user the same fix landed twice.
+
 ## 2.21.1 — 2026-08-20
 
 One user-facing fix, inherited from a DragonKit dependency bump. The What's New pane names it and

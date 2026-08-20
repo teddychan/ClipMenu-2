@@ -9,14 +9,14 @@ import DragonKit
 /// (status-item tooltip, Settings window title) consistent with whatever the
 /// build named the app, without duplicating the version→name rule.
 ///
-/// Falls back to CFBundleName, then a bare "ClipMenu", when run outside a
+/// Falls back to CFBundleName, then a bare "ClipMenu 2", when run outside a
 /// configured bundle (e.g. `swift run`).
 enum AppInfo {
     static var displayName: String {
         let info = Bundle.main.infoDictionary
         return (info?["CFBundleDisplayName"] as? String)
             ?? (info?["CFBundleName"] as? String)
-            ?? "ClipMenu"
+            ?? "ClipMenu 2"
     }
 
     /// Marketing version, e.g. "2.2.1" (CFBundleShortVersionString).

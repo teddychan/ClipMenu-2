@@ -106,7 +106,7 @@
 "Clear History" = "Borrar historial";
 "Edit Snippets…" = "Editar fragmentos…";
 "Preferences…" = "Preferencias…";
-"Quit ClipMenu" = "Salir de ClipMenu";
+"Quit ClipMenu 2" = "Salir de ClipMenu 2";
 "Snippets" = "Fragmentos";
 "History" = "Historial";
 "(Image)" = "(Imagen)";
@@ -133,7 +133,7 @@
 "Select All" = "Seleccionar todo";
 
 /* Login-item prompt */
-"Launch ClipMenu on system startup?" = "¿Abrir ClipMenu al iniciar el sistema?";
+"Launch ClipMenu 2 on system startup?" = "¿Abrir ClipMenu 2 al iniciar el sistema?";
 "You can change this setting in the Preferences if you want." = "Puedes cambiar este ajuste más tarde en las Preferencias.";
 "Launch on system startup" = "Abrir al iniciar el sistema";
 "Don't Launch" = "No abrir";
@@ -184,8 +184,8 @@
 /* Auto-paste info popover (App Store build) */
 "About automatic paste" = "Acerca del pegado automático";
 "When you pick a clip, this version copies it to the clipboard. Mac App Store apps run in a sandbox and aren't allowed to paste into other apps for you, so you press ⌘V yourself." = "Cuando eliges un elemento, esta versión lo copia al portapapeles. Las apps del Mac App Store se ejecutan en un entorno aislado y no pueden pegar en otras apps por ti, así que pulsas ⌘V tú mismo.";
-"To paste automatically after selecting a clip, download ClipMenu from GitHub or install it with Homebrew." = "Para pegar automáticamente tras seleccionar un elemento, descarga ClipMenu desde GitHub o instálalo con Homebrew.";
-"Download ClipMenu" = "Descargar ClipMenu";
+"To paste automatically after selecting a clip, download ClipMenu 2 from GitHub or install it with Homebrew." = "Para pegar automáticamente tras seleccionar un elemento, descarga ClipMenu 2 desde GitHub o instálalo con Homebrew.";
+"Download ClipMenu 2" = "Descargar ClipMenu 2";
 
 "Clipboard History Export" = "Exportar historial del portapapeles";
 "Back up now" = "Hacer copia ahora";
@@ -194,7 +194,7 @@
 "Backup saved." = "Copia guardada.";
 "No changes since the last backup." = "Sin cambios desde la última copia.";
 "No backups yet." = "Aún no hay copias.";
-"items in this folder aren't ClipMenu backups (for example, exports from an older app)." = "elementos de esta carpeta no son copias de seguridad de ClipMenu (por ejemplo, exportaciones de una app anterior).";
+"items in this folder aren't ClipMenu 2 backups (for example, exports from an older app)." = "elementos de esta carpeta no son copias de seguridad de ClipMenu 2 (por ejemplo, exportaciones de una app anterior).";
 "Restore this backup?" = "¿Restaurar esta copia?";
 "This replaces all your current snippets and folders. Your current snippets are backed up first." = "Esto reemplaza todos tus fragmentos y carpetas actuales. Tus fragmentos actuales se respaldan primero.";
 "folders" = "carpetas";
@@ -216,11 +216,11 @@
 "Open it with a shortcut" = "Ábrelo con un atajo";
 "Pop up your history anywhere, pick an item, done." = "Abre tu historial en cualquier lugar, elige un elemento y listo.";
 "No permissions needed" = "No se necesitan permisos";
-"ClipMenu works the moment you continue." = "ClipMenu funciona en cuanto continúas.";
+"ClipMenu 2 works the moment you continue." = "ClipMenu 2 funciona en cuanto continúas.";
 "Your clipboard stays on this Mac" = "Tu portapapeles permanece en este Mac";
 "History is stored locally. Nothing is uploaded or sent anywhere." = "El historial se guarda localmente. No se sube ni se envía nada a ningún sitio.";
 "Accessibility (optional)" = "Accesibilidad (opcional)";
-"Lets ClipMenu paste the item you pick straight into the app you're using." = "Permite que ClipMenu pegue el elemento que elijas directamente en la app que estés usando.";
+"Lets ClipMenu 2 paste the item you pick straight into the app you're using." = "Permite que ClipMenu 2 pegue el elemento que elijas directamente en la app que estés usando.";
 "Accessibility" = "Accesibilidad";
 "Granted" = "Concedido";
 "Not granted" = "No concedido";
@@ -228,7 +228,7 @@
 "Open System Settings…" = "Abrir Ajustes del Sistema…";
 "You can skip this and turn it on later in Settings." = "Puedes omitir esto y activarlo más tarde en Ajustes.";
 "History essentials" = "Lo esencial del historial";
-"Tune what ClipMenu remembers. Change any of it later in Settings." = "Ajusta lo que ClipMenu recuerda. Puedes cambiarlo más tarde en Ajustes.";
+"Tune what ClipMenu 2 remembers. Change any of it later in Settings." = "Ajusta lo que ClipMenu 2 recuerda. Puedes cambiarlo más tarde en Ajustes.";
 "Items to keep" = "Elementos que conservar";
 "Oldest are dropped past this count." = "Los más antiguos se eliminan al superar esta cantidad.";
 "Keep history after quitting" = "Conservar el historial al salir";
@@ -238,18 +238,18 @@
 "Turn on what you want now. Everything is in Settings later." = "Activa lo que quieras ahora. Todo está en Ajustes después.";
 "Launch at login" = "Abrir al iniciar sesión";
 "Paste automatically after picking" = "Pegar automáticamente al elegir";
-"ClipMenu presses ⌘V for you." = "ClipMenu pulsa ⌘V por ti.";
+"ClipMenu 2 presses ⌘V for you." = "ClipMenu 2 pulsa ⌘V por ti.";
 "Global shortcuts" = "Atajos globales";
 "History menu" = "Menú de historial";
 "Main menu" = "Menú principal";
 "Snippets menu" = "Menú de fragmentos";
 "You're all set" = "Todo listo";
-"ClipMenu is live in your menu bar." = "ClipMenu ya está activo en tu barra de menús.";
+"ClipMenu 2 is live in your menu bar." = "ClipMenu 2 ya está activo en tu barra de menús.";
 "Open your clipboard history anytime." = "Abre tu historial del portapapeles cuando quieras.";
-"You can also click the ClipMenu icon in the menu bar." = "También puedes hacer clic en el icono de ClipMenu en la barra de menús.";
+"You can also click the ClipMenu 2 icon in the menu bar." = "También puedes hacer clic en el icono de ClipMenu 2 en la barra de menús.";
 "Continue" = "Continuar";
 "Skip this step" = "Omitir este paso";
-"Open ClipMenu" = "Abrir ClipMenu";
+"Open ClipMenu 2" = "Abrir ClipMenu 2";
 "Back" = "Atrás";
 "Show Setup Guide…" = "Mostrar guía de configuración…";
 
@@ -293,6 +293,5 @@
 "Finder's Get Info panel now shows ClipMenu's copyright, the same line the About pane shows." = "El panel Obtener información del Finder ahora muestra el copyright de ClipMenu, la misma línea que muestra el panel Acerca de.";
 
 /* What's New (2.21.1) */
-"app.whatsNew.summary" = "Una corrección de seguridad en Desinstalar, heredada del framework compartido con el que se compila ClipMenu 2. Tu historial de portapapeles y tus fragmentos no cambian.";
-"app.whatsNew.fixed1" = "Desinstalar ahora se detiene si encuentra más de una copia de ClipMenu 2 en tu Mac. Mover a la Papelera la copia que estás ejecutando siempre fue seguro, pero tus ajustes, el elemento de inicio de sesión y los archivos de soporte se guardan según la identidad de la app y no según su ubicación, así que dos copias comparten todo eso y no hay forma de saber cuál es cuál. Desinstalar una copia de más podría borrar los ajustes de la copia que sí usas. Ahora se detiene antes de borrar nada y muestra dónde están las copias, para que puedas mover a la Papelera las que no quieres y volver a intentarlo. Si tienes una sola copia, que es casi todo el mundo, nada cambia.";
-"app.whatsNew.changed1" = "Actualizado a DragonKit 4.1.1, el framework compartido detrás de Ajustes, Acerca de, Novedades y las actualizaciones de software. La corrección anterior viene de ahí; ninguno de esos paneles se ve ni se comporta de forma distinta.";
+"app.whatsNew.summary" = "ClipMenu 2 ahora usa el mismo nombre en toda su interfaz. Tu historial del portapapeles, tus fragmentos y tus ajustes no cambian.";
+"app.whatsNew.changed1" = "La app se llama \"ClipMenu 2\" en todas partes. Doce lugares de su propia interfaz seguían diciendo \"ClipMenu\" — entre ellos Salir, Abrir, las pantallas de bienvenida, el aviso de inicio al iniciar sesión y la indicación sobre el permiso de pegado — mientras la barra de menús y Acerca de mostraban \"ClipMenu 2\". La app no coincidía consigo misma en su propio nombre. Ahora todos coinciden. Las referencias al ClipMenu original de Naotaka Morimoto, del que esta app es una reconstrucción, conservan a propósito el nombre original.";

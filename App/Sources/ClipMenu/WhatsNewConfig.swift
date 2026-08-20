@@ -36,9 +36,9 @@ enum WhatsNewConfig {
             // rather than reusing verbatim ones.
             summary: L("app.whatsNew.summary"),
             sections: [
-                ChangeSection(kind: .fixed, entries: [
-                    L("app.whatsNew.fixed1"),
-                ]),
+                // One section. 2.21.2 renames nothing but the app's own name, and 2.21.1's
+                // `.fixed` uninstall entry is dropped rather than carried forward — it shipped
+                // there, and repeating it would tell a user the same fix landed twice.
                 ChangeSection(kind: .changed, entries: [
                     L("app.whatsNew.changed1"),
                 ]),
