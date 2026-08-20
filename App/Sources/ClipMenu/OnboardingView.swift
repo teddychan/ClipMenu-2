@@ -182,7 +182,7 @@ private struct WelcomeStep: View {
         VStack(spacing: 0) {
             VStack(spacing: 10) {
                 IconTile(symbol: "list.clipboard")
-                Text("ClipMenu").font(.system(size: 24, weight: .semibold)).foregroundStyle(.white)
+                Text(AppInfo.displayName).font(.system(size: 24, weight: .semibold)).foregroundStyle(.white)
                 Text(L("Your clipboard history and snippets, one keystroke away."))
                     .font(.system(size: 14)).foregroundStyle(OB.subtitle)
                     .multilineTextAlignment(.center)
