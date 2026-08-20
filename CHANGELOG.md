@@ -22,12 +22,15 @@ nothing else — the release also carries a debug-only fix that no user could ev
   no user could hit it. Recorded here rather than in the What's New pane, which is for changes a
   user can observe.
 
-- **The app calls itself "ClipMenu 2" again.** `CFBundleName` had drifted to a bare "ClipMenu" —
-  the only Dragon app missing the version number Ice 2, Spectacle 2 and Yahoo! KeyKey 2 all carry,
-  even though the bundle's own filename (`ClipMenu 2.app`, what the Homebrew cask installs) already
-  had it. Visible in the menu bar tooltip, the Settings window title and the About pane.
-  `AppStore.folder`'s Application Support path stays the hardcoded literal "ClipMenu" it always
-  was, so no one's clipboard history or snippets move.
+- **`CFBundleName` in the committed `Info.plist` now says "ClipMenu 2", matching what every build
+  already produced.** Nothing a user can observe changes, and the entry says so rather than
+  claiming a rename: the value in that file has never reached anyone. `App/scripts/run.sh`,
+  `run-debug.sh` and dragon-release-ci's bundle-assembly step each `PlistBuddy Set :CFBundleName`
+  from an app-name template that resolves to "ClipMenu 2", so the shipped app, the local release
+  build and the Debug build have all called themselves "ClipMenu 2" the whole time. The committed
+  "ClipMenu" was dead weight that read like the app's name while being overwritten in every path —
+  which is the only reason it is worth correcting. `AppStore.folder`'s Application Support path is
+  a separate hardcoded literal and is untouched, so no clipboard history or snippets move.
 
 ## 2.21.0 — 2026-08-18
 
